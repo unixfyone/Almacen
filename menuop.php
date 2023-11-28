@@ -1,0 +1,364 @@
+﻿<?php
+//menuop.php
+
+include('database_connection.php');
+
+if(!isset($_SESSION['type']))
+{
+	header('location:login.php');
+}
+if($_SESSION['type'] != 'Master')
+{
+	header("location:index2.php");
+}
+include('headerx.php');
+include('unico.php');
+include('unico_2.php');
+?>
+
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
+
+<style type="text/css">
+.button {
+    display: block;
+    width: 115px;
+    height: 25px;
+    background: #343a40;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+}
+.dataTables_filter{text-align:right}
+
+.dataTables_filter label {
+  font-weight: normal;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.dataTables_filter input {
+  margin-left: 0.5em;
+  display: inline-block;
+  width: auto;
+}
+
+.dataTables_length label {  font-weight:  normal; text-align: left;   white-space: nowrap;}
+dataTables_length select {  width: auto;  display: inline-block;}
+
+.btn-xs, .btn-group-xs > .btn {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+.btn-warning {
+    color: #ffffff;
+    background-color: #dd5600;
+    border-color: #dd5600;
+}
+.border {
+    border: 1px solid #<?=$ccolor;?>;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    box-shadow: none;
+}
+.btn-success {
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+</style>
+<div class="content-wrapper">
+	<!-- Content Header (Page header)  -->
+    <section class="content-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-6">
+					<h1 class="m-0"><b><font color="#<?=$ccolor;?>" FACE="times new roman" size="5px">Opciones para Menú</font></b></h1>
+				</div>
+				<div class="col-sm-6" align='right'>
+					<?php
+					if($add == '1' and $actua == '1')
+					{
+					?>
+					<a><button type="button" name="add_button" id="add_button" data-toggle="modal" data-target="#menuopModal" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1">Agregar Opción</button></a>
+					<?php	 
+					} else {
+					?>
+					<a>
+					<a><button type="button" name="add_button" id="add_button" data-toggle="modal" data-target="#menuopModal" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" disabled />Agregar Opción</button></a>
+					<?php	 
+					}
+					?>
+				</div>
+			</div>
+		</div><!-- /.container-fluid -->
+    </section>
+	
+	    <!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card card-<?= $cstyle; ?> elevation-2">
+						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
+							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Lista de Opciones para Menú</font></b>
+						</div>
+						<!-- /.card-header -->
+						<div class="card-body">
+							<div class="panel-body">
+								<?php	
+								//---------------------------------------------------------------
+								$SQL = "SELECT * FROM wh_menu_options 
+								INNER JOIN wh_menu_groups ON wh_menu_groups.menugr_id = wh_menu_options.menugr_id
+								";
+								//---------------------------------------------------------------
+								?>						
+								<table id="menuop_data" class="table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer" role="grid" border='1'>
+									<thead>
+									<tr height= '16px'>
+										<th>ID</th>
+										<th>Grupo</th>
+										<th>Descripción Opción</th>
+										<th>Run_MN</th>
+										<th>Act-Datos</th>
+										<th>Status</th>
+										<th>Editar</th>
+									</tr>
+									</thead>
+									<tbody>
+										<?php
+										$Registro2 = mysqli_query($link,$SQL);
+										while($Fila2 = mysqli_fetch_array($Registro2))
+										{
+										$status = '';
+										$accion = '';
+//<!-- =================================================================================== -->							
+	if($Fila2['menuop_statu'] == 'Activo')
+	{
+		if($del == '1' and $actua == '1')
+		{
+		$status = '<button type="button" name="delete" title="Cambiar Status de la Opción" id="'.$Fila2["menuop_id"].'"  class="btn btn-success btn-xs delete" data-status="'.$Fila2["menuop_statu"].'">Activo</button>';
+		}
+		else
+		{
+		$status = '<button type="button" name="delete" title="Cambiar Status de la Opción" id="'.$Fila2["menuop_id"].'"  class="btn btn-success btn-xs delete" data-status="'.$Fila2["menuop_statu"].'" disabled>Activo</button>';
+		}		
+	}
+	else
+	{
+		if($del == '1' and $actua == '1')
+		{	
+		$status = '<button type="button" name="delete" title="Cambiar Status de la Opción" id="'.$Fila2["menuop_id"].'"  class="btn btn-danger btn-xs delete" data-status="'.$Fila2["menuop_statu"].'">Inactivo</button>';
+		}
+		else
+		{
+		$status = '<button type="button" name="delete" title="Cambiar Status de la Opción" id="'.$Fila2["menuop_id"].'"  class="btn btn-danger btn-xs delete" data-status="'.$Fila2["menuop_statu"].'" disabled>Inactivo</button>';
+		}
+	}
+// ==============							
+		if($Fila2['menuop_statu'] == 'Activo' and ($edit == '1') and ($actua == '1'))
+		{
+		$editar = '<button type="button" name="update" title="Editar Opción" id="'.$Fila2["menuop_id"].'" 
+		class="btn btn-outline-light text-dark border border-dark btn-xs mr-1 ml-1 mt-1 mb-1 update" aria-pressed="true"><i class="fas fa-edit"></i></button>';
+		}
+		else
+		{
+		$editar = '<button type="button" name="update" id="'.$Fila2["menuop_id"].'" class="btn btn-outline-light text-dark border border-dark btn-xs mr-1 ml-1 mt-1 mb-1 update" aria-pressed="true" disabled><i class="fas fa-edit"></i></button>';
+		}
+// ==============		
+		if($Fila2['menuop_act'] == '1')
+		{
+		$act = '<span><font color="blue" size="3px">Si</font></span>';
+		}
+		else
+		{
+		$act = '<span><font color="red" size="3px">No</font></span>';
+		}		
+//<!-- =================================================================================== -->								
+										?>
+										<Tr height= '16px'>
+											<Td><font size="3px"><?php echo $Fila2['menuop_id']; ?></font></td>
+											<Td><font size="2px"><?php echo $Fila2['menugr_name']; ?></font></td>
+											<Td><font size="2px"><b><?php echo $Fila2['menuop_desc']; ?></b></font></td>
+											<Td><font size="2px"><?php echo $Fila2['menuop_run_mn']; ?></font></td>
+											<td><font size="2px"><?php echo $act; ?></font></td>
+											<td><?php echo $status; ?></td>
+											<td><?php echo $editar; ?></td>
+										</tr>
+										<?php } mysqli_free_result ($Registro2); ?>
+									</tbody>
+								</table>
+							</div>
+                    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+ </div>
+ <!-- =================================================================================== -->
+    <div id="menuopModal" class="modal fade" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog">
+    	<div class="modal-dialog">
+    		<form method="post" id="menuop_form">
+    			<div class="modal-content">
+    				<div class="modal-header" style="background-color:#<?=$ccolor;?>">
+						<h4 class="modal-title"><font color="#FFFFFF" FACE="times new roman" size="5px"><i class="fa fa-plus"></i> Adicionar Grupo de Opciones</font></h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+    				</div>
+    				<div class="modal-body">
+					
+						<?Php include('function.php'); ?>
+						
+    					<div class="form-group">
+							<label>Grupo de Menú</label>
+    						<select name="menugr_id" id="menugr_id" class="form-control" required>
+								<option value="">Seleccionar Grupo</option>
+								<?php echo fill_menugr_list($connect); ?>
+							</select>
+    					</div>
+						<div class="form-group">
+							<label>Opción de Menú</label>
+							<input type="text" name="menuop_desc" id="menuop_desc" maxlength="80" class="form-control" placeholder="Descripción de la Opciones" required />
+						</div>
+						<div class="form-group">
+							<label>Ruta / Prog.</label>
+							<input type="text" name="menuop_run_mn" id="menuop_run_mn" maxlength="100" class="form-control" placeholder="Ruta / programa a ejecutar" required />
+						</div>
+						<div class="form-group">
+							<label>Opción Actualiza Datos:</label>
+							<select class="form-control"  name="menuop_act" id="menuop_act" required>
+								<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+								<option value="1">Si Actualiza Datos</option>
+								<option value="0">No Actualiza Datos</option>
+							</select>
+						</div>					
+    				</div>
+    				<div class="modal-footer" style="background-color:#FFFFFC">
+    					<input type="hidden" name="menuop_id" id="menuop_id"/>
+    					<input type="hidden" name="btn_action" id="btn_action"/>
+    					<input type="submit" name="action" id="action" class="btn btn-outline-<?php echo $classButtonFooter; ?>" value="Add" />
+						<button type="button" class="btn btn-outline-<?php echo $classButtonFooter; ?>" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cerrar</button>
+    				</div>
+    			</div>
+    		</form>
+    	</div>
+    </div>
+<script>
+$(document).ready(function(){
+<!-- ********************* Egregar Registro ******************************** -->
+	$('#add_button').click(function(){
+		$('#menuop_form')[0].reset();
+		$('.modal-title').html("<font color='#FFFFFF' FACE='times new roman' size='5px'><b>Agregar Opciones de Menú</b></font>");
+		$('#action').val('Grabar');
+		$('#btn_action').val('Add');
+	});
+<!-- ************************************************************************* -->
+
+	$(document).on('submit','#menuop_form', function(event){
+		event.preventDefault();
+		$('#action').attr('disabled','disabled');
+		var form_data = $(this).serialize();
+		$.ajax({
+			url:"menuop_action.php",
+			method:"POST",
+			data:form_data,
+			success:function(data)
+			{
+				$('#menuop_form')[0].reset();
+				$('#menuopModal').modal('hide');
+				$('#alert_action').fadeIn().html('<div class="alert alert-success">'+data+'</div>');
+				$('#action').attr('disabled', false);
+				location.reload();
+			}
+		})
+	});
+<!-- ********************* Editar el Registro ******************************** -->
+	$(document).on('click', '.update', function(){
+		var menuop_id = $(this).attr("id");
+		var btn_action = 'fetch_single';
+		$.ajax({
+			url:"menuop_action.php",
+			method:"POST",
+			data:{menuop_id:menuop_id, btn_action:btn_action},
+			dataType:"json",
+			success:function(data)
+			{
+				$('#menuopModal').modal('show');
+				$('#menugr_id').val(data.menugr_id);
+				$('#menuop_desc').val(data.menuop_desc);
+				$('#menuop_run_mn').val(data.menuop_run_mn);
+				$('#menuop_act').val(data.menuop_act);
+				$('.modal-title').html("<font color='#FFFFFF' FACE='times new roman' size='5px'><b>Editar Opciones de Menú</b></font>");
+				$('#menuop_id').val(menuop_id);
+				$('#action').val('Grabar');
+				$('#btn_action').val("Edit");
+			}
+		})
+	});
+<!-- ************************************************************************* -->
+<!-- ********************* Lista de Registros ******************************** -->
+	var menuopdataTable = $('#menuop_data').DataTable({
+		
+		"language":{
+			"zeroRecords": "No se encontraron registros.",
+            "search" : "Buscar:",
+            "Processing": "Procesando...",
+            "paginate": {
+				"previous": "Anterior",
+				"next": "Siguiente", 
+			}
+		},		
+	
+		"processing":true,
+
+		"order":[],
+		"columnDefs":[
+			{
+				"targets":[0, 3, 4, 5, 6],
+				"orderable":false,
+			},
+		],
+		"pageLength": 10
+	});
+<!-- ************************************************************************* -->
+<!-- ********************* status del Registros ******************************** -->
+	$(document).on('click', '.delete', function(){
+		var menuop_id = $(this).attr('id');
+		var status = $(this).data("status");
+		var btn_action = 'delete';
+		if(confirm("¿Seguro que quieres cambiar el Status de la Opción?"))
+		{
+			$.ajax({
+				url:"menuop_action.php",
+				method:"POST",
+				data:{menuop_id:menuop_id, status:status, btn_action:btn_action},
+				success:function(data)
+				{
+					$('#alert_action').fadeIn().html('<div class="alert alert-info">'+data+'</div>');
+					location.reload();
+				}
+			})
+		}
+		else
+		{
+			return false;
+		}
+	});
+});
+</script>
+
+<?php
+//include('footer.php');
+?>
+
+
+				
