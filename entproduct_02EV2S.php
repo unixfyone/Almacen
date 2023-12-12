@@ -136,7 +136,7 @@ btn-prima {
 
 <?php
 
-echo '<FORM ACTION="act_entpro_edit.php" method="POST">';
+echo '<FORM ACTION="act_salpro_edit.php" method="POST">';
 
 //--------------
 //---------------------------------------------------------------
@@ -147,8 +147,6 @@ $prod2 = $_GET['CP'];			// Codigo de Producto
 if(isset($_GET["TMC"]))$tmid = $_GET["TMC"];	
 else $tmid = '0';								// Codigo Tipo de Movimiento
 //--------------
-if(isset($_GET["TE"]))$mdtipent = $_GET["TE"];
-else $mdtipent = '';
 if(isset($_GET["TS"]))$mdtipsal = $_GET["TS"];
 else $mdtipsal = '';
 if(isset($_GET["CD"]))$CID = $_GET["CD"];
@@ -156,12 +154,12 @@ else $CID = '';
 //-------------
 $dmov = $_GET['DE'];			// Descripcion del Movimiento
 $mdcant = $_GET['CNT'];			// Cantidad del Producto
-//$mdcostoue = $_GET['ME'];		// Costo Unitario Producto M Extranjera
-//$mdcostoul = $_GET['ML'];		// Costo Unitario Producto M Local
 $mdcostoue = $_GET["UNI"];
 $tasa = $_GET["TC"];
-$rprod = $_GET['REC'];			// Persona que recibe producto
-$OBS = $_GET['OBS'];			// Persona que recibe producto
+if(isset($_GET["TT"]))$trans = $_GET["TT"];
+else $trans = '';
+$idconsumo = $_GET['TCON'];
+$OBS = $_GET['OBS'];			
 //---------------------------------------------------------------
 if(isset($_POST["CT1"]))$CT1 = $_POST["CT1"];
 else $CT1 = '0';
@@ -181,7 +179,7 @@ $mhtmov = $Fila1["movh_tmov"];		// Tipo Movimiento (E/S)
 $mhfecha = $Fila1["movh_fecha"];	// Fecha del Documento
 $mhejer = $Fila1["movh_ejer"];		// Ejercicio / Año
 $mhper = $Fila1["movh_per"];		// Periodo / Mes
-$mhproce = $Fila1["movh_proce"];	// Proveedor
+$mhproce = $Fila1["movh_proce"];	// Proveedor	
 }
 mysqli_free_result ($Registro1);
 //===============================================================
@@ -228,7 +226,7 @@ $MM = $mhper;
 $MM_ANT = $MM - 1; 				// Mes periodo actual en arreglo (12 Pos)
 $MM_PANT = $MM - 1;				// Mes para Saldo del Periodo anterior (13 Pos)
 $existencia = 0;
-//--------------------
+//------------------
 $SQL = "SELECT * FROM wh_saldosm
 Where product_cod = '$prod2' and zone_id = '$ZON' and company_id = '$CIA' and aa_s = '$mhejer' 
 ";
@@ -268,6 +266,8 @@ mysqli_free_result ($Registro);
 <Input Type="hidden" name="pid" value="<?Php echo $prodid ?>" />
 <Input Type="hidden" name="tmid" value="<?Php echo $tmid ?>" />
 <Input Type="hidden" name="mhtm" value="<?Php echo $mhtmov ?>" />
+
+<Input Type="hidden" name="TCON" value="<?Php echo $idconsumo ?>" />
 <Input Type="hidden" name="OBS" value="<?Php echo $OBS ?>" />
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 <!--  ======================================================================================= -->
@@ -329,10 +329,11 @@ mysqli_free_result ($Registro);
 						<div class="container-fluid">
 							<div class="form-group">
 								<label><font color="blue" size="3px">Datos del Producto...:</font></label>
+								&nbsp;&nbsp;
 								<font color='black' size="3px"><?Php echo $prod2 ?></font>
 								<label class="control-label"><font color="blue" size="3px">--</font></label>
 								<font color='black' size="3px"><?Php echo $DESCP ?></font>
-								
+
 								<div class="row">
 									<div class="col-lg-11">
 										<div class="input-group">
@@ -348,7 +349,7 @@ mysqli_free_result ($Registro);
 										</div>
 									</div>
 								</div>
-											
+
 								<div class="row">
 									<div class="col-lg-10">
 										<div class="input-group">
@@ -380,57 +381,102 @@ mysqli_free_result ($Registro);
 									</div>							
 								</div>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-lg-4">
 										<div class="input-group">
-											<label class="input-group-text"><font color="#606060" size="3px">Tipo de Entrada Material:</font></label>
-											<select name="tipent" id="tipent" class="form-control" required />
+											<label class="input-group-text"><font color="#606060" size="3px">Tipo Salida Material..:</font></label>
+											<select name="mdtipsal" id="mdtipsal" class="form-control" required />
 											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 											<?php
 											  echo '<option ';
-												if($mdtipent == 'Nacional') echo 'selected ';
-											  echo 'value=' . 'Nacional' .'>'. 'Nacional' . "\n";
+												if($mdtipsal == 'Equipo') echo 'selected ';
+											  echo 'value=' . 'Equipo' .'>'. 'Equipo' . "\n";
 												echo '<option ';
-												if($mdtipent == 'Internacional') echo 'selected ';
-											  echo 'value=' . 'Internacional' .'>'. 'Internacional' . "\n";
+												if($mdtipsal == 'Interna') echo 'selected ';
+											  echo 'value=' . 'Interna' .'>'. 'Interna' . "\n";
 												echo '<option ';
-												if($mdtipent == 'Transferencia') echo 'selected ';
-											  echo 'value=' . 'Transferencia' .'>'. 'Transferencia' . "\n";
-												echo '<option ';
-												if($mdtipent == 'Inv-Inicial') echo 'selected ';
-											  echo 'value=' . 'Inv-Inicial' .'>'. 'Inv-Inicial' . "\n";										  
+												if($mdtipsal == 'Pozo') echo 'selected ';
+											  echo 'value=' . 'Pozo' .'>'. 'Pozo' . "\n";						  
 											?>
 											</select>
 										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-lg-4">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px">Condicion del Material...:</font></label>
-											<select name="c_id" class="form-control" required >
+											<select name="CONDI" class="form-control" required >
 											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
-											<?PHP
-											//---------------------------------------------------------------
-											$SQL="SELECT * FROM wh_conditions where c_statu = 'Activo' ORDER BY c_description ASC ";
-											$Registro=mysqli_query($link,$SQL);
-											//-------
-											while ($Fila=mysqli_fetch_array($Registro)){
-											//-------
-											echo '<option ';
-											if($CID == $Fila["c_id"])echo 'selected ';
-											echo 'value=' . $Fila["c_id"] .'>'. $Fila["c_description"] . "\n";
-											}
-											mysqli_free_result ($Registro);
-											//---------------------------------------------------------------
+										<?PHP
+										//---------------------------------------------------------------
+										$SQL="SELECT * FROM wh_conditions where c_statu = 'Activo' ORDER BY c_description ASC ";
+										$Registro=mysqli_query($link,$SQL);
+										//-------
+										while ($Fila=mysqli_fetch_array($Registro)){
+										//-------
+										echo '<option ';
+										if($CID == $Fila["c_id"])echo 'selected ';
+										echo 'value=' . $Fila["c_id"] .'>'. $Fila["c_description"] . "\n";
+										}
+										mysqli_free_result ($Registro);
+										//---------------------------------------------------------------
+										?>
+										</select>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="input-group">
+											<label class="input-group-text"><font color="#606060" size="3px">Tipo Transacción:</font></label>
+											<select name="movd_trans" id="movd_trans" class="form-control" required />
+											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+											<?php
+											  echo '<option ';
+												if($trans == 'N/A') echo 'selected ';
+											  echo 'value=' . 'N/A' .'>'. 'N/A' . "\n";
+												echo '<option ';
+												if($trans == 'INTERNA') echo 'selected ';
+											  echo 'value=' . 'INTERNA' .'>'. 'INTERNA' . "\n";
+												echo '<option ';
+												if($trans == 'PROPIA') echo 'selected ';
+											  echo 'value=' . 'PROPIA' .'>'. 'PROPIA' . "\n";
+												echo '<option ';
+												if($trans == 'PRESTAMO') echo 'selected ';
+											  echo 'value=' . 'PRESTAMO' .'>'. 'PRESTAMO' . "\n";
+												echo '<option ';
+												if($trans == 'NUEVA') echo 'selected ';
+											  echo 'value=' . 'NUEVA' .'>'. 'NUEVA' . "\n";											  
 											?>
 											</select>
 										</div>
 									</div>
-								</div>
+								</div>									
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="input-group">
+											<label class="input-group-text"><font color="#606060" size="3px">Nombre Consumo.....:</font></label>
+											<select name="TCON" id="TCON" class="form-control" required />
+											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>											
+											<?php
+											$query = "SELECT * FROM wh_consumos WHERE statu_cons = 'Activo' ";
+												
+											$Registro=mysqli_query($link,$query);
+											//-------
+											while ($row=mysqli_fetch_array($Registro)) {
+											//-------
+											echo '<option ';
+											if($idconsumo == $row["id_cons"])echo 'selected ';
+											echo 'value=' . $row["id_cons"] .'>'. $row["name_cons"] . "\n";
+											}
+											mysqli_free_result ($Registro);										
+											?>
+											</select>
+										</div>
+									</div>
+								</div> 									
+	
+
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="input-group">
-											<label class="input-group-text"><font color="#606060" size="3px">Observacion de Entrada.:</font></label>
+											<label class="input-group-text"><font color="#606060" size="3px">Observacion Salida...:</font></label>
 											<Input class="form-control" Type="Text" name="OBS" value="<?Php echo $OBS ?>" >
 										</div>
 									</div>

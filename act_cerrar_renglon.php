@@ -52,10 +52,10 @@ include('unico.php');
 //if (isset($_GET['BtnOK']))
 if (isset($_POST['autorizados'])) 
 {
-	
-	$id = $_POST['id'];
-    //var_dump($id);
-    $count = count($id);
+ 	if (isset($_POST['id'])) 
+	{
+		$id = $_POST['id'];
+		$count = count($id);
 	
 	$mdcant2 = '0';
 //---------------------------------------------------------------
@@ -193,7 +193,14 @@ alert('!Renglones Cerrados Correctamente...')
 window.history.go(-1)
 </script>";
 //==========
+} else {
+	echo"<script type='text/javascript'>
+	alert('!No se Seleccionaron Renglones.........')
+	window.history.go(-1)
+	</script>";
 }
+//==========
+} 
 //===============================================================
 ?>
 </div>

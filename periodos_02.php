@@ -14,6 +14,8 @@ if($_SESSION['type'] != 'Master')
 include('headerx.php');
 include('unico.php');
 ?>
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
+<link rel="stylesheet" type="text/css" href="cssi/styles.css" />
 
 <style type="text/css">
 

@@ -166,7 +166,7 @@ function fill_departments_list($connect, $cia)
 	$statement = $connect->prepare($query);
 	$statement->execute();
 	$result = $statement->fetchAll();
-	$output = '';
+	$output = '<option value="">Seleccionar Departamento</option>';
 	foreach($result as $row)
 	{
 		$output .= '<option value="'.$row["id"].'">'.$row["department"].'</option>';

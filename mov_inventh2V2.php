@@ -234,7 +234,7 @@ $cont_doc = "EM".'-'.$cont_em1;
 								<Input Type="hidden" name="MID" value="<?Php echo $MID ?>">
 								
 								<div class="modal-footer" style="background-color:#FFFFFC">
-									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="bottom" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
+									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="buttom" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
 									
 									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 									

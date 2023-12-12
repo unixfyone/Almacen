@@ -365,7 +365,7 @@ mysqli_free_result ($RegistroA);
 										<div Align="right" style="background-color:#FFFFFC">
 											<input class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="submit" name="autorizados" value="Cerrar seleccionados" />
 										</form>
-											<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>	
+											<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>	
 										</div>
 										
 									</div>
@@ -476,7 +476,7 @@ mysqli_free_result ($RegistroA);
 											{
 											echo "<Td Align=Left><font size=3>" . $Fila['code'];	
 											}	else	{	
-											 echo "<td><a href=\"entproduct_03AV2.php?IDH=$mhid&IDP=$prodid&CP=$prod2X&zone=$ZON \">$prod2X</a></td>";
+											 echo "<td><a href=\"entproduct_03AV2S.php?IDH=$mhid&IDP=$prodid&CP=$prod2X&zone=$ZON \">$prod2X</a></td>";
 											}
 											//-------
 											echo "<Td Align=Left><span class=text-wrap><font size=3>" . $Fila['description_m'];

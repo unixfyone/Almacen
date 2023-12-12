@@ -323,9 +323,9 @@ else $prod = '';
 								echo "<td Align=Left><font size=2>" . $Fila['category'];
 								echo "<td Align=Left><font size=2>" . $Fila['ubication'];
 								echo "<td Align=Center><font size=2>" . $status;
-								echo "<td Align=Center><font size=2>" . $existencia;
+								echo "<td Align=Center><font size=3>" . number_format($existencia, 2, '.', '');
 								echo "</tr>";
-								//---------------
+								//--------------- 
 							} 
 							mysqli_free_result ($Registro2);
 							echo "</table>";

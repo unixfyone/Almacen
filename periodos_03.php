@@ -23,8 +23,10 @@ include('headerx.php');
 include('unico.php');
 ?>
 
-<style type="text/css">
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
+<link rel="stylesheet" type="text/css" href="cssi/styles.css" />
 
+<style type="text/css">
 .div2 {
   background-color: #f2f2f2;
   width: 600px;
@@ -33,7 +35,6 @@ include('unico.php');
   padding: 50px;
   margin: 20px;
 }
-
 </style>
 <?Php
 //---------------------------------------------------------------
@@ -174,20 +175,35 @@ if ($CTA > '0')
 		</div>
 	</section>
 	
-		<?php
-		if (isset($_GET['BtnOK']))
-		{
+	<?php
+	if (isset($_GET['BtnOK']))
+	{
 		$MES = $_GET["mes"];
+		
+		//========
+		$fecmind = 26;
+		$fecmaxd =	25;
+		
+		if ($MES == '1') {
+			$fecminm = 12;
+			$fecmina = $AA -1;
+		} else {
+			$fecminm = ($MES - 1);
+		}
+		
+		$fecmin = $fecmina.'-'.$fecminm.'-'.$fecmind;
+		$fecmax = $AA.'-'.$MES.'-'.$fecmaxd;
+		
 		//=======================================================		
 		//==============================================================		
-		$SQL = "INSERT INTO wh_periodos (per_aa, per_mm, company_id, zone_id) value ('$AA', '$MES', '$CIA', '$ZON')";
+		$SQL = "INSERT INTO wh_periodos (per_aa, per_mm, company_id, zone_id, fec_min, fec_max) value ('$AA', '$MES', '$CIA', '$ZON', '$fecmin', '$fecmax')";
 		mysqli_query ($link, $SQL);
 		//--------------------------
 			echo"<script type='text/javascript'>
 			alert('!Periodo Agregado correctamente...','$MES')
 			window.history.go(-2)
 			</script>";
-		}
+	}
 	//========		
 	}
 	} else {
@@ -196,7 +212,7 @@ if ($CTA > '0')
 		window.history.back()
 		</script>';	
 //--------------------------------------------
-}
+	}
 mysqli_close($link);
 ?>
 </div>

@@ -312,7 +312,7 @@ mysqli_free_result ($RegistroA);
 									<th>Fecha</th>
 									<th>Tipo</th>
 									<th>Documento</th>
-									<th>Procedencia</th>
+									<th>Nro. OC/Salida</th>
 									<th>Status</th>
 									<th>Acciones</th>
 									</tr>
@@ -347,29 +347,37 @@ mysqli_free_result ($RegistroA);
 	if($Fila2['movh_statu'] == 'Abierto')
 	{
 		if($edit == '1' and $actua == '1')
-		{		
-		$accion = '<ul class="nav navbar-nav">
-		<li class="dropdown btn-group">
-		<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
-		
-		<ul class="dropdown-menu dropdown-menu-right">
-		
-			<li><a href="mov_inventh3V2.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
-
-			<li role="presentation" class="divider"></li>
-
-			<li><a href="entproduct_03.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
+		{	
+			if($MID == 'Entradas' )
+			{				
+			$accion = '<ul class="nav navbar-nav">
+			<li class="dropdown btn-group">
+			<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
 			
-			<li role="presentation" class="divider"></li>
-			
-			<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-			
-			<li role="presentation" class="divider"></li>
-			
-			<li><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
-			
-		</ul></li></ul>';
-		
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="mov_inventh3V2.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
+				<li role="presentation" class="divider"></li>
+				<li><a href="entproduct_03.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
+				<li role="presentation" class="divider"></li>
+				<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
+				<li role="presentation" class="divider"></li>
+				<li><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
+			</ul></li></ul>';
+			} else {
+				$accion = '<ul class="nav navbar-nav">
+				<li class="dropdown btn-group">
+				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
+				
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="mov_inventh3V2S.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
+					<li role="presentation" class="divider"></li>
+					<li><a href="entproduct_03.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
+					<li role="presentation" class="divider"></li>
+					<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
+					<li role="presentation" class="divider"></li>
+					<li><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
+				</ul></li></ul>';
+			}
 		} else {
 			
 		$accion = '<ul class="nav navbar-nav">
@@ -377,20 +385,13 @@ mysqli_free_result ($RegistroA);
 		<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
 		
 		<ul class="dropdown-menu dropdown-menu-right">
-		
-			<li class="disabled"><a href="mov_inventh3V2.php?IDX='.$Fila2['movh_id'].' " ><i class="fa fa-edit"></i>  Editar Documento</a></li>
-
+			<li class="disabled"><a href="#" ><i class="fa fa-edit"></i>  Editar Documento</a></li>
 			<li role="presentation" class="divider"></li>
-
-			<li class="disabled"><a href="entproduct_03.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-			
+			<li class="disabled"><a href="#"><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
 			<li role="presentation" class="divider"></li>
-			
 			<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-			
 			<li role="presentation" class="divider"></li>
-			
-			<li class="disabled"><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
+			<li class="disabled"><a href="#"><i class="fa fa-times"></i> Cerrar Documento</a></li>
 			
 		</ul></li></ul>';
 		}
@@ -401,20 +402,13 @@ mysqli_free_result ($RegistroA);
 		<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
 		
 		<ul class="dropdown-menu dropdown-menu-right">
-		
-			<li class="disabled"><a href="mov_inventh3.php?IDX='.$Fila2['movh_id'].' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
-
+			<li class="disabled"><a href="#"><i class="fa fa-edit"></i>  Editar Documento</a></li>
 			<li role="presentation" class="divider"></li>
-
-			<li class="disabled"><a href="entproduct_03.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-			
+			<li class="disabled"><a href="#"><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
 			<li role="presentation" class="divider"></li>
-			
 			<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-			
 			<li role="presentation" class="divider"></li>
-			
-			<li class="disabled"><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
+			<li class="disabled"><a href="#"><i class="fa fa-times"></i> Cerrar Documento</a></li>
 			
 		</ul></li></ul>';
 	}
@@ -426,7 +420,7 @@ mysqli_free_result ($RegistroA);
 										<Td><font size="3px"><?php echo $Fila2['movh_fecha']; ?></font></td>
 										<Td><span class="text-wrap"><font size="3px" color = "#990000"><?php echo $Fila2['tm_desc']; ?></font></span></td>
 										<Td><font size="3px" color = "#990000"><?php echo $Fila2['movh_doc']; ?></font></td>
-										<Td><span class="text-wrap"><font size="3px"><?php echo $Fila2['movh_proce']; ?></font></span></td>
+										<Td><span class="text-wrap"><font size="3px"><?php echo $Fila2['movh_oc']; ?></font></span></td>
 										<td><?php echo $status; ?></td>
 										<td><?php echo $accion; ?></td>
 									</tr>

@@ -136,7 +136,7 @@ echo '<FORM name="" ACTION="" method="">';
 //---------------------------------------------------------------
 if(isset($_GET["movd_id"]))$IDM = $_GET["movd_id"];
 else $IDM = $_GET["IDM2"];
-//--------------
+//---------------------------------------------------------------
 if(isset($_GET["prod2"]))$prod2 = $_GET["prod2"];
 else $prod2 = '';
 //--------------
@@ -167,6 +167,11 @@ if(isset($_GET["CID"]))$CID = $_GET["CID"];
 else $CID = '';
 if(isset($_GET["CONDI"]))$CONDI = $_GET["CONDI"];
 else $CONDI = '';
+//-------------
+if(isset($_GET["trans"]))$trans = $_GET["trans"];
+else $trans = '';
+if(isset($_GET["movd_id_cons"]))$idconsumo = $_GET["movd_id_cons"];
+else $idconsumo = '';
 if(isset($_GET["obs"]))$movd_obs = $_GET["obs"];
 else $movd_obs = '';
 //-------------
@@ -208,6 +213,8 @@ $CID = $Fila1["c_id"];				// ID Condidion del Material
 $CONDI = $Fila1["c_description"];	// Condidion del Material
 $dmov = $Fila1["movd_desc"];		// Descripcion del Movimiento
 $rprod = $Fila1["movd_recprod"];	// Persona que recibe producto
+$trans = $Fila1["movd_trans"];
+$idconsumo = $Fila1["movd_id_cons"];
 $movd_obs = $Fila1["movd_obs"];
 } 
 }
@@ -226,7 +233,7 @@ mysqli_free_result ($Registro1);
 	// Asignar Datos a las variables
 	//-------------------------------
 	$DESCP= $Filap["description_m"];
-	$PRODP = $Filap["cost_me"];			// Precio A del Producto
+	$PRODP = $Filap["cost_me"];
 	$UNIM = $Filap["name"];
 	}
 	mysqli_free_result ($Registrop);
@@ -301,6 +308,9 @@ mysqli_free_result ($Registro);
 <Input Type="hidden" name="tmcod" value="<?Php echo $tmcod ?>" />
 <Input Type="hidden" name="tmtipo" value="<?Php echo $tmtipo ?>" />
 <Input Type="hidden" name="CID" value="<?Php echo $CID ?>" />
+
+<Input Type="hidden" name="trans" value="<?Php echo $trans ?>" />
+<Input Type="hidden" name="movd_id_cons" value="<?Php echo $idconsumo ?>" />
 <Input Type="hidden" name="obs" value="<?Php echo $movd_obs ?>" />
 
 <div class="content-wrapper">
@@ -363,13 +373,13 @@ mysqli_free_result ($Registro);
 								<div class="col-lg-12">
 									<div class="panel panel-default">
 										<div class="container-fluid">
-											<?Php include_once('tasacambio.php'); ?>					
-											<?Php include('function.php'); ?>
+
 											<label><font color="blue" size="3px">Datos del Material...:</font></label>
+											&nbsp;&nbsp;
 											<font color='black' size="3px"><?Php echo $prod2 ?></font>
 											<label class="control-label"><font color="blue" size="3px">--</font></label>
 											<font color='black' size="3px"><?Php echo $DESCP ?></font>
-											
+
 											<div class="row">
 												<div class="col-lg-11">
 													<div class="input-group">
@@ -389,7 +399,7 @@ mysqli_free_result ($Registro);
 											<div class="row">
 												<div class="col-lg-8">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon..:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon.:</font></label>
 														<Input class="form-control" Type="Text" name="dmov" maxlength="200" size="100" value="<?Php echo $dmov ?>" readonly>
 													</div>
 												</div>
@@ -397,7 +407,7 @@ mysqli_free_result ($Registro);
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Cantidad de Material..:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Cantidad de Material.:</font></label>
 														<Input class="form-control" Type="Text" name="CANT" size='8' value="<?Php echo $mdcant ?>" readonly></font>
 													</div>
 												</div>
@@ -417,25 +427,51 @@ mysqli_free_result ($Registro);
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-lg-6">
+												<div class="col-lg-4">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Tipo de Entrada Material:</font></label>
-														<Input class="form-control" Type="Text" name="mdtipent" size="40" value="<?Php echo $mdtipent ?>" readonly>
+														<label class="input-group-text"><font color="#606060" size="3px">Tipo Salida Material..:</font></label>
+														<Input class="form-control" Type="Text" name="mdtipsal" size="40" value="<?Php echo $mdtipsal ?>" readonly>
 													</div>
 												</div>
-											</div>
-											<div class="row">
-												<div class="col-lg-6">
+												<div class="col-lg-4">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Condicion del Material...:</font></label>
 														<Input class="form-control" Type="Text" name="CONDI" value="<?Php echo $CONDI ?>" readonly>
 													</div>
 												</div>
-											</div>
+												<div class="col-lg-4">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#606060" size="3px">Tipo Transacción:</font></label>
+														<Input class="form-control" Type="Text" name="movd_trans" value="<?Php echo $trans ?>" readonly>
+													</div>
+												</div>
+											</div>											
+											<div class="row">
+												<div class="col-lg-4">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#606060" size="3px">Nombre Consumo.....:</font></label>
+														<?php
+														$query = "SELECT * FROM wh_consumos 
+														WHERE statu_cons = 'Activo'
+														";
+															
+														$Registro=mysqli_query($link,$query);
+														//-------
+														while ($row=mysqli_fetch_array($Registro))
+														{
+														$idconsumo= $row["id_cons"];
+														$nconsumo= $row["name_cons"];
+														}
+														mysqli_free_result ($Registro);										
+														?>
+														<Input class="form-control" Type="Text" name="nconsumo" value="<?Php echo $nconsumo ?>" readonly>
+													</div>
+												</div>
+											</div> 																
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Observacion de Entrada.:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Observacion Salida...:</font></label>
 														<Input class="form-control" Type="Text" name="obs" value="<?Php echo $movd_obs ?>" readonly>
 													</div>
 												</div>
@@ -453,12 +489,12 @@ mysqli_free_result ($Registro);
 														</div>
 													</div>
 												</div>
-												<div class="col-sm-6" align='right'>
-
+												
+												<div class="col-sm-6" align="right">
 													<?php
-													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&TS=$mdtipsal&CD=$CID&DE=$dmov&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>"; 
+													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"entproduct_02EV2S.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TS=$mdtipsal&CD=$CID&DE=$dmov&TT=$trans&TCON=$idconsumo&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>";
 													?> &nbsp;&nbsp;&nbsp;&nbsp;
-													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>													
+													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>
 												</div>											
 											</div>
 										</div>
@@ -525,7 +561,7 @@ mysqli_free_result ($Registro);
 							{
 							echo "<Td Align=Left><font size=2>" . $Fila['code'];	
 							}	else	{	
-							echo "<td><a href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&TS=$mdtipsal&CD=$CID \">$prod2X</a></td>"; 
+							echo "<td><a href=\"entproduct_02EV2S.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TS=$mdtipsal&CD=$CID&TT=$trans&TCON=$idconsumo&OBS=$movd_obs \">$prod2X</a></td>"; 
 							}
 							echo "<Td Align=Left><span class=text-wrap><font size=2>" . $Fila['description_m'];
 							echo "<Td Align=Center><font size=2>" . $GRPXD;

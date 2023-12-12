@@ -139,7 +139,7 @@ btn-prima {
 
 <?php
 
-echo '<FORM ACTION="act_entpro_add.php" method="POST">';
+echo '<FORM ACTION="act_salpro_add.php" method="POST">';
 
 //--------------
 //---------------------------------------------------------------
@@ -181,8 +181,8 @@ mysqli_free_result ($Registro1);
 	// Asignar Datos a las variables
 	//-------------------------------
 	$DESCP = $Filap["description_m"];		// Descripcion del Producto
-	$PRODP = $Filap["cost_me"];				// Precio A del Producto
-	$UNIM = $Filap["name"];					// Nombre Unidad de Medida
+	$PRODP = $Filap["cost_me"];			// Precio A del Producto
+	$UNIM = $Filap["name"];					// Nombre Unidad de Medida	
 	}
 	mysqli_free_result ($Registrop);
 //---------------------------------------------------------------
@@ -237,8 +237,7 @@ while ($row=mysqli_fetch_array($Registro))
 }
 mysqli_free_result ($Registro);
 //---------------------------------------------------------------
-//---------------------------------------------------------------
-	
+//---------------------------------------------------------------	
 ?>
 <Input Type="hidden" name="mhid" value="<?Php echo $mhid ?>" />
 <Input Type="hidden" name="mhdoc" value="<?Php echo $mhdoc ?>" />
@@ -341,7 +340,7 @@ mysqli_free_result ($Registro);
 													</div>
 												</div>
 											</div>
-
+										
 											<div class="row">
 												<div class="col-lg-8">
 													<div class="input-group">
@@ -350,6 +349,7 @@ mysqli_free_result ($Registro);
 													</div>
 												</div>
 											</div>
+											
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
@@ -358,11 +358,12 @@ mysqli_free_result ($Registro);
 													</div>
 												</div>
 											</div>
+											
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Costo Unitario Moneda Ext:</font></label>
-														<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="0.00" required />
+														<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="<?Php echo $PRODP ?>" readonly />
 													</div>
 												</div>
 												<div class="col-lg-4">
@@ -373,20 +374,18 @@ mysqli_free_result ($Registro);
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-lg-6">
+												<div class="col-lg-4">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Tipo de Entrada Material:</font></label>
-														<select name="tipent" class="form-control" required />						
+														<label class="input-group-text"><font color="#606060" size="3px">Tipo Salida Material..:</font></label>
+														<select name="tipsal" class="form-control" required />						
 															<option value=""></option>
-															<option value="Nacional">Nacional</option>
-															<option value="Internacional">Internacional</option>
-															<option value="Transferencia">Transferencia</option>
+															<option value="Equipo">Equipo</option>
+															<option value="Interna">Interna</option>
+															<option value="Pozo">Pozo</option>
 														<select>
 													</div>
 												</div>
-											</div>
-											<div class="row">
-												<div class="col-lg-6">
+												<div class="col-lg-4">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Condicion del Material...:</font></label>
 														<select name="c_id" class="form-control" required />
@@ -395,18 +394,42 @@ mysqli_free_result ($Registro);
 														</select>
 													</div>
 												</div>
-											</div>						
+												<div class="col-lg-4">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#606060" size="3px">Tipo Transacción:</font></label>
+														<select name="movd_trans" class="form-control" required />						
+															<option value=""></option>
+															<option value="N/A">N/A</option>
+															<option value="INTERNA">INTERNA</option>
+															<option value="PROPIA">PROPIA</option>
+															<option value="PRESTAMO">PRESTAMO</option>
+															<option value="NUEVA">NUEVA</option>
+														<select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-4">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#606060" size="3px">Nombre Consumo.....:</font></label>
+														<select name="movd_id_cons" id="movd_id_cons" class="form-control" required>
+															<option value="">Seleccionar Consumo</option>
+															<?php echo fill_consumo_list($connect, $ZON); ?>
+														</select>
+													</div>
+												</div>
+											</div> 																
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Observacion de Entrada.:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Observacion Salida...:</font></label>
 														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" />
 													</div>
 												</div>
 											</div>
 
 											<div class="modal-footer" style="background-color:#FFFFFC">
-												<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="Submit" id="BotonAdd" name="BotonAdd"><span class="glyphicon glyphicon-save"></span> Grabar</button>
+												<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="Submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-save"></span> Grabar</button>
 												
 												<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 											</div>
