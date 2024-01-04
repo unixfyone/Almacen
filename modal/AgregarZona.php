@@ -23,25 +23,25 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label><font color="#303030" FACE="times new roman" size="3px"> Código de la Zona</font></label>
-								<input type="text" name="zone_id" maxlength="6" class="form-control" placeholder="Codigo ID de la Zona" required />
+								<input type="text" name="zone_id" maxlength="6" class="form-control" placeholder="Codigo ID de la Zona" onkeyup="this.value = this.value.toUpperCase();" required />
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label><font color="#303030" FACE="times new roman" size="3px"> Prefijo Compañia-Zona</font></label>
-						<input type="text" name="zone_prefix" maxlength="25" class="form-control" placeholder="Prefijo" required />
+						<input type="text" name="zone_prefix" maxlength="25" class="form-control" placeholder="Prefijo" onkeyup="this.value = this.value.toUpperCase();" required />
 					</div>							
 					<div class="form-group">
 						<label><font color="#303030" FACE="times new roman" size="3px"> Descripción de la Zona</font></label>
-						<input type="text" name="zone_desc" size="60" maxlength="60" class="form-control" placeholder="Descripción de Zona" required />
+						<input type="text" name="zone_desc" size="60" maxlength="60" class="form-control" placeholder="Descripción de Zona" onkeyup="this.value = this.value.toUpperCase();" required />
 					</div>
 					<div class="form-group">
 						<label><font color="#303030" FACE="times new roman" size="3px"> Ubicación de la Zona</font></label>
-						<input type="text" name="zone_ubic" size="60" maxlength="60" class="form-control" placeholder="Área Ubicación de la Zona" required />
+						<input type="text" name="zone_ubic" size="60" maxlength="60" class="form-control" placeholder="Área Ubicación de la Zona" onkeyup="this.value = this.value.toUpperCase();" required />
 					</div>
 					<div class="form-group">
 						<label><font color="#303030" FACE="times new roman" size="3px"> Direccíon de la Zona</font></label>
-						<input type="text" name="zone_direc" size="100" maxlength="100" class="form-control" placeholder="Dirección de la Zona" required />
+						<input type="text" name="zone_direc" size="100" maxlength="100" class="form-control" placeholder="Dirección de la Zona" onkeyup="this.value = this.value.toUpperCase();" required />
 					</div>						
 				</div> 
 			</div>

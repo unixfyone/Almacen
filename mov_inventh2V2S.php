@@ -94,7 +94,7 @@ mysqli_free_result ($RegistroA);
 	mysqli_free_result ($Registrop);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
- if ($MID == 'Salidas' ) {
+ if ($MID == 'SALIDAS' ) {
 	  
  if ($cont_sm < 10000 ) {
  $cont_sm1 = str_pad($cont_sm, 5, "0", STR_PAD_LEFT);

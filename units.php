@@ -240,7 +240,7 @@ dataTables_length select {  width: auto;  display: inline-block;}
 											<label><font FACE="times new roman" size="3px">Sigla</font></label>
 											<div class="input-group-prepend">
 												<span class="input-group-text"><i class="fas fa-spell-check"></i></span>
-												<input type="text" name="acronym" id="acronym" maxlength="4" class="form-control" required />
+												<input type="text" name="acronym" id="acronym" maxlength="4" class="form-control" onkeyup="this.value = this.value.toUpperCase();" required />
 											</div>
 										</div> 
 									</div>                        
@@ -249,7 +249,7 @@ dataTables_length select {  width: auto;  display: inline-block;}
 											<label><font FACE="times new roman" size="3px">Descripción Unidad de Medida</font></label>
 											<div class="input-group-prepend">
 												<span class="input-group-text"><i class="fas fa-object-ungroup"></i></span>
-												<input type="text" name="name" id="name" maxlength="100" class="form-control" required />
+												<input type="text" name="name" id="name" maxlength="100" class="form-control" onkeyup="this.value = this.value.toUpperCase();" required />
 											</div>
 										</div>                                 
 									</div>

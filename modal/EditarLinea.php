@@ -8,6 +8,7 @@
             </div>
 			<div class="modal-body">
 				<div class="container-fluid">
+				
 					<form method="POST" action="action/EditarLinea.php?id=<?php echo $Fila2['id']; ?>">
 
 					<div class="row">
@@ -15,10 +16,10 @@
 							<div class="row">
 								<div class="col-sm-4">
 									<div class="form-group">
-										<label><font FACE="times new roman" size="3px">Sigla</font></label>
+										<label><font FACE="times new roman" size="3px">Prefijo Cod SAP</font></label>
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="fas fa-spell-check"></i></span>
-											<input type="text" name="acronym" maxlength="10" class="form-control" value="<?php echo $Fila2['acronym']; ?>" required />
+											<input type="text" name="acronym" maxlength="20" class="form-control" value="<?php echo $Fila2['acronym']; ?>" onkeyup="this.value = this.value.toUpperCase();" required />
 										</div>
 									</div> 
 								</div>  
@@ -27,7 +28,7 @@
 										<label><font FACE="times new roman" size="3px">Descripción de la Linea</font></label>
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="fas fa-sticky-note "></i></span>
-											<input type="text" name="namel" maxlength="80" class="form-control" value="<?php echo $Fila2['namel']; ?>" required />
+											<input type="text" name="namel" maxlength="80" class="form-control" value="<?php echo $Fila2['namel']; ?>" onkeyup="this.value = this.value.toUpperCase();" required />
 										</div>
 									</div>                                 
 								</div>

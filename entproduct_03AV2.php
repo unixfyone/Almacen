@@ -346,7 +346,7 @@ mysqli_free_result ($Registro);
 												<div class="col-lg-8">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon.:</font></label>
-														<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="100" value="<?Php echo $DESCP ?>" required />
+														<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="100" value="<?Php echo $DESCP ?>" readonly />
 													</div>
 												</div>
 											</div>
@@ -378,9 +378,9 @@ mysqli_free_result ($Registro);
 														<label class="input-group-text"><font color="#606060" size="3px">Tipo de Entrada Material:</font></label>
 														<select name="tipent" class="form-control" required />						
 															<option value=""></option>
-															<option value="Nacional">Nacional</option>
-															<option value="Internacional">Internacional</option>
-															<option value="Transferencia">Transferencia</option>
+															<option value="NACIONAL">NACIONAL</option>
+															<option value="INTERNACIONAL">INTERNACIONAL</option>
+															<option value="TRANSFERENCIA">TRANSFERENCIA</option>
 														<select>
 													</div>
 												</div>
@@ -400,7 +400,7 @@ mysqli_free_result ($Registro);
 												<div class="col-lg-12">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Observacion de Entrada.:</font></label>
-														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" />
+														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" onkeyup="this.value = this.value.toUpperCase();" />
 													</div>
 												</div>
 											</div>

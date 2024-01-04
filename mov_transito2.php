@@ -43,7 +43,7 @@ include('unico_1.php');
 </HEAD>
 <BODY bgcolor=#FFFFFF>
 <?php
-echo '<FORM ACTION="act_movinventh.php" method="Post">';
+echo '<FORM ACTION="act_tmovinventh.php" method="Post">';
 //---------------------------------------------------------------
 if(isset($_GET["CIAX"]))$CIAX = $_GET["CIAX"];
 else $CIAX = '';
@@ -51,8 +51,8 @@ else $CIAX = '';
 if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
 else $ZON = '';
 //-------------
-if(isset($_GET["MID"]))$MID = $_GET["MID"];
-else $MID = '';
+if(isset($_GET["mth_tdoc"]))$mth_tdoc = $_GET["mth_tdoc"];
+else $mth_tdoc = '';
 //-------------
 if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 else $CT1 = '0';
@@ -81,26 +81,17 @@ mysqli_free_result ($RegistroA);
 	{	
 		$AA_P = $Filap["per_aa"];
 		$MM_P = $Filap["per_mm"];
-		$CTA2 = $Filap['Cuenta1'];
+		$CTA2 = $Filap["Cuenta1"];
 		$fechamin = $Filap["fec_min"];
 		$fechamax = $Filap["fec_max"];
 	}
 	mysqli_free_result ($Registrop);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
- if ($MID == 'ENTRADAS' ) {
-	 
- if ($cont_em < 10000 ) {
- $cont_em1 = str_pad($cont_em, 5, "0", STR_PAD_LEFT);
- } else { 
- $cont_em1 = $cont_em;
- }
-$cont_doc = "EM".'-'.$cont_em1; 
-}
 ?>
 <Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
-<Input Type="hidden" name="MID" value="<?Php echo $MID ?>">
+<Input Type="hidden" name="mth_tdoc" value="<?Php echo $mth_tdoc ?>">
 
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 <!--  ======================================================================================= -->
@@ -114,7 +105,7 @@ $cont_doc = "EM".'-'.$cont_em1;
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Agregar Documento Movimientos Almacen</font></b>
+							<b><font color="#FFFFFF" size="4px">Agregar Documento para Transito de Materiales</font></b>
 						</div>
 						<!-- /.card-header -->
 
@@ -127,18 +118,13 @@ $cont_doc = "EM".'-'.$cont_em1;
 											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $DCIA ; ?></font></span>
 										</div>
 									</div>
-									<div class="col-lg-4">
+									<div class="col-lg-6">
 										<div class="form-group">
 											<label><font color="blue" size="4px">Almacen..:  </font></label>
 											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $ZOND ." / ". $ZONU; ?></font></span>
 										</div>
 									</div>
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label><font color="blue" size="4px">Tipo Documento..:  </font></label>
-											&nbsp;&nbsp;<span><b><font color="red" size="4px"> <?Php echo $MID; ?></font></b></span>
-										</div>
-									</div>								
+						
 								</div>
 								<hr class="elevation-2" color="#CCCCCC" >
 								<?Php include_once('function.php'); ?>
@@ -148,117 +134,138 @@ $cont_doc = "EM".'-'.$cont_em1;
 								<div class="row">  
 									<div class="col-sm-2">
 										<div class="form-group">
-											<label><font size="3px"> Nro.Documento.:</font></label>
-											<div class="input-group-prepend">
-												<input type="text" maxlength="15" name="movh_doc" id="movh_doc" class="form-control" placeholder="Nra. del Documento" value="<?Php echo $cont_doc ?>" readonly />
-											</div>
-										</div> 
-									</div>
-									<div class="col-sm-2">
-										<div class="form-group">
 											<label><font size="3px"> Ejercicio-Periodo.:</font></label>
 											<div class="input-group-prepend">
-												<input type="text" name="movh_ejer" id="movh_ejer" style="text-align:center" class="form-control" value="<?Php echo $AA_P ?>" readonly ></input>
+												<input type="text" name="mth_ejer" id="mth_ejer" style="text-align:center" class="form-control" value="<?Php echo $AA_P ?>" readonly ></input>
 												&nbsp;&nbsp;&nbsp;&nbsp;
-												<input type="text" name="movh_per" id="movh_per" style="text-align:center" class="form-control" value="<?Php echo $MM_P ?>" readonly ></input>
+												<input type="text" name="mth_per" id="mth_per" style="text-align:center" class="form-control" value="<?Php echo $MM_P ?>" readonly ></input>
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-2">
+									<div class="col-sm-3">
 										<div class="form-group">
-											<label><font size="3px"> Fecha Documento.:</font></label>
+											<label><font FACE="times new roman" size="3px"> Fecha del Documento.:</font></label>
 											<div class="input-group-prepend">
-												<input type="date" name="movh_fecha" id="movh_fecha" min="<?= $fechamin; ?>" max="<?= $fechamax; ?>" class="form-control" required />
+												<input type="date" name="mth_fecha" id="mth_fecha" min="<?= $fechamin; ?>" max="<?= $fechamax; ?>" class="form-control" required />
 											</div>
 										</div> 
-									</div>									
-									<div class="col-sm-4">
+									</div>										
+									<div class="col-sm-3">
 										<div class="form-group">
-											<label><font size="3px"> Tipo de Documento.:</font></label>
-											<select name="tm_id" class="form-control" required />
-												<option value=""></option>
-												<?php echo fill_tipmov_list($connect, $MID); ?>
-											</select>
-										</div>                                 
-									</div>
-									<div class="col-sm-2">
-										<div class="form-group">
-											<label><font size="3px"><i class="fa fa-clock-o "></i> Orden de Compra.:</font></label>						
+											<label><font size="3px"> Nro. Documento.:</font></label>
 											<div class="input-group-prepend">
-												<input type="text" name="movh_oc" id="movh_oc" maxlength="45" class="form-control" placeholder="Nro. de Orden de Compra" />
+												<input type="text" maxlength="15" name="mth_doc" id="mth_doc" class="form-control" placeholder="Nra. del Documento" />
 											</div>
-										</div>
+										</div> 
 									</div>
 								</div>
+								<br>
+
+							</div>
+
 								<div class="row">
-									<div class="col-sm-6">
+									<div class="col-lg-4">
 										<div class="form-group">
-											<label><font size="3px"><i class="fa fa-clock-o "></i> Procedencia.:</font></label>						
+											<label class="input-group-text"><font color="#505050" size="3px">Compañia del Receptor.:</font></label>
 											<div class="input-group-prepend">
-												<input type="text" name="movh_proce" id="movh_proce" maxlength="60" class="form-control" placeholder="Procedencia / Proveedor / Cliente" />
+												<select name="company_id" id="company_id" class="form-control">
+												<option value=""></option>
+												<?php echo fill_companies_list($connect); ?>
+												</select>
+											</div>
+										</div>
+									</div>								
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label class="input-group-text"><font color="#505050" size="3px">Departamento del Receptor.:</font></label>
+											<div class="input-group-prepend">
+												<select name="department_id2" id="department_id2" class="form-control">
+												<option value=""></option>
+												</select>
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-6">
+									<div class="col-lg-4">
 										<div class="form-group">
-											<label><font size="3px"><i class="fa fa-clock-o "></i> Proveedor.:</font></label>
-											<select name="movh_prove_id" id="movh_prove_id" class="form-control" >
-												<option value="">Seleccionar Proveedor</option>
-												<?php echo fill_prove_list($connect); ?>
-											</select>						
-										</div>								
+											<label class="input-group-text"><font color="#505050" size="3px"> Receptor...:</font></label>
+											<div class="input-group-prepend">
+												<select name="user_receptor" id="user_receptor" class="form-control" >
+													<option value="">Seleccionar Usuario</option>
+												</select>
+											</div>
+										</div>
 									</div>
 								</div>
+
+
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="input-group">
-											<label class="input-group-text"><font color="#505050" size="3px">Departamento del Receptor.:</font></label>
-											<select name="department_id2" id="department_id2" class="form-control" required>
-												<option value="">Seleccionar Departamento</option>
+											<label class="input-group-text"><font color="#505050" size="3px">Departamento Despachador:</font></label>
+											<select name="department_id" id="department_id" class="form-control" required>
+												<option value=""></option>
 												<?php echo fill_departments_list($connect, $CIAX); ?>
 											</select>
 										</div>
 									</div>
 									<div class="col-lg-6">
 										<div class="input-group">
-											<label class="input-group-text"><font color="#505050" size="3px"> Usuario Receptor.:</font></label>
-											<select name="user_receptor" id="user_receptor" class="form-control"  required>
+											<label class="input-group-text"><font color="#505050" size="3px">Usuario Despachador:</font></label>
+											<select name="user_despachador" id="user_despachador" class="form-control"  required>
 												<option value="">Seleccionar Usuario</option>
 											</select>
 										</div>
 									</div>
 								</div>
-								
+
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="input-group">
+											<label class="input-group-text"><font color="#505050" size="3px">Departamento Aprobador:</font></label>
+											<select name="department_id3" id="department_id3" class="form-control" required>
+												<option value=""></option>
+												<?php echo fill_departments_list($connect, $CIAX); ?>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="input-group">
+											<label class="input-group-text"><font color="#505050" size="3px">Usuario Aprobador:</font></label>
+											<select name="user_aprobador" id="user_aprobador" class="form-control"  required>
+												<option value="">Seleccionar Usuario</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+
 								<Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 								<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
-								<Input Type="hidden" name="MID" value="<?Php echo $MID ?>">
-								
+							
 								<div class="modal-footer" style="background-color:#FFFFFC">
-									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="buttom" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
+									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" formaction="act_tmovinventh.php" formmethod="post" type="submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
 									
 									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
-									
+								</div>
+								
 								<?php } else {?>
 								
-									<div class="modal-dialog modal-md"">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h4 class="modal-title">Agregar Documentos</h4>
-												<button type="button" class="close" data-dismiss="modal">&times;</button>
-											</div>
-										<div class="modal-body">
-											<div class="alert alert-danger">
-												<strong>Atencion.! </strong> No Existe Ningun Periodo Abierto .....
-											</div>
+								<div class="modal-dialog modal-md"">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">Agregar Documentos</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
 										</div>
-										<div class="modal-footer">
-											<button class='btn btn-outline-<?php echo $classButtonFooter; ?>' type='submit' name='Cancel' onclick='window.history.go(-1)' data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</button>
+									<div class="modal-body">
+										<div class="alert alert-danger">
+											<strong>Atencion.! </strong> No Existe Ningun Periodo Abierto .....
 										</div>
-									</div>								
-						
+									</div>
+									<div class="modal-footer">
+										<button class='btn btn-outline-<?php echo $classButtonFooter; ?>' type='button' name='Cancel' onclick='window.history.go(-1)' data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</button>
+									</div>
+								</div>								
 								<?php } ?>
-								</div>			
-							</div>
 						</div>
 					</div>
 				</div>		
@@ -266,9 +273,24 @@ $cont_doc = "EM".'-'.$cont_em1;
 		</div>
 	</section>					
 </div>
+</FORM>
+
 <script>
 $(document).ready(function(){
 <!-- ********************* Lista para Usuarios/departamento **************** -->
+$('#department_id').change(function(){
+        var department_id = $('#department_id').val();
+        var btn_action = 'load_usuarios';
+        $.ajax({
+            url:"mov_action.php",
+            method:"POST",
+            data:{department_id:department_id, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#user_despachador').html(data);
+            }
+        });
+    });
 $('#department_id2').change(function(){
         var department_id2 = $('#department_id2').val();
         var btn_action = 'load_usuarios2';
@@ -282,11 +304,36 @@ $('#department_id2').change(function(){
             }
         });
     });
+$('#department_id3').change(function(){
+        var department_id3 = $('#department_id3').val();
+        var btn_action = 'load_usuarios3';
+        $.ajax({
+            url:"mov_action.php",
+            method:"POST",
+            data:{department_id3:department_id3, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#user_aprobador').html(data);
+            }
+        });
+    });
+$('#company_id').change(function(){
+        var company_id = $('#company_id').val();
+        var btn_action = 'load_department';
+        $.ajax({
+            url:"mov_action.php",
+            method:"POST",
+            data:{company_id:company_id, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#department_id2').html(data);
+            }
+        });
+    });
+//---------------
 });	
 //---------------
 </script>
 
-<!-- ======================================= -->
-</FORM>
 </BODY>
 </HTML> 

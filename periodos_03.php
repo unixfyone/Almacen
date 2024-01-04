@@ -40,11 +40,9 @@ include('unico.php');
 //---------------------------------------------------------------
 echo '<FORM ACTION="" method="">';
 
-if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
-else $ZON = $_POST["ZON"];
+$ZON = $_POST["ZON"];
 //-----------------
-if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
-else $CIA = $_POST["CIA"];
+$CIA = $_POST["CIA"];
 //-----------------
 if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 else $CT1 = '0';
@@ -52,7 +50,8 @@ else $CT1 = '0';
 $CTA = '0';
 $CTAE = '0';
 //===============================================================
-$SQLx = "SELECT Count(per_aa) AS Cuenta FROM wh_periodos WHERE per_statu = 'Abierto' ";
+$SQLx = "SELECT Count(per_aa) AS Cuenta FROM wh_periodos 
+WHERE per_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
 
 $Registro2 = mysqli_query($link, $SQLx);
 while ($Fila2=mysqli_fetch_array($Registro2))
@@ -63,7 +62,8 @@ $CTA = $Fila2["Cuenta"];
 //--------------------------------------------
 mysqli_free_result ($Registro2);
 //===============================================================
-$SQL1 = "SELECT *, Count(ej_aa) AS Cuenta2 FROM wh_ejercicios WHERE ej_statu = 'Abierto' ";
+$SQL1 = "SELECT *, Count(ej_aa) AS Cuenta2 FROM wh_ejercicios 
+WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
 
 $Registro1 = mysqli_query($link, $SQL1);
 //-----------------------------

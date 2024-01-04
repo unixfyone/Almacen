@@ -13,6 +13,7 @@ if($_SESSION['type'] != 'Master')
 include('headerx.php');
 include('unico.php');
 ?>
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
 
 <style type="text/css">
 body {font-family: Arial;}
@@ -63,12 +64,19 @@ echo '<FORM ACTION="" method="">';
 //$AA= date('Y');
 $year = date("Y");
 
+$CIA = $_POST["CIA"];
+//-------------
+$ZON = $_POST["ZON"];
+//-------------
 if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 else $CT1 = '0';
 
+//echo "<pre>"; print_r($ZON); exit();
+
 $CTA = '0';
 //===============================================================
-$SQLx = "SELECT Count(ej_aa) AS Cuenta FROM wh_ejercicios WHERE ej_statu = 'Abierto' ";
+$SQLx = "SELECT Count(ej_aa) AS Cuenta FROM wh_ejercicios 
+WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
 
 $Registro2 = mysqli_query($link,$SQLx);
 while ($Fila2=mysqli_fetch_array($Registro2))
@@ -88,6 +96,8 @@ if ($CTA > '0')
 //==============================
 } else {
 ?>
+<Input Type="hidden" name="CIA" value="<?Php echo $CIA ?>">
+<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 
 <div class="content-wrapper">

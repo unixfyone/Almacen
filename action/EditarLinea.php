@@ -1,6 +1,8 @@
 <?php
 	//session_start();
 	include_once('../config/dbconect.php');
+	
+//echo "<pre>"; print_r($_GET['id']); exit();
 
 	if(isset($_POST['editar'])){
 		$database = new Connection();
@@ -18,7 +20,6 @@
 			WHERE id = '$id'";
 			//if-else statement in executing our query
 			$_SESSION['message'] = ( $db->exec($sql) ) ? 'Linea actualizada correctamente' : 'No se puso actualizar la Linea';
-
 		}
 		catch(PDOException $e){
 			$_SESSION['message'] = $e->getMessage();
@@ -30,8 +31,6 @@
 	else{
 		$_SESSION['message'] = 'Complete el formulario de edición';
 	}
-
-	//header('location: ../lines.php?MOP=28');
 
 ?>
   <script>

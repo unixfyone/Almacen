@@ -153,13 +153,13 @@ dataTables_length select {  width: auto;  display: inline-block;}
 										$editar = '';
 										//======================================= -->
 										$tipo = '';
-										if($Fila2['tm_tipo'] == 'Entradas')
+										if($Fila2['tm_tipo'] == 'ENTRADAS')
 										{
-											$tipo = '<span><font color="blue" size="3px">Entradas</font></span>';
+											$tipo = '<span><font color="blue" size="3px">ENTRADAS</font></span>';
 										}
 										else
 										{
-											$tipo = '<span><font color="red" size="3px">Salidas</font></span>';
+											$tipo = '<span><font color="red" size="3px">SALIDAS</font></span>';
 										}
 										//==========
 										$actc = '';
@@ -245,8 +245,8 @@ dataTables_length select {  width: auto;  display: inline-block;}
 									<div class="input-group-prepend">
 										<select name="tm_tipo" id="tm_tipo" class="form-control" required> 
 											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Seleccionar Tipo</option>
-											<option value="Entradas">Entradas de Materiales</option>
-											<option value="Salidas">Salidas de Materiales</option>
+											<option value="ENTRADAS">Entradas de Materiales</option>
+											<option value="SALIDAS">Salidas de Materiales</option>
 										<select>									
 									</div>
 								</div> 
@@ -265,7 +265,7 @@ dataTables_length select {  width: auto;  display: inline-block;}
 								<div class="form-group">
 									<label><font color="#606060" FACE="times new roman" size="3px"><i class="fas fa-file-text"></i> Descripción del Movimiento</font></label>
 									<div class="input-group-prepend">
-										<input type="text" maxlength="60" name="tm_desc" id="tm_desc" class="form-control" placeholder="Nombre / Descripción Movimiento" required />
+										<input type="text" maxlength="60" name="tm_desc" id="tm_desc" class="form-control" placeholder="Nombre / Descripción Movimiento" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div>                                 
 							</div>
@@ -312,8 +312,8 @@ dataTables_length select {  width: auto;  display: inline-block;}
 									<div class="input-group-prepend">
 										<select name="tm_tipo1" id="tm_tipo1" class="form-control" required> 
 											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Seleccionar Tipo</option>
-											<option value="Entradas">Entradas de Materiales</option>
-											<option value="Salidas">Salidas de Materiales</option>
+											<option value="ENTRADAS">Entradas de Materiales</option>
+											<option value="SALIDAS">Salidas de Materiales</option>
 										<select>									
 									</div>
 								</div> 
@@ -332,7 +332,7 @@ dataTables_length select {  width: auto;  display: inline-block;}
 								<div class="form-group">
 									<label><font color="#606060" FACE="times new roman" size="3px"><i class="fas fa-file-text"></i> Descripción del Movimiento</font></label>
 									<div class="input-group-prepend">
-										<input type="text" maxlength="60" name="tm_desc1" id="tm_desc1" class="form-control" placeholder="Nombre / Descripción Movimiento" required />
+										<input type="text" maxlength="60" name="tm_desc1" id="tm_desc1" class="form-control" placeholder="Nombre / Descripción Movimiento" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div>                                 
 							</div>

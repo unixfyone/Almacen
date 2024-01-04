@@ -40,12 +40,15 @@ $wh_line_id = $_POST["LIN"];
 $wh_category_id = $_POST["wh_category_id"];
 $wh_subcategory_id = $_POST["wh_subcategory_id"];
 $wh_brand_id = $_POST["wh_brand_id"];
-$type_material = $_POST["type_material"];
+$type_material = $_POST["wh_type_material"];
+$wh_tinv_id = $_POST["wh_tinv_id"];
+$wh_clastm2_id = $_POST["wh_clastm2_id"];
 //-------------------------- 
 //-------------------------- 
-$SQL = "INSERT INTO wh_master_materials (code, description, description_amp, part_number, wh_measurement_unit_id, wh_line_id, wh_category_id, wh_subcategory_id, wh_brand_id, type_material) VALUES ('$code', '$description', '$description_a', '$part_number', '$wh_measurement_unit_id', '$wh_line_id', '$wh_category_id', '$wh_subcategory_id', '$wh_brand_id', '$type_material')";
+$SQL = "INSERT INTO wh_master_materials (code, description, description_amp, part_number, wh_measurement_unit_id, wh_line_id, wh_category_id, wh_subcategory_id, wh_brand_id, type_material, type_tm2_id, clas_tm2_id) VALUES ('$code', '$description', '$description_a', '$part_number', '$wh_measurement_unit_id', '$wh_line_id', '$wh_category_id', '$wh_subcategory_id', '$wh_brand_id', '$type_material', '$wh_tinv_id', '$wh_clastm2_id')";
 //--------------------------
 mysqli_query ($link, $SQL);
+//--------------------------
 //--------------------------
 $SQL = "SELECT * FROM wh_lines
 Where id = '$wh_line_id' ";
@@ -56,15 +59,14 @@ $idlin = $row["id"];
 $cont_cod = $row["cont_cod"];
 } 
 mysqli_free_result ($RegistroA);
-//---------------------------------------------------------------
-//---------------------------------------------------------------
-$cont_cod = ($cont_cod + 1);
-
+//------------------------------
+//------------------------------
 $query= "UPDATE wh_lines 
 set cont_cod = '$cont_cod' 
 where id = '$idlin'
 ";
 mysqli_query ($link, $query);
+//================================
 ?>
 <div class="container">
 <!-- Modal -->

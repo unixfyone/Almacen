@@ -215,17 +215,16 @@ mysqli_free_result ($RegistroA);
 												<?php
 												//---------------------------------------------------------------
 												$SQL="Select * FROM wh_lines  
-												WHERE statu = 'Activo'
+												WHERE statu = 'Activo' and typel = 'LIN' 
 												ORDER BY acronym ASC";								
 												
 												$Registro=mysqli_query($link,$SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
-												$LIND = $Fila["acronym"] ."&nbsp;&nbsp; / &nbsp;&nbsp;". $Fila["namel"];
 												//----
 												echo '<option ';
 												if($LIN == $Fila["id"])echo 'selected ';
-												echo 'value=' . $Fila["id"] .'>'. $LIND . "\n";
+												echo 'value=' . $Fila["id"] .'>'. $Fila["namel"] . "\n";
 												}
 												mysqli_free_result ($Registro);
 												//---------------------------------------------------------------

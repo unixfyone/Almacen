@@ -95,6 +95,9 @@ else $ZON = '';
 //-------------
 if(isset($_GET["CAT"]))$CAT = $_GET["CAT"];
 else $CAT = '';
+//-------------
+if(isset($_GET["LIN"]))$LIN = $_GET["LIN"];
+else $LIN = '';
 //--------------
 
 //===============================================================
@@ -114,6 +117,7 @@ else $CAT = '';
 <Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <Input Type="hidden" name="CAT" value="<?Php echo $CAT ?>">
+<Input Type="hidden" name="LIN" value="<?Php echo $LIN ?>">
 
 <!-- =================================================================================== -->
 <div class="content-wrapper">
@@ -135,7 +139,7 @@ else $CAT = '';
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Existencia de Materiales por Categorias</font></b>
+							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Existencia de Materiales por Línea</font></b>
 						</div>
 						<!-- /.card-header -->
 <!-- =================================================================================== -->
@@ -200,13 +204,42 @@ else $CAT = '';
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="input-group">
-											<span class="input-group-text"><b>Categorias Materiales.:</b></span>
+											<span class="input-group-text"><b>Línea del Material.:</b></span>
+											<select class="form-control" name="LIN" onChange="javascrip:form.submit()">
+												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Selecconar Línea</option>
+												<?php
+												//---------------------------------------------------------------
+												$SQL="Select * FROM wh_lines  
+												WHERE statu = 'Activo' and typel = 'LIN' 
+												ORDER BY acronym ASC";								
+												
+												$Registro=mysqli_query($link,$SQL);
+												//-------
+												while ($Fila=mysqli_fetch_array($Registro)){
+												//----
+												echo '<option ';
+												if($LIN == $Fila["id"])echo 'selected ';
+												echo 'value=' . $Fila["id"] .'>'. $Fila["namel"] . "\n";
+												}
+												mysqli_free_result ($Registro);
+												//---------------------------------------------------------------
+												?>									
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="input-group">
+											<span class="input-group-text"><b>Categoria.:</b></span>
 											<select class="form-control" name="CAT" onChange="javascrip:form.submit()">
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_categories WHERE cat_statu = 'Activo' 
-												ORDER BY category";								
+												$SQL = "SELECT * FROM wh_materials 
+												INNER JOIN wh_lines on wh_lines.id = wh_materials.wh_line_id_m
+												INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
+												INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
+												Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_line_id_m = '$LIN' and wh_materials.m_statu_m = 'Activo' and wh_saldosm.aa_s = '$AA'
+												GROUP by wh_categories.category ASC";								
 												
 												$Registro=mysqli_query($link,$SQL);
 												//-------
@@ -221,7 +254,7 @@ else $CAT = '';
 												?>									
 											</select>
 										</div>
-									</div>						
+									</div>									
 								</div>
 								<br>								
 							</div>
@@ -232,7 +265,7 @@ else $CAT = '';
 		</div>
 	</section>
 	<!-- ========================================================== -->
-	<?php if ($CIAX != '' and $ZON != '' and $CAT != '') { ?>
+	<?php if ($CIAX != '' and $ZON != '' and $LIN != '') { ?>
 	
 	<section class="content">
 		<div class="container-fluid">
@@ -247,19 +280,25 @@ else $CAT = '';
 					<!-------------------------------------- -->		
 						<div class="container-fluid">
 							<?php
-							//if ($CAT != '') {
+							if ($CAT != '') {
 							//---------------------------------------------------------------
 							$SQL = "SELECT * FROM wh_materials 
+							INNER JOIN wh_lines on wh_lines.id = wh_materials.wh_line_id_m
 							INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
 							INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
-							Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_category_id_m = '$CAT' and wh_materials.m_statu_m = 'Activo' and wh_saldosm.aa_s = '$AA'
+							Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_line_id_m = '$LIN' and wh_materials.wh_category_id_m = '$CAT' and wh_materials.m_statu_m = 'Activo' and wh_saldosm.aa_s = '$AA'
 							Order by wh_materials.code ASC";
 							//---------------------------------------------------------------
-							//} else {
+							} else {
 							//---------------------------------------------------------------
-
+							$SQL = "SELECT * FROM wh_materials 
+							INNER JOIN wh_lines on wh_lines.id = wh_materials.wh_line_id_m
+							INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
+							INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
+							Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_line_id_m = '$LIN' and wh_materials.m_statu_m = 'Activo' and wh_saldosm.aa_s = '$AA'
+							Order by wh_materials.code ASC";
 							//--------------------------------------------------------------								
-							//} 
+							} 
 							echo "<b><font color='#0066FF' FACE='times new roman' size='4px'>Lista de Materiales</font></b>";
 							echo "<Table class='table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer' role='grid' border='1'>";
 
@@ -267,8 +306,8 @@ else $CAT = '';
 							echo "<tr>";
 							echo "<th>Codigo</th>";
 							echo "<th>Descripción</th>";
-							echo "<th>Categoria</th>";							
-							echo "<th>Ubicación</th>";
+							echo "<th>Línea</th>";							
+							echo "<th>Categoria</th>";
 							echo "<th>Statu</th>";
 							echo "<th>Existencia</th>";
 							echo "</tr>";
@@ -284,10 +323,8 @@ else $CAT = '';
 									$status = '<span class=""><font color="red" FACE="times new roman" size="3px">Inactivo</font></span>';
 								}	
 								//=============================
-								$GRPXD = '';
 								$prodid = $Fila["id"];
 								$prod2X = $Fila["code"];
-								$GRPXD =  $Fila["category"];
 								
 								$MM_ANT = $MM - 1; 				// Mes periodo actual en arreglo
 								$MM_PANT = $MM - 1;				// Mes para Saldo del Periodo anterior (13 Pos)
@@ -327,8 +364,8 @@ else $CAT = '';
 									id=".$Fila['id']." class='view'>".$Fila['code']."</button></a></td>"; 
 								}
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
+								echo "<td Align=Left><font size=2>" . $Fila['namel'];
 								echo "<td Align=Left><font size=2>" . $Fila['category'];
-								echo "<td Align=Left><font size=2>" . $Fila['ubication'];
 								echo "<td Align=Center><font size=2>" . $status;
 								echo "<td Align=Center><font size=2>" . $existencia;
 								echo "</tr>";

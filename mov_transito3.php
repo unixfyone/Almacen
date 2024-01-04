@@ -203,7 +203,7 @@ mysqli_free_result ($RegistroA);
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Agregar Documento Movimientos Almacen</font></b>
+							<b><font color="#FFFFFF" size="4px">Agregar Documento Transito de Materiales</font></b>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -302,7 +302,7 @@ mysqli_free_result ($RegistroA);
 	{
 		$status = '<span class=""><font color="green" size="3px">Abierto</font></span>';
 
-		if($mhtmov == 'ENTRADAS' ) {
+		if($mhtmov == 'Entradas' ) {
 			$accion = '<ul class="nav navbar-nav">
 			<li class="dropdown btn-group">
 			<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
@@ -313,7 +313,7 @@ mysqli_free_result ($RegistroA);
 				<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
 			</ul></li></ul>';
 		}
-		if($mhtmov == 'SALIDAS' ) {
+		if($mhtmov == 'Salidas' ) {
 			$accion = '<ul class="nav navbar-nav">
 			<li class="dropdown btn-group">
 			<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
@@ -365,7 +365,7 @@ mysqli_free_result ($RegistroA);
 										<div Align="right" style="background-color:#FFFFFC">
 											<input class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="submit" name="autorizados" value="Cerrar seleccionados" />
 										</form>
-											<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>	
+											<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>	
 										</div>
 										
 									</div>
@@ -476,7 +476,7 @@ mysqli_free_result ($RegistroA);
 											{
 											echo "<Td Align=Left><font size=3>" . $Fila['code'];	
 											}	else	{	
-											 echo "<td><a href=\"entproduct_03AV2.php?IDH=$mhid&IDP=$prodid&CP=$prod2X&zone=$ZON \">$prod2X</a></td>";
+											 echo "<td><a href=\"entproduct_03AV2S.php?IDH=$mhid&IDP=$prodid&CP=$prod2X&zone=$ZON \">$prod2X</a></td>";
 											}
 											//-------
 											echo "<Td Align=Left><span class=text-wrap><font size=3>" . $Fila['description_m'];

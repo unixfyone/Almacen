@@ -10,13 +10,15 @@ if($_SESSION['type'] != 'Master')
 	header("location:index2.php");
 }
 $userid= $_SESSION['user_id'];
-//include('headerx.php');
+include('headerx.php');
 include('unico.php');
 ?>
 
 <html>
 <head>
 <title>Movimientos de Almacen</title>
+
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
 
 </head>
 <BODY>
@@ -28,7 +30,7 @@ $CT1 = $_POST['CT1'];
 $CT1++;
 
 $MID = $_POST['MID'];
-if($MID == 'Entradas'){
+if($MID == 'ENTRADAS'){
 //===============================================================
 //============== ADD/EDITAR REGISTROS   ============================
 if (isset($_POST['BotonAdd']))
@@ -74,7 +76,30 @@ where zone_id = '$idzon'
 mysqli_query ($link, $query);
 //-----------------------------
 //-----------------------------
-header("location:entproduct_03V2.php?movh_doc=$MDOC&zone=$ZON");
+?>
+<div class="container">
+<!-- Modal -->
+    <div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Agregar Entradas</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-info">
+					<strong>Info! </strong> Documento de Entradas Agregado Correctamente.
+				</div>
+			</div>
+			<div class="modal-footer">
+				<?php
+				echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"entproduct_03V2.php?movh_doc=$MDOC&zone=$ZON&CT1=$CT1 \"><i class='fa fa-check'></i> Aceptar</a>";
+				?>
+			</div>
+		</div>
+    </div>
+</div>
+ <?Php
+//==========
 }
 //======================================================================
 if (isset($_POST['BotonUpd']))
@@ -177,9 +202,30 @@ where zone_id = '$idzon'
 ";
 mysqli_query ($link, $query);
 //-----------------------------
-header("location:entproduct_03V2S.php?movh_doc=$MDOC&zone=$ZON");
-//-----------------------------
-//-----------------------------
+?>
+<div class="container">
+<!-- Modal -->
+    <div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Agregar Salidas</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-info">
+					<strong>Info! </strong> Documento de Salidas Agregado Correctamente.
+				</div>
+			</div>
+			<div class="modal-footer">
+				<?php
+				echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"entproduct_03V2S.php?movh_doc=$MDOC&zone=$ZON&CT1=$CT1 \"><i class='fa fa-check'></i> Aceptar</a>";
+				?>
+			</div>
+		</div>
+    </div>
+</div>
+ <?Php
+//==========
 }
 if (isset($_POST['BotonUpd']))
 {

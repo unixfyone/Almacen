@@ -380,6 +380,45 @@ function get_user_name($connect, $user_id)
 	}
 }
 //------------------------------------
+function fill_type_material2($connect, $tm_id)
+//====================================
+{
+	$query = "
+	SELECT * FROM wh_type_material2
+	WHERE statu= 'Activo' and type_material_id = '".$tm_id."'
+	ORDER BY name ASC
+	";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$output = '<option value="">Seleccionar Tipo</option>';
+	foreach($result as $row)
+	{
+		$output .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
+	}
+	return $output;
+}
+//------------------------------------
+function fill_type_cmaterial2($connect, $ctm_id)
+//====================================
+{
+	$query = "
+	SELECT * FROM wh_clasificacion_tm2
+	WHERE statu= 'Activo' and id_tm2 = '".$ctm_id."'
+	ORDER BY name ASC
+	";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$output = '<option value="">Seleccionar Tipo</option>';
+	foreach($result as $row)
+	{
+		$output .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
+	}
+	return $output;
+}
+
+//------------------------------------
 function fill_conditions_list($connect)
 //====================================
 {

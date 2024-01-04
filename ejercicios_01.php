@@ -153,17 +153,19 @@ else $ZON = '';
 							<div align="center">
 								<br>
 								<label><font color="#<?=$ccolor;?>" FACE="times new roman" size="5px"><b>Ejercicios</b></font></label>
+								
 								<?php
 								//---------------------------------------------------------------
 								echo '<FORM ACTION="ejercicios_03.php" method="Post">';
-
 								//---------------------------------------------------------------
 								$SQL = "SELECT * FROM wh_ejercicios 
 								WHERE company_id = '$CIA' and zone_id = '$ZON'
 								ORDER BY ej_aa ASC ";
 								//---------------------------------------------------------------
 								?>
-
+								<Input Type="hidden" name="CIA" value="<?Php echo $CIA ?>">
+								<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
+								
 								<table class="blueTable" align="center" width='50%'>
 								<thead>
 								<tr>
@@ -192,7 +194,7 @@ else $ZON = '';
 								echo "<td bgcolor=FFFFFF align=Center><font color='Red'>" . "Cerrado";
 								echo "</font>";
 								} else {
-								echo "<td bgcolor=ffffff align=Center><font color='Blue'><A HREF=\"ejercicios_02.php?AA=" .$Fila['ej_aa']."\">";
+								echo "<td bgcolor=ffffff align=Center><font color='Blue'><A HREF=\"ejercicios_02.php?AA=" .$Fila['ej_aa']."&CIA=" .$Fila['company_id']."&ZON=" .$Fila['zone_id']."\">";
 								echo "Abierto</a></td>";
 								echo "</font>";
 								}

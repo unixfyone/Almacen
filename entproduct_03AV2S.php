@@ -331,7 +331,11 @@ mysqli_free_result ($Registro);
 														<label class="input-group-text"><font color="blue" size="3px">Unidad de Medida.:</font></label>
 														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $UNIM ?></font></label>												
 														&nbsp;&nbsp;
-														<label class="input-group-text"><font color="blue" size="3px">Existencia:</font></label>
+														<?php if ($existencia != 0) { ?>
+															<label class="input-group-text"><font color="blue" size="3px">Existencia:</font></label>
+														<?php } else {?>
+															<label class="input-group-text"><font color="#FFFFFF" style="background-color:red;" size="3px">Existencia:</font></label>
+														<?php } ?>
 														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo number_format($existencia, 2, '.', '') ?></font></label>
 															
 														&nbsp;&nbsp;
@@ -345,20 +349,24 @@ mysqli_free_result ($Registro);
 												<div class="col-lg-8">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon.:</font></label>
-														<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="100" value="<?Php echo $DESCP ?>" required />
+														<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="100" value="<?Php echo $DESCP ?>" readonly />
 													</div>
 												</div>
 											</div>
-											
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Cantidad de Material.:</font></label>
-														<Input class="form-control" Type="Text" name="CANT" size='8' maxlength="8" value="" required />
+														
+														<?php if ($existencia != 0) { ?>
+															<Input class="form-control" Type="Text" name="CANT" size='8' maxlength="8" value="" required />
+														<?php } else {?>
+															<Input class="form-control" Type="Text" name="CANT" size='8' maxlength="8" value="0" disabled />
+														<?php } ?>
+														
 													</div>
 												</div>
 											</div>
-											
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
@@ -379,9 +387,9 @@ mysqli_free_result ($Registro);
 														<label class="input-group-text"><font color="#606060" size="3px">Tipo Salida Material..:</font></label>
 														<select name="tipsal" class="form-control" required />						
 															<option value=""></option>
-															<option value="Equipo">Equipo</option>
-															<option value="Interna">Interna</option>
-															<option value="Pozo">Pozo</option>
+															<option value="EQUIPO">EQUIPO</option>
+															<option value="INTERNA">INTERNA</option>
+															<option value="POZO">POZO</option>
 														<select>
 													</div>
 												</div>
@@ -423,7 +431,7 @@ mysqli_free_result ($Registro);
 												<div class="col-lg-12">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Observacion Salida...:</font></label>
-														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" />
+														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" onkeyup="this.value = this.value.toUpperCase();" />
 													</div>
 												</div>
 											</div>

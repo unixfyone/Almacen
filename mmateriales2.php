@@ -128,7 +128,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font color="#505050" size="3px"> Descripción del Material</font></label>
 											<div class="input-group-prepend">
-												<textarea maxlength="200" name="description" id="description" class="form-control" rows="2" placeholder="Nombre / Descripción del Material" required></textarea>
+												<textarea maxlength="200" name="description" id="description" class="form-control" rows="2" placeholder="Nombre / Descripción del Material" onkeyup="this.value = this.value.toUpperCase();" required></textarea>
 											</div>
 										</div>                                 
 									</div>
@@ -136,7 +136,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font color="#505050" size="3px"> Descripción Ampliada del Material</font></label>
 											<div class="input-group-prepend">
-												<textarea maxlength="200" name="description_a" id="description_a" class="form-control" rows="2" placeholder="Descripción Ampliada del Material" ></textarea>
+												<textarea maxlength="200" name="description_a" id="description_a" class="form-control" rows="2" placeholder="Descripción Ampliada del Material"  onkeyup="this.value = this.value.toUpperCase();"></textarea>
 											</div>
 										</div>                                 
 									</div>
@@ -146,7 +146,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font color="#505050" size="3px"> Número de Parte</font></label>
 											<div class="input-group-prepend">
-												<input type="text" maxlength="45" name="part_number" id="part_number" class="form-control" />
+												<input type="text" maxlength="45" name="part_number" id="part_number" class="form-control" onkeyup="this.value = this.value.toUpperCase();" />
 											</div>
 										</div> 
 									</div>
@@ -195,19 +195,41 @@ mysqli_free_result ($RegistroA);
 											</div>
 										</div> 
 									</div>
+								</div>
+								<div class="row">
 									<div class="col-sm-4">
 										<div class="form-group">
 											<label><font color="#505050" size="3px"> Tipo Material</font></label>
 											<div class="input-group-prepend">
-												<select name="type_material" id="type_material" class="form-control" required>
+												<select name="wh_type_material" id="wh_type_material" class="form-control" required>
 													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Seleccionar Tipo</option>
-													<option value="Accesorio">Accesorio</option>
-													<option value="Consumible">Consumible</option>
-													<option value="Inventario">Inventario</option>
+													<option value="ACCESORIOS">ACCESORIOS</option>
+													<option value="CONSUMIBLES">CONSUMIBLES</option>
+													<option value="INVENTARIO">INVENTARIO</option>
 												<select>									
 											</div>
 										</div> 
-									</div>									
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label><font color="#505050" size="3px">Tipo de Inventario</font></label>
+											<div class="input-group-prepend">
+												<select name="wh_tinv_id" id="wh_tinv_id" class="form-control" required>
+													<option value="">Seleccionar Tipo</option>
+												</select>									
+											</div>
+										</div> 
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label><font color="#505050" size="3px">Clasificacion Tipo Inventario</font></label>
+											<div class="input-group-prepend">
+												<select name="" id="wh_clastm2_id" class="form-control" required>
+													<option value="">Seleccionar Clasificacion</option>
+												</select>									
+											</div>
+										</div> 
+									</div>										
 								</div>
 					
 								<div class="modal-footer" style="background-color:#FFFFFC">
@@ -240,6 +262,34 @@ $(document).ready(function(){
             success:function(data)
             {
                 $('#wh_subcategory_id').html(data);
+            }
+        });
+    });
+<!-- ************************************************************************* -->
+    $('#wh_type_material').change(function(){
+        var wh_type_material = $('#wh_type_material').val();
+        var btn_action = 'load_typematerial';
+        $.ajax({
+            url:"materiales_action.php",
+            method:"POST",
+            data:{wh_type_material:wh_type_material, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#wh_tinv_id').html(data);
+            }
+        });
+    });
+<!-- ************************************************************************* -->
+    $('#wh_tinv_id').change(function(){
+        var wh_tinv_id = $('#wh_tinv_id').val();
+        var btn_action = 'load_ctypematerial';
+        $.ajax({
+            url:"materiales_action.php",
+            method:"POST",
+            data:{wh_tinv_id:wh_tinv_id, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#wh_clastm2_id').html(data);
             }
         });
     });

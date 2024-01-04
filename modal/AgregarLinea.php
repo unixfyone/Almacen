@@ -16,7 +16,7 @@
 							<label><font FACE="times new roman" size="3px">Sigla</font></label>
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fas fa-spell-check"></i></span>
-								<input type="text" name="acronym" maxlength="20" class="form-control"  />
+								<input type="text" name="acronym" maxlength="20" class="form-control" onkeyup="this.value = this.value.toUpperCase();" />
 							</div>
 						</div> 
 					</div>			
@@ -25,7 +25,7 @@
 							<label><font FACE="times new roman" size="3px">Descripción de la Linea</font></label>
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fas fa-sticky-note "></i></span>
-								<input type="text" name="namel" maxlength="80" class="form-control"  />
+								<input type="text" name="namel" maxlength="80" class="form-control" onkeyup="this.value = this.value.toUpperCase();" />
 							</div>
 						</div>                                 
 					</div>				

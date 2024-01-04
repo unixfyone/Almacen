@@ -353,7 +353,7 @@ mysqli_free_result ($Registro);
 									<div class="col-lg-10">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon.:</font></label>
-											<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="200" value="<?Php echo $DESCP ?>" required />
+											<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="200" value="<?Php echo $DESCP ?>" readonly />
 										</div>
 									</div>
 								</div>
@@ -387,17 +387,17 @@ mysqli_free_result ($Registro);
 											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 											<?php
 											  echo '<option ';
-												if($mdtipent == 'Nacional') echo 'selected ';
-											  echo 'value=' . 'Nacional' .'>'. 'Nacional' . "\n";
+												if($mdtipent == 'NACIONAL') echo 'selected ';
+											  echo 'value=' . 'NACIONAL' .'>'. 'NACIONAL' . "\n";
 												echo '<option ';
-												if($mdtipent == 'Internacional') echo 'selected ';
-											  echo 'value=' . 'Internacional' .'>'. 'Internacional' . "\n";
+												if($mdtipent == 'INTERNACIONAL') echo 'selected ';
+											  echo 'value=' . 'INTERNACIONAL' .'>'. 'INTERNACIONAL' . "\n";
 												echo '<option ';
-												if($mdtipent == 'Transferencia') echo 'selected ';
-											  echo 'value=' . 'Transferencia' .'>'. 'Transferencia' . "\n";
+												if($mdtipent == 'TRANSFERENCIA') echo 'selected ';
+											  echo 'value=' . 'TRANSFERENCIA' .'>'. 'TRANSFERENCIA' . "\n";
 												echo '<option ';
-												if($mdtipent == 'Inv-Inicial') echo 'selected ';
-											  echo 'value=' . 'Inv-Inicial' .'>'. 'Inv-Inicial' . "\n";										  
+												if($mdtipent == 'INV-INICIAL') echo 'selected ';
+											  echo 'value=' . 'INV-INICIAL' .'>'. 'INV-INICIAL' . "\n";										  
 											?>
 											</select>
 										</div>

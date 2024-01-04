@@ -122,7 +122,7 @@ mysqli_free_result ($RegistroA);
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label><font color="blue" size="4px">Línea.:  </font></label>
-											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $acronym ." / ". $namel; ?></font></span>
+											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $namel; ?></font></span>
 										</div>
 									</div>	
 								</div>	

@@ -22,7 +22,7 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label><font color="#303030" FACE="times new roman" size="3px"> Código de la Zona</font></label>
-										<input type="text" name="zone_id" class="form-control" value="<?php echo $Fila2['zone_id']; ?>" readonly />
+										<input type="text" name="zone_id" class="form-control" value="<?php echo $Fila2['zone_id']; ?>" onkeyup="this.value = this.value.toUpperCase();" readonly />
 									</div>
 								</div>
 							</div>							
@@ -30,13 +30,13 @@
 								<div class="col-sm-8">
 									<div class="form-group">
 										<label><font color="#303030" FACE="times new roman" size="3px"> Descripción de la Zona</font></label>
-										<input type="text" name="zone_desc" maxlength="60" class="form-control" value="<?php echo $Fila2['zone_desc']; ?>" required />
+										<input type="text" name="zone_desc" maxlength="60" class="form-control" value="<?php echo $Fila2['zone_desc']; ?>" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label><font color="#303030" FACE="times new roman" size="3px"> Prefijo Compañia-Zona</font></label>
-										<input type="text" name="zone_prefix" maxlength="25" class="form-control" value="<?php echo $Fila2['zone_prefix']; ?>" required />
+										<input type="text" name="zone_prefix" maxlength="25" class="form-control" value="<?php echo $Fila2['zone_prefix']; ?>" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div>							
 							</div>
@@ -44,7 +44,7 @@
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label><font color="#303030" FACE="times new roman" size="3px"> Ubicación de la Zona</font></label>
-										<input type="text" name="zone_ubic" size="60" maxlength="60" class="form-control" value="<?php echo $Fila2['zone_ubic']; ?>" required />
+										<input type="text" name="zone_ubic" size="60" maxlength="60" class="form-control" value="<?php echo $Fila2['zone_ubic']; ?>" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div>
 							</div>
@@ -52,7 +52,7 @@
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label><font color="#303030" FACE="times new roman" size="3px"> Direccíon de la Zona</font></label>
-										<input type="text" name="zone_direc" maxlength="100" class="form-control" value="<?php echo $Fila2['zone_direc']; ?>" required />
+										<input type="text" name="zone_direc" maxlength="100" class="form-control" value="<?php echo $Fila2['zone_direc']; ?>" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div>
 							</div>

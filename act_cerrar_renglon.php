@@ -108,7 +108,7 @@ if (isset($_POST['autorizados']))
 	$Registro2 = mysqli_query($link,$query);			
 	while($row2 = mysqli_fetch_array($Registro2))
 	{		
-		if ($tm_tipo == 'Entradas') {
+		if ($tm_tipo == 'ENTRADAS') {
 			$mdcante = $mdcant;					// Cantidad del Movimiento
 			$mdcant2 = $mdcant * 1;
 			//--------------------------------
@@ -174,7 +174,7 @@ if (isset($_POST['autorizados']))
 //========= Actualiza Quantity en Producto ============
 
 //======== Actualiza Costo Unitario en Producto =========
-	if ($tm_tipo == 'Entradas' and $tm_actcost == 'Si')
+	if ($tm_tipo == 'ENTRADAS' and $tm_actcost == 'Si')
 	{
 		$mdcost2 = $mdcost;
 //========

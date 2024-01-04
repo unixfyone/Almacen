@@ -167,7 +167,7 @@ else $ZON = '';
 								//---------------------------------------------------------------
 								$SQL = "SELECT * FROM wh_periodos 
 								INNER JOIN wh_ejercicios ON wh_ejercicios.ej_aa = wh_periodos.per_aa
-								WHERE wh_periodos.company_id = '$CIA' and wh_periodos.zone_id = '$ZON'
+								WHERE wh_ejercicios.company_id = '$CIA' and wh_ejercicios.zone_id = '$ZON' and wh_periodos.zone_id = '$ZON'
 								ORDER BY wh_periodos.per_mm DESC ";
 								
 								//---------------------------------------------------------------
@@ -209,7 +209,7 @@ else $ZON = '';
 								echo "<Td bgcolor=FFFFFF align=Center><font color='Red'>" . "Cerrado";
 								echo "</font>";
 								} else {
-								echo "<td bgcolor=ffffff align=Center><font color='Blue'><A HREF=\"periodos_02.php?AA=" .$Fila['per_aa']."&MM=" .$Fila['per_mm']."\">";
+								echo "<td bgcolor=ffffff align=Center><font color='Blue'><A HREF=\"periodos_02.php?AA=" .$Fila['per_aa']."&MM=" .$Fila['per_mm']."&CIA=" .$Fila['company_id']."&ZON=" .$Fila['zone_id']."\">";
 								echo "Abierto</a></td>";
 								echo "</font>";
 								}

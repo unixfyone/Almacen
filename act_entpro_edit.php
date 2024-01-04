@@ -28,7 +28,7 @@ echo '<FORM ACTION="" method="Post">';
 date_default_timezone_set('America/Caracas');
 
 $TMOV = $_POST['mhtm'];
-if($TMOV == 'Entradas'){
+if($TMOV == 'ENTRADAS'){
 //===============================================================
 //============== Editar REGISTROS   ============================
 if (isset($_POST['BotonEdit']))

@@ -9,6 +9,14 @@ if(isset($_POST['btn_action']))
 	{
 		echo fill_scategories_list($connect, $_POST['wh_category_id']);
 	}
+	if($_POST['btn_action'] == 'load_typematerial')
+	{
+		echo fill_type_material2($connect, $_POST['wh_type_material']);
+	}
+	if($_POST['btn_action'] == 'load_ctypematerial')
+	{
+		echo fill_type_cmaterial2($connect, $_POST['wh_tinv_id']);
+	}
 //===============================================
 	if($_POST['btn_action'] == 'Addx')
 	{

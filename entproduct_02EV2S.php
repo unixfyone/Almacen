@@ -354,7 +354,7 @@ mysqli_free_result ($Registro);
 									<div class="col-lg-10">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon.:</font></label>
-											<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="200" value="<?Php echo $DESCP ?>" required />
+											<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="200" value="<?Php echo $DESCP ?>" readonly />
 										</div>
 									</div>
 								</div>

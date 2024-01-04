@@ -240,7 +240,7 @@ dataTables_length select {  width: auto;  display: inline-block;}
 											<label><font FACE="times new roman" size="3px">Descripción de la SubCategoria</font></label>
 											<div class="input-group-prepend">
 												<span class="input-group-text"><i class="fas fa-object-ungroup"></i></span>
-													<input type="text" name="subcategory" id="subcategory" maxlength="100" class="form-control" required />
+													<input type="text" name="subcategory" id="subcategory" maxlength="100" class="form-control" onkeyup="this.value = this.value.toUpperCase();" required />
 											</div>
 										</div>                                 
 									</div>

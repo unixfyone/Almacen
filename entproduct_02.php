@@ -296,7 +296,7 @@ mysqli_free_result ($RegistroA);
 							</div>
 						</div>
 						<div class="row">
-							<?Php if($tmtipo == 'Entradas') { ?>
+							<?Php if($tmtipo == 'ENTRADAS') { ?>
 							<div class="col-lg-5">
 								<div class="input-group">
 									<span class="input-group-text"><font color="#660000" FACE="times new roman" size="3px">Unitario Moneda Extranjera:</font></span>
@@ -313,7 +313,7 @@ mysqli_free_result ($RegistroA);
 						</div>
 						
 						<div class="row">
-							<?Php if($tmtipo == 'Entradas') { ?>
+							<?Php if($tmtipo == 'ENTRADAS') { ?>
 							<div class="col-lg-6">
 								<div class="input-group">
 									<span class="input-group-text"><font color="#660000" FACE="times new roman" size="3px">Tipo de Entrada Material:</font></span>

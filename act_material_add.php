@@ -48,6 +48,9 @@ $CAT = $_POST["CAT"];
 $SCAT = $_POST["SCAT"];
 $MARC = $_POST["MARC"];
 $type_material = $_POST["type_material"];
+$type_tm2_id = $_POST["type_tm2_id"];
+$clas_tm2_id = $_POST["clas_tm2_id"];
+
 $ubication = $_POST["ubication"];
 $cost_me = $_POST["cost_me"];	
 //$cost_ml = $_POST["cost_ml"];
@@ -67,7 +70,7 @@ where company_id = '$company_id' and zone_id = '$zone_id' and code = '$code'
 		if ($CTA1 == '0')			// Existen el Material
 		{
 //-------------------------- 
-$SQL = "INSERT INTO wh_materials (company_id, zone_id, code, description_m, description_amp_m, prefix, code_sap, part_number_m, wh_measurement_unit_id_m, wh_line_id_m, wh_category_id_m, wh_subcategory_id_m, wh_brand_id_m, type_material_m, ubication, cost_me, reorder, fill) VALUES ('$company_id', '$zone_id', '$code', '$description', '$description_a', '$prefix', '$code_sap', '$part_number', '$UNID', '$wh_line_id', '$CAT', '$SCAT', '$MARC', '$type_material', '$ubication', '$cost_me', '$reorder', '$fill')";
+$SQL = "INSERT INTO wh_materials (company_id, zone_id, code, description_m, description_amp_m, prefix, code_sap, part_number_m, wh_measurement_unit_id_m, wh_line_id_m, wh_category_id_m, wh_subcategory_id_m, wh_brand_id_m, type_material_m, type_tm2_id, clas_tm2_id, ubication, cost_me, reorder, fill) VALUES ('$company_id', '$zone_id', '$code', '$description', '$description_a', '$prefix', '$code_sap', '$part_number', '$UNID', '$wh_line_id', '$CAT', '$SCAT', '$MARC', '$type_material', '$type_tm2_id', '$clas_tm2_id', '$ubication', '$cost_me', '$reorder', '$fill')";
 //--------------------------
 mysqli_query ($link, $SQL);
 //---------------------------

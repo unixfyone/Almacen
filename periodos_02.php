@@ -39,12 +39,18 @@ else $AA = $_POST["AA"];
 
 if(isset($_GET["MM"]))$MM = $_GET["MM"];
 else $MM = $_POST["MM"];
+//-------------
+if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
+else $CIA = '';
+//-------------
+if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
+else $ZON = '';
 //===============================================================
 
 //===============================================================
 	$query2 = "
 	SELECT *, Count(movh_id) AS Cuenta1 FROM wh_movinvh 
-	WHERE movh_statu = 'Abierto'
+	WHERE movh_statu = 'Abierto' and movh_cia = '$CIA' and movh_zone = '$ZON'
 	";	
 	$Registro2 = mysqli_query($link,$query2);
 	while($row2 = mysqli_fetch_array($Registro2))
@@ -100,7 +106,8 @@ else $MM = $_POST["MM"];
 		<?php
 		if (isset($_GET['BtnOK']))
 		{
-		$query = "SELECT * FROM wh_saldosm WHERE aa_s = '".$AA."' ";	
+		$query = "SELECT * FROM wh_saldosm 
+		WHERE aa_s = '".$AA."' and company_id = '$CIA' and zone_id = '$ZON' ";	
 		$Registro2 = mysqli_query($link,$query);			
 		while($row2 = mysqli_fetch_array($Registro2))
 		{
@@ -120,7 +127,8 @@ else $MM = $_POST["MM"];
 		//--------------------------------				
 		$query4 = "UPDATE wh_saldosm SET 
 		saldos_fp = '$mValorfp2'
-		WHERE aa_s = '$AA' and product_id = '$PROD'";
+		WHERE aa_s = '$AA' and product_id = '$PROD' and company_id = '$CIA' and zone_id = '$ZON'
+		";
 		mysqli_query($link,$query4);
 		
 		}
@@ -128,7 +136,7 @@ else $MM = $_POST["MM"];
 		//=======================================================
 		$SQL = "UPDATE wh_periodos 
 		SET per_statu ='Cerrado' 
-		WHERE per_aa = '$AA' and per_mm = '$MM' and per_statu ='Abierto' ";
+		WHERE per_aa = '$AA' and per_mm = '$MM' and per_statu ='Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
 		mysqli_query ($link, $SQL);
 		//--------------------------
 			echo"<script type='text/javascript'>

@@ -331,7 +331,7 @@ mysqli_free_result ($Registro1);
 		
 		if($edit == '1' and $actua == '1')
 		{
-			if($mhtmov == 'Entradas' ) {
+			if($mhtmov == 'ENTRADAS' ) {
 				$accion = '<ul class="nav navbar-nav">
 				<li class="dropdown btn-group">
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
@@ -394,7 +394,7 @@ mysqli_free_result ($Registro1);
 											<?php } ?>
 											<Td><?php echo $Fila['code']; ?></td>
 											<Td><span class="text-wrap"><?php echo $Fila['movd_desc']; ?></span></td>
-											<Td align="right"><?php echo number_format($Fila['movd_cant'], 3, ",", ".");?></td>
+											<Td align="right"><?php echo number_format($Fila['movd_cant'], 2, ",", ".");?></td>
 											<Td align="right"><?php echo number_format($Fila['movd_costou_me'], 2, ",", ".");?></td>
 											<Td align="right"><?php echo number_format($Fila['movd_tasa_cambio'], 2, ",", ".");?></td>
 											<td align="center"><?php echo $status; ?></td>

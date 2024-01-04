@@ -128,21 +128,17 @@ mysqli_free_result ($RegistroA);
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
-					<h2 class="m-0"><font color="#<?=$ccolor;?>" >Movimiento Almacen
+					<h2 class="m-0"><font color="#<?=$ccolor;?>" >Materiales en Transito
 					</font></h2>
 				</div>
 				<div class="col-sm-6" align='right'>
 					<?php
-					if($add == '1' and $CIAX != '' and $ZON !='' and $MID !='' and $actua == '1')
+					if($add == '1' and $CIAX != '' and $ZON !='' and $actua == '1')
 					{
-						if($MID =='ENTRADAS') {
-							echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_inventh2V2.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";						
-						} else {
-							echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_inventh2V2S.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";										
-						}
+							echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_transito2.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";										
 					} else {
 						?>
-						<a><button type="button" name="add_button" id="add_button" data-toggle="modal" data-target="#" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" disabled />Agregar Documento</button></a>
+						<a><button type="button" name="add_button" id="add_button" data-toggle="modal" data-target="#" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" disabled />Agregar Transito</button></a>
 						<?php	 
 					}
 					?>
@@ -158,7 +154,7 @@ mysqli_free_result ($RegistroA);
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Documentos Movimientos Almacen</font></b>
+							<b><font color="#FFFFFF" size="4px">Documentos Materiales en Transito</font></b>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -217,54 +213,8 @@ mysqli_free_result ($RegistroA);
 												?>									
 											</select>
 										</div>
-									</div>			  
-								</div>
-								<br>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="input-group">
-											<span class="input-group-text"><b>Tipo de Movimiento.:</b></span>
-											<select class="form-control" name="MID" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Selecconar Movimientos</option>							
-												<?php
-												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_tipmov group by tm_tipo";
-												$Registro=mysqli_query($link,$SQL);
-												//-------
-												while ($Fila=mysqli_fetch_array($Registro)){
-												//----
-												echo '<option ';
-												if($MID == $Fila["tm_tipo"])echo 'selected ';
-												echo 'value=' . $Fila["tm_tipo"] .'>'. $Fila["tm_tipo"] . "\n";
-												}
-												mysqli_free_result ($Registro);
-												//---------------------------------------------------------------
-												?>									
-											</select>
-										</div>
 									</div>
-									<div class="col-lg-6">
-										<div class="input-group">
-											<span class="input-group-text"><b>Status Movimientos:</b></span>
-											<select class="form-control" name="EDO" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
-												<?php
-												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_movinvh group by movh_statu";
-												$Registro=mysqli_query($link,$SQL);
-												//-------
-												while ($Fila=mysqli_fetch_array($Registro)){
-												//----
-												echo '<option ';
-												if($EDO == $Fila["movh_statu"])echo 'selected ';
-												echo 'value=' . $Fila["movh_statu"] .'>'. $Fila["movh_statu"] . "\n";
-												}
-												mysqli_free_result ($Registro);
-												//---------------------------------------------------------------
-												?>	
-											</select>
-										</div>
-									</div>						
+									<br>
 								</div>
 							</div>
 							
@@ -275,7 +225,7 @@ mysqli_free_result ($RegistroA);
 		</div>
 	</section>
 							
-	<?php if ($CIAX != '' and $ZON != '' and $MID != '') { ?>
+	<?php if ($CIAX != '' and $ZON != '') { ?>
 
 	<section class="content">
 		<div class="container-fluid">
@@ -284,23 +234,22 @@ mysqli_free_result ($RegistroA);
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card card-<?= $cstyle; ?>-dark card-outline">
 							<div class="card-header bg-light border-0">
-								<h5 class="card-title text-<?= $cstyle; ?>-dark text-bold">Documentos </h5>
+								<h5 class="card-title text-<?= $cstyle; ?>-dark text-bold">Documentos Transito</h5>
 							</div>
 						</div>
 						<div class="panel-body">
 							<?php
 							if ($EDO != '') {
 							//---------------------------------------------------------------
-							$SQL = "SELECT * FROM wh_movinvh 
-							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
-							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_statu = '$EDO' ORDER BY wh_movinvh.movh_fecha DESC ";
+							$SQL = "SELECT * FROM wh_tranmovinvh 
+							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_tranmovinvh.mth_ejer and wh_periodos.per_mm = wh_tranmovinvh.mth_per
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_tranmovinvh.mth_zone = '$ZON' and ORDER BY wh_tranmovinvh.mth_doc DESC ";
 							//---------------------------------------------------------------
 							} else {
-							$SQL = "SELECT * FROM wh_movinvh 
-							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
-							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' ORDER BY wh_movinvh.movh_fecha DESC ";
+							$SQL = "SELECT * FROM wh_tranmovinvh 
+							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_tranmovinvh.mth_ejer and wh_periodos.per_mm = wh_tranmovinvh.mth_per
+							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_tranmovinvh.mth_tmid
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_tranmovinvh.mth_zone = '$ZON' ORDER BY wh_tranmovinvh.mth_doc DESC ";
 							//---------------------------------------------------------------								
 							}
 							?>
@@ -337,18 +286,18 @@ mysqli_free_result ($RegistroA);
 										mysqli_free_result ($Registro3);
 									
 //<!-- ====================================================== -->
-	if($Fila2['movh_statu'] == 'Abierto')
+	if($Fila2['mth_statu'] == 'Abierto')
 	{
 		$status = '<span class=""><b><font color="green" size="3px">Abierto</font></b></span>';
 	} else { 
 		$status = '<span class=""><b><font color="red" size="3px">Cerrado</font></b></span>';
 	}
 //<!-- ============
-	if($Fila2['movh_statu'] == 'Abierto')
+	if($Fila2['mth_statu'] == 'Abierto')
 	{
 		if($edit == '1' and $actua == '1')
 		{	
-			if($MID == 'ENTRADAS' )
+			if($MID == 'Entradas' )
 			{				
 			$accion = '<ul class="nav navbar-nav">
 			<li class="dropdown btn-group">
