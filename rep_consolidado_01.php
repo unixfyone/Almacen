@@ -108,7 +108,7 @@ mysqli_free_result ($RegistroA);
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Reporte de Materiales</font></b>
+							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Inventario Consolidado</font></b>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -172,32 +172,6 @@ mysqli_free_result ($RegistroA);
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="input-group">
-											<span class="input-group-text"><b>Línea / Empresa.:</b></span>
-											<select class="form-control" name="LIN" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
-												<?php
-												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_lines  
-												WHERE statu = 'Activo'
-												ORDER BY acronym ASC";								
-												
-												$Registro=mysqli_query($link,$SQL);
-												//-------
-												while ($Fila=mysqli_fetch_array($Registro)){
-												$LIND = $Fila["acronym"] ."&nbsp;&nbsp; / &nbsp;&nbsp;". $Fila["namel"];
-												//----
-												echo '<option ';
-												if($LIN == $Fila["id"])echo 'selected ';
-												echo 'value=' . $Fila["id"] .'>'. $LIND . "\n";
-												}
-												mysqli_free_result ($Registro);
-												//---------------------------------------------------------------
-												?>									
-											</select>
-										</div>
-									</div>									
-									<div class="col-lg-6">
-										<div class="input-group">
 											<span class="input-group-text"><b>Ejercicio / Periodo.:</b></span>
 											<select class="form-control" name="PER" onChange="javascrip:form.submit()">
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
@@ -231,28 +205,21 @@ mysqli_free_result ($RegistroA);
 							{ ?>
 							<hr>						
 							<div class="panel-body">
-								<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "rep_stock_mat_01_Excel.php?CIA=$CIA&ZON=$ZON&LIN=$LIN&PER=$PER "; ?> "> Descargar en Excel</a>
+								<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "rep_consolidado_01_Excel.php?CIA=$CIA&ZON=$ZON&PER=$PER "; ?> "> Descargar en Excel</a>
 								<br><br>
 								<?php
-								if ($LIN != '') {
-								//---------------------------------------------------------------
-								$SQL = "SELECT mat.*, mat.id AS matid, um.id AS umid, um.name, lin.id, lin.acronym FROM wh_materials mat
-								INNER JOIN wh_lines lin ON lin.id = mat.wh_line_id_m
-								INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
-								WHERE mat.zone_id = '$ZON' and mat.wh_line_id_m = '$LIN' and mat.company_id = '$CIA'
-								ORDER BY mat.code DESC
+								$SQL = "SELECT *, wh_measurement_units.name AS nameum, wh_lines.namel, wh_materials.id AS matid,  wh_categories.category, wh_type_material2.name AS nametm2, wh_clasificacion_tm2.name AS namecl2
+								FROM wh_materials 
+								left join wh_measurement_units on wh_measurement_units.id = wh_materials.wh_measurement_unit_id_m
+								left join wh_lines on wh_lines.id = wh_materials.wh_line_id_m
+								left join wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
+								left join wh_type_material2 on wh_type_material2.id = wh_materials.type_tm2_id
+								left join wh_clasificacion_tm2 on wh_clasificacion_tm2.id = wh_materials.clas_tm2_id
+								WHERE wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIA'
+								ORDER BY wh_materials.code ASC
 								";
 								//---------------------------------------------------------------
-								} else {
-								//---------------------------------------------------------------
-								$SQL = "SELECT mat.*, mat.id AS matid, um.id AS umid, um.name, lin.id, lin.acronym FROM wh_materials mat
-								INNER JOIN wh_lines lin ON lin.id = mat.wh_line_id_m
-								INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
-								WHERE mat.zone_id = '$ZON' and mat.company_id = '$CIA' 
-								ORDER BY mat.code DESC
-								";
-								//---------------------------------------------------------------
-								}
+
 								?>
 								<div class="table">
 								<table id="materials_data" class="table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer" role="grid" border='1'>
@@ -260,13 +227,15 @@ mysqli_free_result ($RegistroA);
 								  <tr>
 									<th>Código</th>
 									<th>Descripción</th>
-									<th>Línea</th>
 									<th>Uni-Med</th>
+									<th>Línea</th>
 									<th>Tipo</th>
-									<th>Costo/Unitario ME</th>
+									<th>Tipo Inv</th>
+									<th>Clasificación</th>
+									<th>Costo</th>
 									<th>Existencia</th>
 									<th>Ubicacion</th>
-									<th>Total ME</th>
+									<th>Total</th>
 								  </tr>
 								  </thead>
 								  <tbody>			  
@@ -284,7 +253,7 @@ mysqli_free_result ($RegistroA);
 										$mValors = '';
 										$mValorfp = '';
 										//----------------------------
-										$query = "SELECT *, Count(sal_id) AS Cuenta1 FROM wh_saldosm WHERE product_id = '".$prodid2."' and aa_s = '".$AA2."' ";	
+										$query = "SELECT *, Count(sal_id) AS Cuenta1 FROM wh_saldosm WHERE product_id = '".$prodid2."' and aa_s = '".$AA2."' and zone_id = '".$ZON."' ";	
 										
 										$Registro3 = mysqli_query($link,$query);			
 										while($row3 = mysqli_fetch_array($Registro3))
@@ -319,9 +288,11 @@ mysqli_free_result ($RegistroA);
 										<Tr height= '16px'>
 										<Td><font size="2px"><?php echo $Fila2['code_sap']; ?></font></td>
 										<Td><span class="text-wrap"><font size="2px"><?php echo $Fila2['description_m']; ?></font></span></td>
-										<Td><font size="2px"><?php echo $Fila2['acronym'];?></font></td>
-										<Td><font size="2px"><?php echo $Fila2['name'];?></font></td>
+										<Td><font size="2px"><?php echo $Fila2['nameum'];?></font></td>
+										<Td><font size="2px"><?php echo $Fila2['namel'];?></font></td>
 										<Td><font size="2px"><?php echo $Fila2['type_material_m'];?></font></td>
+										<Td><font size="2px"><?php echo $Fila2['nametm2'];?></font></td>
+										<Td><font size="2px"><?php echo $Fila2['namecl2'];?></font></td>
 										<Td><font size="2px"><?php echo $Fila2['cost_me'];?></font></td>
 										<Td><font size="2px"><?php echo $existencia;?></font></td>
 										<Td><font size="2px"><?php echo $Fila2['ubication'];?></font></td>

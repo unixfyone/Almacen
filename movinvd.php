@@ -289,7 +289,7 @@ mysqli_free_result ($Registro1);
 									INNER JOIN wh_movinvd ON wh_movinvd.movh_id = wh_movinvh.movh_id
 									INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvd.tm_id
 									INNER JOIN wh_materials ON wh_materials.zone_id = wh_movinvd.movd_zone and wh_materials.code = wh_movinvd.product_cod
-									Where wh_movinvh.movh_id = '$IDX' ORDER BY wh_movinvd.movd_id ASC";
+									Where wh_movinvh.movh_id = '$IDX' ORDER BY wh_movinvd.product_cod ASC";
 									//---------------------------------------------------------------
 									?>
 									<div class="col-sm-12 table-responsive">

@@ -244,8 +244,8 @@ mysqli_free_result ($RegistroA);
 								//---------------------------------------------------------------
 								$SQL = "SELECT mat.*, mat.id AS idmat, mmat.*, mmat.id AS idmmat, um.id AS umid, um.name, cat.cat_id, cat.category FROM wh_materials mat
 								INNER JOIN wh_master_materials mmat ON mmat.code = mat.code
-								INNER JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
-								INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
+								LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
+								LEFT JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
 								WHERE mat.zone_id = '$ZON' and mat.wh_line_id_m = '$LIN' and mat.company_id = '$CIA'
 								ORDER BY mat.code DESC
 								";

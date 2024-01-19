@@ -77,7 +77,7 @@ if(isset($_GET["EDO"]))$EDO = $_GET["EDO"];
 else $EDO = '';
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' ";
+	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
 	while ($Filap=mysqli_fetch_array($Registrop))
@@ -121,6 +121,8 @@ mysqli_free_result ($RegistroA);
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <Input Type="hidden" name="EDO" value="<?Php echo $EDO ?>">
 <Input Type="hidden" name="MOP" value="<?Php echo $MOP ?>">
+
+
 
 <!--<span id="alert_action"></span> -->
 <div class="content-wrapper">
@@ -276,6 +278,8 @@ mysqli_free_result ($RegistroA);
 	</section>
 							
 	<?php if ($CIAX != '' and $ZON != '' and $MID != '') { ?>
+	
+	
 
 	<section class="content">
 		<div class="container-fluid">
@@ -294,16 +298,18 @@ mysqli_free_result ($RegistroA);
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_statu = '$EDO' ORDER BY wh_movinvh.movh_fecha DESC ";
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and wh_movinvh.movh_statu = '$EDO' ORDER BY wh_movinvh.movh_fecha DESC ";
 							//---------------------------------------------------------------
 							} else {
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' ORDER BY wh_movinvh.movh_fecha DESC ";
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' ORDER BY wh_movinvh.movh_fecha DESC ";
 							//---------------------------------------------------------------								
 							}
 							?>
+							
+							
 							<div class="col-sm-12 table-responsive">
 							<table id="movimientos_data" class="table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer" role="grid" border='1'>
 															
@@ -335,7 +341,6 @@ mysqli_free_result ($RegistroA);
 										$rcerrados = $row['renglones'];
 										}
 										mysqli_free_result ($Registro3);
-									
 //<!-- ====================================================== -->
 	if($Fila2['movh_statu'] == 'Abierto')
 	{
@@ -415,7 +420,7 @@ mysqli_free_result ($RegistroA);
 //<!-- =======================	
 
 //<!-- =================================================================================== -->	
-								?>								
+								?>							
 									<Tr height= '16px'>
 										<Td><font size="3px"><?php echo $Fila2['movh_fecha']; ?></font></td>
 										<Td><span class="text-wrap"><font size="3px" color = "#990000"><?php echo $Fila2['tm_desc']; ?></font></span></td>

@@ -74,6 +74,8 @@ else $CT1 = '0';
 //echo "<pre>"; print_r($ZON); exit();
 
 $CTA = '0';
+
+
 //===============================================================
 $SQLx = "SELECT Count(ej_aa) AS Cuenta FROM wh_ejercicios 
 WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
@@ -99,6 +101,8 @@ if ($CTA > '0')
 <Input Type="hidden" name="CIA" value="<?Php echo $CIA ?>">
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
+
+<?Php //echo "<pre>"; print_r($CIA); exit(); ?>
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -161,7 +165,7 @@ if ($CTA > '0')
 		while($row2 = mysqli_fetch_array($Registro2))
 		{	
 			$prodid = $row2["product_id"];					// id Producto del Registro Ejercicio cerrado
-			$cia = $row2["company_id"];
+			$cias = $row2["company_id"];
 			$zone = $row2["zone_id"];
 			$prodcod = $row2["product_cod"];
 
@@ -172,7 +176,7 @@ if ($CTA > '0')
 			
 			if ($vefp12 != '0')								// insertar 
 			{
-				$query2 = "INSERT INTO wh_saldosm (aa_s, company_id, zone_id, product_id, product_cod, saldos_e, saldos_s, saldos_fp) VALUES ('$AA', '$cia', '$zone', '$prodid', '$prodcod', '$saldos', '$saldos', '$saldos13')";
+				$query2 = "INSERT INTO wh_saldosm (aa_s, company_id, zone_id, product_id, product_cod, saldos_e, saldos_s, saldos_fp) VALUES ('$AA', '$cias', '$zone', '$prodid', '$prodcod', '$saldos', '$saldos', '$saldos13')";
 				//--------------------------------		
 				mysqli_query($link,$query2);
 		
@@ -202,7 +206,7 @@ if ($CTA > '0')
 		mysqli_free_result ($Registro2);
 		//=======================================================
 	
-		$SQL = "INSERT INTO wh_ejercicios (ej_aa, company_id, zone_id) value ('$AA', '$cia', '$zone')";
+		$SQL = "INSERT INTO wh_ejercicios (ej_aa, company_id, zone_id) value ('$AA', '$CIA', '$ZON')";
 		mysqli_query ($link, $SQL);
 		//--------------------------
 		echo"<script type='text/javascript'>

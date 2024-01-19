@@ -171,8 +171,8 @@ mysqli_free_result ($Registro1);
 								
 								//---------------------------------------------------------------
 								$SQL = "SELECT mat.*, um.id AS umid, um.name, cat.cat_id, cat.category FROM wh_master_materials mat
-								INNER JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id
-								INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id
+								LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id
+								LEFT JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id
 								WHERE mat.wh_line_id = '$LIN' 
 								ORDER BY mat.code DESC
 								";
