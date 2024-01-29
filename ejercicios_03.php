@@ -63,10 +63,15 @@ echo '<FORM ACTION="" method="">';
 //$MM= date('m');
 //$AA= date('Y');
 $year = date("Y");
+$year1 = date("Y");
 
-$CIA = $_POST["CIA"];
+//$CIA = $_POST["CIA"];
+if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
+else $CIA = $_POST["CIA"];
 //-------------
-$ZON = $_POST["ZON"];
+//$ZON = $_POST["ZON"];
+if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
+else $ZON = $_POST["ZON"];
 //-------------
 if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 else $CT1 = '0';
@@ -129,10 +134,17 @@ if ($CTA > '0')
 						<div class="card-body">
 							<div class="panel-body">
 								<div class="row">
-									<div class="col-sm-3">
+									<div class="col-sm-2">
 										<div class="form-group">
-											<span class="input-group-addon"><b><font color="#303030">Año del Ejercicio.:</font></b></span>
-											<input type="number" placeholder="YYYY" min="2023" max="2030" name="AA" id="AA"value="<?= $year; ?>" class="form-control" />
+											<?php $years = range(date('Y'), strftime("%Y", time())); ?>	
+											
+											<span class="input-group-addon"><b><font color="#303030">Año del Ejercicio.:</font></b></span>										
+											<select class="form-control" name="AA" id="AA">
+
+											  <?php foreach($years as $year) : ?>
+												<option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+											  <?php endforeach; ?>
+											</select>											
 										</div>
 									</div>	
 								</div>
@@ -144,6 +156,7 @@ if ($CTA > '0')
 								<button class="btn btn-outline-<?php echo $classButtonFooter; ?> btn-sm" type="Submit" name="BtnOK" ><span class="fa fa-save"></span> Grabar Ejercicio</button>
 							</div>
 						</div>
+					
 					</div>
 				</div>
 			</div>
@@ -160,7 +173,9 @@ if ($CTA > '0')
 		$saldos = '0|0|0|0|0|0|0|0|0|0|0|0';
 		$saldos13 = '0|0|0|0|0|0|0|0|0|0|0|0|0';	
 	//=======================================================
-		$query = "SELECT * FROM wh_saldosm WHERE aa_s = '".$AA_ANT."'";	
+		$query = "SELECT * FROM wh_saldosm 
+		WHERE aa_s = '".$AA_ANT."' and company_id = '".$CIA."' and zone_id = '".$ZON."'
+		";	
 		$Registro2 = mysqli_query($link,$query);			
 		while($row2 = mysqli_fetch_array($Registro2))
 		{	
@@ -224,3 +239,4 @@ if ($CTA > '0')
       document.querySelector("input[type=number]")
       .oninput = e => console.log(new Date(e.target.valueAsNumber, 0, 1))
 </script>
+

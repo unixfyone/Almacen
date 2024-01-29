@@ -101,7 +101,8 @@ else $prod = '';
 //-------------
 
 //===============================================================
-	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' ";
+	$SQLp = "SELECT * FROM wh_periodos 
+	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
 	while ($Filap=mysqli_fetch_array($Registrop))

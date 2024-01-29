@@ -300,6 +300,7 @@ while($Fila1 = mysqli_fetch_array($Registro1))
 $IDM = $Fila1["movh_id"];			// Id de Documento
 $ZON = $Fila1["movh_zone"];			// Código del Almacen
 $mhdoc = $Fila1["movh_doc"];		// Nro. de Documento
+$tmcod = $Fila1["movh_tmid"];		// Tipo de Movimiento
 $mhtdoc = $Fila1["movh_tdoc"];		// Tipo de Documento
 $mhtmov = $Fila1["movh_tmov"];		// Tipo Movimiento (E/S)
 $mhfecha = $Fila1["movh_fecha"];	// Fecha del Documento
@@ -343,6 +344,16 @@ $cerrados = $row["renglones"];
 	
 }
 mysqli_free_result ($Registro3);
+//---------------------------------------------------------------
+//---------------------------------------------------------------
+	$SQLtm="Select * From wh_tipmov where tm_id = '$tmcod' ";
+	$RegistroTM=mysqli_query($link,$SQLtm);
+	//------------------------------------------------------
+	while ($FilaTM=mysqli_fetch_array($RegistroTM))
+	{
+	$DESCTM= $FilaTM["tm_desc"];
+	}
+	mysqli_free_result ($RegistroTM);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 ?>
@@ -394,7 +405,7 @@ mysqli_free_result ($Registro3);
 								</tr></thead>
 								<tr>
 									<td><b><input class="form-control2" style='text-align:center' Type="text2" name="movh_doc" id="movh_doc" size='12'  value="<?Php echo $mhdoc; ?>" readonly /></b></td>
-									<td><b><input class="form-control2" Type="text2" name="movh_tdoc" id="movh_tdoc" size='30' value="<?Php echo $mhtdoc;?>" readonly /></b></td>
+									<td><b><input class="form-control2" Type="text2" name="movh_tdoc" id="movh_tdoc" size='30' value="<?Php echo $DESCTM;?>" readonly /></b></td>
 									<td><b><input class="form-control2" style='text-align:center' type="text2" name="movh_tmov" id="movh_tmov" size='10' value="<?Php echo $mhtmov; ?>" readonly /></b></td>
 									<td><input class="form-control2" type="date" name="movh_fecha" id="movh_fecha" size='13' value="<?Php echo $mhfecha; ?>" readonly /></td>
 									<td><input class="form-control2" style="text-align:center" Type="text2" name="movh_ejer" id="movh_ejer" size='4' maxlength="4" value="<?Php echo $mhejer; ?>" readonly></td>

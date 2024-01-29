@@ -98,7 +98,8 @@ else $CAT = '';
 //--------------
 
 //===============================================================
-	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' ";
+	$SQLp = "SELECT * FROM wh_periodos 
+	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
 	while ($Filap=mysqli_fetch_array($Registrop))
@@ -250,14 +251,14 @@ else $CAT = '';
 							//if ($CAT != '') {
 							//---------------------------------------------------------------
 							$SQL = "SELECT * FROM wh_materials 
-							INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
-							INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
+							left JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
+							left JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
 							Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_category_id_m = '$CAT' and wh_materials.m_statu_m = 'Activo' and wh_saldosm.aa_s = '$AA'
 							Order by wh_materials.code ASC";
 							//---------------------------------------------------------------
 							//} else {
 							//---------------------------------------------------------------
-
+//echo "<pre>"; print_r($SQL); exit();
 							//--------------------------------------------------------------								
 							//} 
 							echo "<b><font color='#0066FF' FACE='times new roman' size='4px'>Lista de Materiales</font></b>";

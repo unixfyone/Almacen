@@ -107,7 +107,7 @@ else $ZON = '';
 		if (isset($_GET['BtnOK']))
 		{
 		$query = "SELECT * FROM wh_saldosm 
-		WHERE aa_s = '".$AA."' and company_id = '$CIA' and zone_id = '$ZON' ";	
+		WHERE aa_s = '".$AA."' and company_id = '".$CIA."' and zone_id = '".$ZON."' ";	
 		$Registro2 = mysqli_query($link,$query);			
 		while($row2 = mysqli_fetch_array($Registro2))
 		{
@@ -127,23 +127,25 @@ else $ZON = '';
 		//--------------------------------				
 		$query4 = "UPDATE wh_saldosm SET 
 		saldos_fp = '$mValorfp2'
-		WHERE aa_s = '$AA' and product_id = '$PROD' and company_id = '$CIA' and zone_id = '$ZON'
+		WHERE aa_s = '".$AA."' and product_id = '".$PROD."' and company_id = '".$CIA."' and zone_id = '".$ZON."'
 		";
 		mysqli_query($link,$query4);
-		
 		}
+		echo "<pre>"; print_r($mValorfp2); exit();
+		
 		mysqli_free_result ($Registro2);
 		//=======================================================
-		$SQL = "UPDATE wh_periodos 
+		$SQLx = "UPDATE wh_periodos 
 		SET per_statu ='Cerrado' 
-		WHERE per_aa = '$AA' and per_mm = '$MM' and per_statu ='Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
-		mysqli_query ($link, $SQL);
+		WHERE per_aa = '".$AA."' and per_mm = '".$MM."' and per_statu ='Abierto' and company_id = '".$CIA."' and zone_id = '".$ZON."' ";
+		mysqli_query ($link, $SQLx);
 		//--------------------------
 			echo"<script type='text/javascript'>
 			alert('!Periodo Cerrado correctamente...','$AA')
 			window.history.go(-2)
 			</script>";
 		}
+							echo "<pre>"; print_r($ZON); exit();
 	//========		
 	}
 //===============================================================

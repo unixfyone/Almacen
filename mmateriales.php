@@ -309,7 +309,7 @@ $accion = '<ul class="nav navbar-nav">
 				<div class="modal-body">
 					<div class="form-group">
 						<label><font color="#660000" size="4px">Línea del Material.:  </font></label>
-						&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $LIND2; ?></font></span>
+						&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $namel; ?></font></span>
 					</div>
 
 					<Div id="materials_details"></Div>

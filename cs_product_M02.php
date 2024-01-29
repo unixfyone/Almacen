@@ -202,7 +202,8 @@ else $prod = '';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select * From wh_ejercicios ";
+												$SQL="Select * From wh_ejercicios
+												WHERE zone_id = '$ZON' ";												
 												$Registro=mysqli_query($link, $SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
@@ -269,10 +270,10 @@ else $prod = '';
 							sal.sal_id, sal.saldos_e, sal.saldos_s, sal.saldos_fp
 							FROM wh_movinvd movd
 							INNER JOIN wh_materials mat ON mat.id = movd.product_id
-							INNER JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
+							LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
 							INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
-							INNER JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
-							WHERE movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA'
+							LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
+							WHERE movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' and sal.zone_id = '$ZON'
 							GROUP BY movd.product_id
 							ORDER BY movd.product_id ASC";
 							
@@ -282,10 +283,10 @@ else $prod = '';
 							sal.sal_id, sal.saldos_e, sal.saldos_s, sal.saldos_fp
 							FROM wh_movinvd movd
 							INNER JOIN wh_materials mat ON mat.id = movd.product_id
-							INNER JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
+							LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
 							INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
-							INNER JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
-							WHERE movd.product_cod LIKE '%$prod%' and movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' 
+							LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
+							WHERE movd.product_cod LIKE '%$prod%' and movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' and sal.zone_id = '$ZON'
 							GROUP BY movd.product_id
 							ORDER BY movd.product_id ASC";								
 							}
@@ -301,7 +302,6 @@ else $prod = '';
 							echo "<th>Categoria</th>";							
 							echo "<th>Uni-Med</th>";
 							echo "<th>Statu</th>";
-							echo "<th>Saldo</th>";
 							echo "</tr>";
 							echo "</thead>";
 
@@ -316,11 +316,6 @@ else $prod = '';
 								}	
 								//=============================
 
-										$exe = 0;
-										$exs = 0;
-										$expa = 0;
-									
-									$existencia = $expa + $exe - $exs;
 								//=============================
 								echo "<tr>";
 								if($Fila['m_statu_m'] != 'Activo')
@@ -336,7 +331,6 @@ else $prod = '';
 								echo "<td align=Left><font size=2>" . $Fila['category'];
 								echo "<td align=Left><font size=2>" . $Fila['umname'];
 								echo "<td align=Center><font size=2>" . $status;
-								echo "<Td align='center'><font size='2px'>" . number_format($existencia, 2, ',', '.');
 								echo "</tr>";
 								//---------------
 							} 
@@ -378,7 +372,7 @@ else $prod = '';
 <script>
 $(document).ready(function(){
 <!-- ********************* Lista de Registros ******************************** -->
-	$('#product_datax').DataTable({
+	$('#product_data').DataTable({
 		
 		"language":{
 			"zeroRecords": "No se encontraron registros.",
@@ -395,11 +389,11 @@ $(document).ready(function(){
 
 		"columnDefs":[
 			{
-				"targets":[0, 5],
+				"targets":[0, 4],
 				"orderable":false,
 			},
 		],
-		"pageLength": 8
+		"pageLength": 50
 	});
 <!-- ********************* Detalle del Producto ***************************** -->
     $(document).on('click', '.view', function(){

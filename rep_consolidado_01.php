@@ -45,6 +45,12 @@ else $CIA = '';
 if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
 else $ZON = '';
 //-------------
+if(isset($_GET["AA"]))$AA = $_GET["AA"];
+else $AA = '0';
+//-------------
+if(isset($_GET["MM"]))$MM = $_GET["MM"];
+else $MM = '0';
+//-------------
 if(isset($_GET["LIN"]))$LIN = $_GET["LIN"];
 else $LIN = '';
 //-------------
@@ -85,7 +91,6 @@ mysqli_free_result ($RegistroA);
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <Input Type="hidden" name="LIN" value="<?Php echo $LIN ?>">
 <Input Type="hidden" name="PER" value="<?Php echo $PER ?>">
-<Input Type="hidden" name="EDO" value="<?Php echo $EDO ?>">
 <Input Type="hidden" name="MOP" value="<?Php echo $MOP ?>">
 
 <div class="content-wrapper">
@@ -170,38 +175,57 @@ mysqli_free_result ($RegistroA);
 									</div>			  
 								</div>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-lg-3">
 										<div class="input-group">
-											<span class="input-group-text"><b>Ejercicio / Periodo.:</b></span>
-											<select class="form-control" name="PER" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
+											<span class="input-group-text"><b>Ejercicio...:</b></span>
+											<select class="form-control" name="AA" id = "xaa" onChange="javascrip:form.submit()" >
+												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="SELECT * FROM wh_periodos 
-												WHERE zone_id = '$ZON'
-												ORDER BY per_aa, per_mm DESC";
-												$Registro=mysqli_query($link,$SQL);
+												$SQL="Select * From wh_ejercicios 
+												where zone_id = '$ZON' ";
+												$Registro=mysqli_query($link, $SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
-												$PERD = $Fila["per_aa"] ."&nbsp;&nbsp; / &nbsp;&nbsp;". $Fila["per_mm"];
 												//----
 												echo '<option ';
-												if($PER == $Fila["per_id"])echo 'selected ';
-												echo 'value=' . $Fila["per_id"] .'>'. $PERD . "\n";
-												
-												$AA2 = $Fila["per_aa"];
+												if($AA == $Fila["ej_aa"])echo 'selected ';
+												echo 'value=' . $Fila["ej_aa"] .'>'. $Fila["ej_aa"] . "\n";
 												}
 												mysqli_free_result ($Registro);
 												//---------------------------------------------------------------
 												?>									
 											</select>
 										</div>
-									</div>									
+									</div>								
+									<div class="col-lg-3">
+										<div class="input-group">
+											<span class="input-group-text"><b>Periodo.:</b></span>
+											<select class="form-control" name="MM" id = "xmm" onChange="javascrip:form.submit()" >
+												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+												<?php
+												//---------------------------------------------------------------
+												$SQL="Select * From wh_periodos 
+												WHERE zone_id = '$ZON' and per_aa = '$AA' ";
+												$Registro=mysqli_query($link, $SQL);
+												//-------
+												while ($Fila=mysqli_fetch_array($Registro)){
+												//----
+												echo '<option ';
+												if($MM == $Fila["per_mm"])echo 'selected ';
+												echo 'value=' . $Fila["per_mm"] .'>'. $Fila["per_mm"] . "\n";
+												}
+												mysqli_free_result ($Registro);
+												//---------------------------------------------------------------
+												?>									
+											</select>
+										</div>
+									</div>
 								</div>
 							</div>
 							<br>
 							<?php
-							if ($CIA != '' and $ZON != '' and $PER != '')
+							if ($CIA != '' and $ZON != '' and $AA != '' and $MM != '')
 							{ ?>
 							<hr>						
 							<div class="panel-body">
@@ -253,7 +277,8 @@ mysqli_free_result ($RegistroA);
 										$mValors = '';
 										$mValorfp = '';
 										//----------------------------
-										$query = "SELECT *, Count(sal_id) AS Cuenta1 FROM wh_saldosm WHERE product_id = '".$prodid2."' and aa_s = '".$AA2."' and zone_id = '".$ZON."' ";	
+										$query = "SELECT *, Count(sal_id) AS Cuenta1 FROM wh_saldosm 
+										WHERE product_id = '".$prodid2."' and aa_s = '".$AA."' and zone_id = '".$ZON."' ";	
 										
 										$Registro3 = mysqli_query($link,$query);			
 										while($row3 = mysqli_fetch_array($Registro3))

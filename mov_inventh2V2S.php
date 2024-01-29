@@ -80,7 +80,7 @@ $cont_sm = $FilaA["zone_doc_sm"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-	$SQLp = "SELECT *, Count(per_statu) AS Cuenta1 FROM wh_periodos WHERE per_statu = 'Abierto' ";
+	$SQLp = "SELECT *, Count(per_statu) AS Cuenta1 FROM wh_periodos WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
 	while ($Filap=mysqli_fetch_array($Registrop))
