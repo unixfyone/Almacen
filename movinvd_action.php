@@ -64,7 +64,7 @@ if(isset($_POST['btn_action']))
 			</tr>
 			<tr>
 				<td><font color="#0066FF" FACE="times new roman" size="3px">Costos Renglon Moneda Extranjera</font></td>
-				<td>Unitario Moneda Extranjera: '.number_format($row['movd_costou_me'], 2, ",", ".").' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Costo Total.: '.number_format($CTOTALE, 2, ",", ".").'</td>
+				<td>Unitario Moneda Extranjera: '.number_format($row['movd_costou_me'], 3, ",", ".").' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Costo Total.: '.number_format($CTOTALE, 3, ",", ".").'</td>
 			</tr>
 			<tr>
 				<td><font color="#0066FF" FACE="times new roman" size="3px">Tasa de Cambio</font></td>
