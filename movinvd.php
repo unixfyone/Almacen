@@ -203,6 +203,7 @@ mysqli_free_result ($Registro1);
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 <Input Type="hidden" name="IDX2" size=11 value="<?Php echo $IDX?>">
 <Input Type="hidden" name="MOP" value="<?Php echo $MOP ?>">
+
 <!--  ======================================================================================= -->
 <div class="content-wrapper">
     <section class="content-header">
@@ -342,7 +343,7 @@ mysqli_free_result ($Registro1);
 					<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
 				</ul></li></ul>';
 			}
-			if($mhtmov == 'Salidas' ) {
+			if($mhtmov == 'SALIDAS' ) {
 				$accion = '<ul class="nav navbar-nav">
 				<li class="dropdown btn-group">
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>

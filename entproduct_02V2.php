@@ -390,7 +390,7 @@ mysqli_free_result ($Registro);
 												<div class="col-lg-8">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon..:</font></label>
-														<Input class="form-control" Type="Text" name="dmov" maxlength="200" size="100" value="<?Php echo $dmov ?>" readonly>
+														<Input class="form-control" Type="Text" name='dmov' maxlength="200" size="100" value='<?Php echo $dmov ?>' readonly>
 													</div>
 												</div>
 											</div>
@@ -456,8 +456,9 @@ mysqli_free_result ($Registro);
 												<div class="col-sm-6" align='right'>
 
 													<?php
-													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&TS=$mdtipsal&CD=$CID&DE=$dmov&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>"; 
-													?> &nbsp;&nbsp;&nbsp;&nbsp;
+													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&CD=$CID&DE=$dmov&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>"; 
+													?> 
+													&nbsp;&nbsp;&nbsp;&nbsp;
 													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>													
 												</div>											
 											</div>
@@ -525,7 +526,7 @@ mysqli_free_result ($Registro);
 							{
 							echo "<Td Align=Left><font size=2>" . $Fila['code'];	
 							}	else	{	
-							echo "<td><a href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&TS=$mdtipsal&CD=$CID \">$prod2X</a></td>"; 
+							echo "<td><a href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&CD=$CID \">$prod2X</a></td>"; 
 							}
 							echo "<Td Align=Left><span class=text-wrap><font size=2>" . $Fila['description_m'];
 							echo "<Td Align=Center><font size=2>" . $GRPXD;

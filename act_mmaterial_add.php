@@ -56,7 +56,7 @@ $RegistroA = mysqli_query($link,$SQL);
 while($row = mysqli_fetch_array($RegistroA))
 {
 $idlin = $row["id"];
-$cont_cod = $row["cont_cod"];
+$cont_cod = $row["cont_cod"] + '1';
 } 
 mysqli_free_result ($RegistroA);
 //------------------------------

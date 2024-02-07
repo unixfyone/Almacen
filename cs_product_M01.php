@@ -324,9 +324,9 @@ else $prod = '';
 							echo "<th>Codigo</th>";
 							echo "<th>Descripción</th>";
 							echo "<th>Categoria</th>";							
-							echo "<th>Uni-Med</th>";
+							echo "<th>UniMed</th>";
 							echo "<th>Statu</th>";
-							echo "<th>Saldo</th>";
+							echo "<th>Existencia</th>";
 							echo "</tr>";
 							echo "</thead>";
 							//--------

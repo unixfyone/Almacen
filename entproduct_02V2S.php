@@ -452,7 +452,7 @@ mysqli_free_result ($Registro);
 														<label class="input-group-text"><font color="#606060" size="3px">Nombre Consumo.....:</font></label>
 														<?php
 														$query = "SELECT * FROM wh_consumos 
-														WHERE statu_cons = 'Activo'
+														WHERE statu_cons = 'Activo' and id_cons = '$idconsumo'
 														";
 															
 														$Registro=mysqli_query($link,$query);

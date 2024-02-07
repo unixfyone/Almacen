@@ -130,7 +130,7 @@ dataTables_length select {  width: auto;  display: inline-block;}
 								<div class="panel-body">
 									<?php
 									//---------------------------------------------------------------
-									$SQL = "SELECT * FROM wh_tipmov ";
+									$SQL = "SELECT * FROM wh_tipmov ORDER BY tm_cod ASC";
 									//---------------------------------------------------------------
 									?>						
 									<table id="tipmov_data" class="table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer" border='1'>

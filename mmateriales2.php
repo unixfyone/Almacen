@@ -224,7 +224,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font color="#505050" size="3px">Clasificacion Tipo Inventario</font></label>
 											<div class="input-group-prepend">
-												<select name="" id="wh_clastm2_id" class="form-control" required>
+												<select name="wh_clastm2_id" id="wh_clastm2_id" class="form-control" required>
 													<option value="">Seleccionar Clasificacion</option>
 												</select>									
 											</div>

@@ -105,6 +105,9 @@ $CODSAP = $PREFIX1.'-'.$code;
 <Input Type="hidden" name="description_m" value="<?Php echo $description ?>">
 <Input Type="hidden" name="description_amp_m" value="<?Php echo $description_a ?>">
 
+<Input Type="hidden" name="type_tm2_id" value="<?Php echo $type_tm2_id ?>">
+<Input Type="hidden" name="clas_tm2_id" value="<?Php echo $clas_tm2_id ?>">
+
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 <!--  ======================================================================================= -->
 <!--<span id="alert_action"></span> -->
@@ -348,7 +351,7 @@ $CODSAP = $PREFIX1.'-'.$code;
 										<div class="form-group">
 											<label><font color="#505050" size="3px">Tipo de Inventario</font></label>
 											<div class="input-group-prepend">
-												<select name="type_tm2_id" class="form-control" onChange="javascrip:form.submit()" disabled>
+												<select name="type_tm2_id" id="type_tm2_id" class="form-control" onChange="javascrip:form.submit()" disabled>
 													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>													
 													<?php
 													//---------------------------------------------------------------
@@ -372,7 +375,7 @@ $CODSAP = $PREFIX1.'-'.$code;
 										<div class="form-group">
 											<label><font color="#505050" size="3px">Clasificacion Tipo Inventario</font></label>
 											<div class="input-group-prepend">
-												<select name="clas_tm2_id" class="form-control" onChange="javascrip:form.submit()" disabled>
+												<select name="clas_tm2_id" id="clas_tm2_id" class="form-control" onChange="javascrip:form.submit()" disabled>
 													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>													
 													<?php
 													//---------------------------------------------------------------

@@ -268,7 +268,9 @@ else $CT1 = '0';
 							echo "<th>Línea</th>";														
 							echo "<th>Cantidad</th>";
 							echo "<th>C/U</th>";
-							echo "<th>Proveedor</th>";
+							if ($MID == 'ENTRADAS') {
+								echo "<th>Proveedor</th>";
+							} 
 							echo "<th>Sub Total</th>";
 							echo "</tr>";
 							echo "</thead>";
@@ -286,7 +288,9 @@ else $CT1 = '0';
 								echo "<td align=Left><font size=2>" . $Fila['namel'];
 								echo "<td align=Left><font size=2>" . $Fila['movd_cant'];
 								echo "<td align=Center><font size=2>" . $Fila['movd_costou_me'];
-								echo "<td align=Center><span class='text-wrap'><font size=2>" . $Fila['prove'];
+								if ($MID == 'ENTRADAS') {
+									echo "<td align=Center><span class='text-wrap'><font size=2>" . $Fila['prove'];
+								}
 								echo "<Td align='center'><font size='2px'>" . number_format($stotale, 2, ',', '.');
 								echo "</tr>";
 								//---------------

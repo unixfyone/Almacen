@@ -250,9 +250,9 @@ else $prod = '';
 							
 							//---------------------------------------------------------------
 							$SQL = "SELECT * FROM wh_materials 
-							INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
-							INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
-							Where wh_materials.code LIKE '%$prod%' and wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_saldosm.aa_s = '$AA'
+							LEFT JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
+							LEFT JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
+							Where wh_materials.code LIKE '%$prod%' and wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_saldosm.aa_s = '$AA' and wh_saldosm.zone_id = '$ZON'
 							Order by wh_materials.code ASC";
 							//---------------------------------------------------------------
 							echo "<b><font color='#0066FF' FACE='times new roman' size='4px'>Lista de Materiales</font></b>";

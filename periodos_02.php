@@ -131,7 +131,7 @@ else $ZON = '';
 		";
 		mysqli_query($link,$query4);
 		}
-		echo "<pre>"; print_r($mValorfp2); exit();
+		//echo "<pre>"; print_r($mValorfp2); exit();
 		
 		mysqli_free_result ($Registro2);
 		//=======================================================
@@ -145,7 +145,7 @@ else $ZON = '';
 			window.history.go(-2)
 			</script>";
 		}
-							echo "<pre>"; print_r($ZON); exit();
+							//echo "<pre>"; print_r($ZON); exit();
 	//========		
 	}
 //===============================================================

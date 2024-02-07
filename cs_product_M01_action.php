@@ -54,7 +54,7 @@ if(isset($_POST['btn_action']))
 				<td><font size="2px">'.$row["movh_doc"].'</font></td>
 				<td><font size="2px">'.$row["tm_desc"].'</font></td>
 				<td align="left"><b><font size="2px">'.$tipod.'</font></b></td>
-				<td align="right"><font size="2px">'.number_format($row['movd_costou_me'], 2, ",", ".").'</font></td>
+				<td align="right"><font size="2px">'.number_format($row['movd_costou_me'], 3, ",", ".").'</font></td>
 				<td align="right"><b><font size="2px">'.$tipom.'</font></b></td>
 			</tr>
 

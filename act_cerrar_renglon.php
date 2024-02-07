@@ -18,6 +18,7 @@ include('unico.php');
 
 <?php
 
+//$ZON = $_POST["ZON"];
 
 //---------------------------------------------------------------
 
@@ -30,17 +31,18 @@ include('unico.php');
 //if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 //else $CT1 = '0';
 //===============================================================
-	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' ";
-	$Registrop = mysqli_query($link,$SQLp);
+//	$SQLp = "SELECT * FROM wh_periodos 
+//	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
+//	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
-	while ($Filap=mysqli_fetch_array($Registrop))
-	{	
-		$AA = $Filap["per_aa"];
-		$MM = $Filap["per_mm"];
-	}
-	mysqli_free_result ($Registrop);
+//	while ($Filap=mysqli_fetch_array($Registrop))
+//	{	
+//		$AA = $Filap["per_aa"];
+//		$MM = $Filap["per_mm"];
+//	}
+//	mysqli_free_result ($Registrop);
 	//===============================================================
-
+//echo "<pre>"; print_r($ZON); exit();
 //===============================================================
 //---------------------------------------------------------------
 //---------------------------------------------------------------
@@ -75,6 +77,8 @@ if (isset($_POST['autorizados']))
 		$tm_tipo = $row['movh_tmov'];			// Tipo Movimiento (E/S)
 		$cia = $row['movd_cia'];				// Id. Compañia
 		$zone = $row['movd_zone'];				// Id. Zona
+		$AA = $row['movd_ejer'];				// Ejercicio
+		$MM = $row['movd_per'];					// Periodo
 		$prodid = $row['product_id'];			// Id. de Producto
 		$prodcod = $row['product_cod'];			// Cod. de Producto
 		$mdcant = $row['movd_cant'];			// Cantidad del Movimiento
