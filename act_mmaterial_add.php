@@ -44,6 +44,18 @@ $type_material = $_POST["wh_type_material"];
 $wh_tinv_id = $_POST["wh_tinv_id"];
 $wh_clastm2_id = $_POST["wh_clastm2_id"];
 //-------------------------- 
+$query = "select *, COUNT(code) AS ctacode from wh_master_materials
+where code = '$code'
+";
+		$Registro = mysqli_query($link,$query);
+		while($row = mysqli_fetch_array($Registro))
+		{
+			$CTA1 = $row['ctacode'];
+		}
+		mysqli_free_result ($Registro);
+		//========
+		if ($CTA1 == '0')			// Existe el Material
+		{
 //-------------------------- 
 $SQL = "INSERT INTO wh_master_materials (code, description, description_amp, part_number, wh_measurement_unit_id, wh_line_id, wh_category_id, wh_subcategory_id, wh_brand_id, type_material, type_tm2_id, clas_tm2_id) VALUES ('$code', '$description', '$description_a', '$part_number', '$wh_measurement_unit_id', '$wh_line_id', '$wh_category_id', '$wh_subcategory_id', '$wh_brand_id', '$type_material', '$wh_tinv_id', '$wh_clastm2_id')";
 //--------------------------
@@ -89,6 +101,30 @@ mysqli_query ($link, $query);
 </div>
  <?Php
 //==========
+} else {
+?>
+<div class="container">
+<!-- Modal -->
+    <div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Materiales</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger">
+					<h5><strong>Info! </strong> Favor Verificar, el Material Existe en Maestro de Materiales..
+					</h5>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class='btn btn-outline-<?php echo $classButtonFooter; ?>' type='Button' name='Cancel' onclick='goBack()' data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cerrar</button>
+			</div>
+		</div>
+    </div>
+</div>
+ <?Php	
+}
 }
 //===============================================================
 mysqli_close($link);

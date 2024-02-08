@@ -66,14 +66,14 @@ mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 
- if ($cont_cod < 10000 ) {
- $cont_cod1 = str_pad($cont_cod, 5, "0", STR_PAD_LEFT);
- } else { 
- $cont_cod1 = $cont_cod;
- }
+ //if ($cont_cod < 10000 ) {
+ //$cont_cod1 = str_pad($cont_cod, 5, "0", STR_PAD_LEFT);
+ //} else { 
+ //$cont_cod1 = $cont_cod;
+ //}
 
 ?>
-<Input Type="hidden" name="code" value="<?Php echo $cont_cod1 ?>">
+<!--<Input Type="hidden" name="code" value="<?Php //echo $cont_cod1 ?>">-->
 <Input Type="hidden" name="LIN" value="<?Php echo $LIN ?>">
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 <!--  ======================================================================================= -->
@@ -118,7 +118,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font color="#505050" size="3px">Código Material</font></label>
 											<div class="input-group-prepend">
-												<input type="text" maxlength="45" name="code" id="code" class="form-control" value = "<?= $cont_cod1; ?>" readonly />
+												<input type="text" maxlength="45" name="code" id="code" class="form-control" autofocus required />
 											</div>
 										</div> 
 									</div>
