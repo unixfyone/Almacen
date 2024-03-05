@@ -8,6 +8,7 @@ header('Content-type: application/vnd.ms-excel');
 header('Content-Disposition: attachment; filename="' . $nombreDelDocumento . '" ');
 header("Pragma: no-cache");
 header("Expires: 0");
+header("Content-Type: text/html; charset=utf-8");
 
 //header('Cache-Control: max-age=0');
 //------------------------------------
@@ -58,22 +59,22 @@ mysqli_free_result ($RegistroA);
 $SQL = "SELECT movd.*, mat.*, cat.category, um.name AS umname,
 sal.sal_id, sal.saldos_e, sal.saldos_s, sal.saldos_fp, li.acronym, su.prove
 FROM wh_movinvd movd
-INNER JOIN wh_materials mat ON mat.id = movd.product_id
-INNER JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
-INNER JOIN wh_lines li ON li.id = mat.wh_line_id_m
+LEFT JOIN wh_materials mat ON mat.id = movd.product_id
+LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
+LEFT JOIN wh_lines li ON li.id = mat.wh_line_id_m
 INNER JOIN wh_movinvh movh ON movh.movh_id = movd.movh_id
 LEFT JOIN wh_suppliers su ON su.id = movh.movh_prove_id
-INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
-INNER JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
+LEFT JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
+LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
 WHERE movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' and movd.movd_per = '$MM' and movd.movd_tmov = '$MID'
 ORDER BY movd.product_id ASC";
 //---------------------------------------------------------------
 //----------
-echo "<font color='#660000' FACE='times new roman' size='5'><b>Movimientos de Materiales - $MID</b></font>";
+echo "<font color='#660000' size='5'><b>Movimientos de Materiales - $MID</b></font>";
 echo "<br>";
-echo "<font color='blue' FACE='times new roman' size='4'><b>$DCIA</b></font>";
+echo "<font color='blue' size='4'><b>$DCIA</b></font>";
 echo "<br>";
-echo "<font color='#990000' FACE='times new roman' size='4px'><b>$ZOND  Periodo: $AA - $MM</b></font>";
+echo "<font color='#990000' size='4px'><b>$ZOND  Periodo: $AA - $MM</b></font>";
 echo "<br>";
 
 echo "<Table cellspacing='0' cellpadding='0' bgcolor=#6699FF border color= 000000>";

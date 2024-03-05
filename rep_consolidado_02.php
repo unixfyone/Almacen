@@ -50,12 +50,6 @@ echo '<FORM ACTION="" method="GET">';
 if(isset($_GET["MOP"]))$MOP = $_GET["MOP"];
 else $MOP = '';
 //-------------
-if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
-else $CIA = '';
-//-------------
-if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
-else $ZON = '';
-//-------------
 if(isset($_GET["AA"]))$AA = $_GET["AA"];
 else $AA = '0';
 //-------------
@@ -98,8 +92,6 @@ else $CT2 = '0';
 //---------------------------------------------------------------
 ?>
 <Input Type="hidden" name="CT2" value="<?Php echo $CT2=$CT2+'1'; ?>">
-<Input Type="hidden" name="CIA" value="<?Php echo $CIA ?>">
-<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <Input Type="hidden" name="LIN" value="<?Php echo $LIN ?>">
 <Input Type="hidden" name="PER" value="<?Php echo $PER ?>">
 <Input Type="hidden" name="MOP" value="<?Php echo $MOP ?>">
@@ -124,67 +116,11 @@ else $CT2 = '0';
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Inventario Consolidado</font></b>
+							<b><font color="#FFFFFF" size="4px">Inventario Consolidado General</font></b>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
 							<div class="panel-body">
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="input-group">
-											<span class="input-group-text"><b>Compañia:</b></span>
-											<select class="form-control" name="CIA" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
-												<?php
-												//---------------------------------------------------------------
-												$SQL="Select uz.*, co.id, co.company FROM wh_user_zones uz
-												INNER JOIN companies co ON co.id = uz.uzcompany_id
-												WHERE uz.user_id = '$userid' and uz.userz_statu = 'Activo' 
-												GROUP BY uz.uzcompany_id
-												";
-												//---------------------------------------------------------------
-												$Registro=mysqli_query($link,$SQL);
-												//-------
-												while ($Fila=mysqli_fetch_array($Registro)){
-												//----
-												echo '<option ';
-												if($CIA == $Fila["id"])echo 'selected ';
-												echo 'value=' . $Fila["id"] .'>'. $Fila["company"] . "\n";
-												}
-												mysqli_free_result ($Registro);
-												//---------------------------------------------------------------
-												?>									
-											</select>
-										</div>
-									</div>				
-									<div class="col-lg-6">
-										<div class="input-group">
-											<span class="input-group-text"><b>Zona Ubicación:</b></span>
-											<select class="form-control" name="ZON" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Selecconar la Ubicación</option>
-												<?php
-												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_user_zones 
-												INNER JOIN wh_zones ON wh_zones.zone_id = wh_user_zones.zone_id
-												WHERE wh_user_zones.user_id = '$userid' and wh_user_zones.uzcompany_id = '$CIA' and wh_user_zones.userz_statu = 'Activo' and wh_zones.zone_statu = 'Activo' 
-												ORDER BY wh_zones.zone_desc";								
-												
-												$Registro=mysqli_query($link,$SQL);
-												//-------
-												while ($Fila=mysqli_fetch_array($Registro)){
-												$UBIC = $Fila["zone_desc"] ."&nbsp;&nbsp; / &nbsp;&nbsp;". $Fila["zone_ubic"];
-												//----
-												echo '<option ';
-												if($ZON == $Fila["zone_id"])echo 'selected ';
-												echo 'value=' . $Fila["zone_id"] .'>'. $UBIC . "\n";
-												}
-												mysqli_free_result ($Registro);
-												//---------------------------------------------------------------
-												?>									
-											</select>
-										</div>
-									</div>			  
-								</div>
 								<div class="row">
 									<div class="col-lg-3">
 										<div class="input-group">
@@ -194,7 +130,7 @@ else $CT2 = '0';
 												<?php
 												//---------------------------------------------------------------
 												$SQL="Select * From wh_ejercicios 
-												where zone_id = '$ZON' ";
+												group by ej_aa";
 												$Registro=mysqli_query($link, $SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
@@ -217,7 +153,7 @@ else $CT2 = '0';
 												<?php
 												//---------------------------------------------------------------
 												$SQL="Select * From wh_periodos 
-												WHERE zone_id = '$ZON' and per_aa = '$AA' ";
+												WHERE per_aa = '$AA' group by per_mm ";
 												$Registro=mysqli_query($link, $SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
@@ -236,77 +172,31 @@ else $CT2 = '0';
 							</div>
 							<br>
 							<?php
-							if ($CIA != '' and $ZON != '' and $AA != '' and $MM != '')
+							if ($AA != '' and $MM != '')
 							{ 
-							$totale1XG = 0;
 							?>
 							<hr>						
 							<div class="panel-body">
-								<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "rep_consolidado_01_Excel.php?CIA=$CIA&ZON=$ZON&AA=$AA&PER=$MM"; ?> "> Descargar en Excel</a>
+								<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "rep_consolidado_02_Excel.php?AA=$AA&PER=$MM"; ?> "> Descargar en Excel</a>
 								<br><br>
 								<?php
 								$SQL = "SELECT *, wh_measurement_units.name AS nameum, wh_lines.namel, wh_materials.id AS matid,  wh_categories.category, wh_type_material2.name AS nametm2, wh_clasificacion_tm2.name AS namecl2
 								FROM wh_materials 
+								INNER join companies on companies.id = wh_materials.company_id
 								left join wh_measurement_units on wh_measurement_units.id = wh_materials.wh_measurement_unit_id_m
 								left join wh_lines on wh_lines.id = wh_materials.wh_line_id_m
 								left join wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
 								left join wh_type_material2 on wh_type_material2.id = wh_materials.type_tm2_id
 								left join wh_clasificacion_tm2 on wh_clasificacion_tm2.id = wh_materials.clas_tm2_id
-								WHERE wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIA'
-								ORDER BY wh_materials.code ASC
+								ORDER BY wh_materials.zone_id DESC, wh_materials.code ASC
 								";
 								//----------------------------
-								$RegistroX2 = mysqli_query($link,$SQL);
-								while($FilaX2 = mysqli_fetch_array($RegistroX2))
-								{
-								$mValore1X = '';
-								$mValors1X= '';
-								$mValorfp1X = '';
-								$prodid2X = $FilaX2["matid"];
-								
-								$query = "SELECT * FROM wh_saldosm 
-								WHERE product_id = '$prodid2X' and aa_s = '$AA' and zone_id = '$ZON' ";	
-										
-									$Registro1X = mysqli_query($link,$query);			
-									while($row1X = mysqli_fetch_array($Registro1X))
-									{
-										$existencia1X = 0;
-									//=======================================================
-										$MM_ANT = $MM - 1; 		// Mes periodo actual en arreglo (12 Pos)
-										$MM_PANT = $MM - 1;		// Mes para Saldo del Periodo anterior (13 Pos)
-										
-										$mValore=explode("|", $row1X["saldos_e"]);
-										$exe1x = $mValore[$MM_ANT];
-
-										$mValors=explode("|", $row1X["saldos_s"]);
-										$exs1x = $mValors[$MM_ANT];
-
-										$mValorfp=explode("|", $row1X["saldos_fp"]);
-										$expa1x = $mValorfp[$MM_PANT];
-
-										$existencia1X = ((int)$expa1x + (int)$exe1x - (int)$exs1x );
-									
-										$totale1X = $existencia1X * $FilaX2["cost_me"];
-										$totale1XG = $totale1XG + ($existencia1X * $FilaX2["cost_me"]);
-									}	
-
-								} mysqli_free_result ($RegistroX2);
-								//=======================================================
-									?>
-									<div class="col-lg-12" align = "right">
-										<div class="form-group">
-											<label><font color="blue" size="4px">Total General..:  </font></label>
-											&nbsp;&nbsp;<span><b><font size="4px">
-											<?php echo number_format($totale1XG, 2, ". ", ",");?>
-											</font></b></span>
-										</div>
-									</div>								
-								
-								
+								?>
 								<div class="table">
 								<table id="materials_data" class="table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer collapsed" role="grid" border='1'>
 								  <thead>
 								  <tr>
+									<th>Empresa</th>
 									<th>Código</th>
 									<th>Descripción</th>
 									<th>Uni-Med</th>
@@ -330,6 +220,7 @@ else $CT2 = '0';
 										$total = '0';
 										//$existencia = 0 * 1;
 										$prodid2 = $Fila2["matid"];
+										$ZON = $Fila2["zone_id"];
 										//----------------------------
 										$mValore = '';
 										$mValors = '';
@@ -365,11 +256,11 @@ else $CT2 = '0';
 										}
 										$existencia = ((int)$expa + (int)$exe - (int)$exs );
 										$totale = $existencia * $Fila2["cost_me"];
-										//$totall = $existencia * $Fila2["cost_ml"];
 										//=======================================================	
 										if ($existencia != 0) {
 										?>								
 										<Tr height= '16px'>
+										<Td><font size="2px"><?php echo $Fila2['company']; ?></font></td>
 										<Td><font size="2px"><?php echo $Fila2['code_sap']; ?></font></td>
 										<Td><span class="text-wrap"><font size="2px"><?php echo $Fila2['description_m']; ?></font></span></td>
 										<Td><font size="2px"><?php echo $Fila2['nameum'];?></font></td>

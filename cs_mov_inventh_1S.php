@@ -261,24 +261,23 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font color="#505050" FACE="times new roman" size="3px"> Tipo de Documento</font></label>
 											<div class="input-group-prepend">
-												<select class="form-control" name="TMID" >
-													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>							
-													<?php
-													//---------------------------------------------------------------
-													$query="select * From wh_tipmov 
-													where tm_statu = 'Activo' and tm_tipo = '$MID'
-													ORDER BY tm_desc ASC";
-													$Registro=mysqli_query($link,$query);
-													//-------
-													while ($row=mysqli_fetch_array($Registro)){
-													//-------
-													echo '<option ';
-													if($TMID == $row["tm_id"])echo 'selected ';
-													echo 'value=' . $row["tm_id"] .'>'. $row["tm_desc"] . "\n";
-													}
-													mysqli_free_result ($Registro);
-													//---------------------------------------------------------------
-													?>									
+												<select class="form-control" name="TMID" disabled />
+												<?php
+												//---------------------------------------------------------------
+												$query="select * From wh_tipmov 
+												where tm_statu = 'Activo' and tm_tipo = '$MID'
+												ORDER BY tm_desc ASC";
+												$Registro=mysqli_query($link,$query);
+												//-------
+												while ($row=mysqli_fetch_array($Registro)){
+												//-------
+												echo '<option ';
+												if($TMID == $row["tm_id"])echo 'selected ';
+												echo 'value=' . $row["tm_id"] .'>'. $row["tm_desc"] . "\n";
+												}
+												mysqli_free_result ($Registro);
+												//---------------------------------------------------------------
+												?>									
 												</select>													
 											</div>
 										</div> 									
@@ -288,7 +287,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font size="3px"><i class="fa fa-clock-o "></i> Orden de Salida.:</font></label>						
 											<div class="input-group-prepend">
-												<input type="text" name="movh_oc" id="movh_oc" maxlength="45" class="form-control" value="<?Php echo $ORCO ?>" />
+												<input type="text" name="movh_oc" id="movh_oc" maxlength="45" class="form-control" value="<?Php echo $ORCO ?>" readonly />
 											</div>
 										</div>
 									</div>
@@ -297,8 +296,7 @@ mysqli_free_result ($RegistroA);
 									<div class="col-lg-4">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px"> Tipo de Entrega</font></label>
-											<select name="movh_tentrega" id="movh_tentrega" class="form-control" required />
-											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+											<select name="movh_tentrega" id="movh_tentrega" class="form-control" disabled />
 											<?php
 											  echo '<option ';
 												if($movh_tentrega == "NO-APLICA") echo 'selected ';
@@ -320,7 +318,7 @@ mysqli_free_result ($RegistroA);
 									<div class="col-sm-2">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#990000" size="3px"> Receptor externo:</font></label>
-											<input type="checkbox" name="check" id="check" onclick="javascript:showContent()" checked />
+											<input type="checkbox" name="check" id="check" onclick="javascript:showContent()" checked disabled />
 										</div>
 									</div>
 									<?php 
@@ -331,7 +329,7 @@ mysqli_free_result ($RegistroA);
 									<div id="content" style="display: block;" class="col-sm-6">
 										<div class="input-group">
 											<label><font FACE="times new roman" size="3px"> Material Recibido por.:</font></label>
-											<input type="text" maxlength="60" name="movh_receptor" id="movh_receptor" class="form-control" value="<?Php echo $receptor_e ?>" />
+											<input type="text" maxlength="60" name="movh_receptor" id="movh_receptor" class="form-control" value="<?Php echo $receptor_e ?>" readonly />
 										</div>
 									</div>		
 								
@@ -339,13 +337,13 @@ mysqli_free_result ($RegistroA);
 									<div class="col-sm-2">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#990000" size="3px"> Receptor externo:</font></label>
-											<input type="checkbox" name="check" id="check" onclick="javascript:showContent()" />
+											<input type="checkbox" name="check" id="check" onclick="javascript:showContent()" readonly />
 										</div>
 									</div>	
 									<div id="content" style="display: none;" class="col-sm-6">
 										<div class="input-group">
 											<label><font FACE="times new roman" size="3px"> Material Recibido por.:</font></label>
-											<input type="text" maxlength="60" name="movh_receptor" id="movh_receptor" class="form-control" value="<?Php echo $receptor_e ?>" />
+											<input type="text" maxlength="60" name="movh_receptor" id="movh_receptor" class="form-control" value="<?Php echo $receptor_e ?>" readonly />
 										</div>
 									</div>
 									<?php 
@@ -363,24 +361,23 @@ mysqli_free_result ($RegistroA);
 											<div class="input-group">
 												<label class="input-group-text"><font color="#606060" size="3px"> Compañia</font></label>
 												<div class="input-group-prepend">
-													<select class="form-control" name="ciarec" id="ciarec" onChange="javascrip:form.submit()" >
-														<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
-														<?php
-														//------------------------------------
-														$SQL="Select * FROM companies WHERE companies.statu = 'Activo'
-														ORDER BY company ASC ";
-														
-														$Registro=mysqli_query($link,$SQL);
-														//-------
-														while ($Fila=mysqli_fetch_array($Registro)){
-														//----
-														echo '<option ';
-														if($ciarec == $Fila["id"])echo 'selected ';
-														echo 'value=' . $Fila["id"] .'>'. $Fila["company"] . "\n";
-														}
-														mysqli_free_result ($Registro);
-														//--------------------------------------
-														?>									
+													<select class="form-control" name="ciarec" id="ciarec" onChange="javascrip:form.submit()" disabled >
+													<?php
+													//------------------------------------
+													$SQL="Select * FROM companies WHERE companies.statu = 'Activo'
+													ORDER BY company ASC ";
+													
+													$Registro=mysqli_query($link,$SQL);
+													//-------
+													while ($Fila=mysqli_fetch_array($Registro)){
+													//----
+													echo '<option ';
+													if($ciarec == $Fila["id"])echo 'selected ';
+													echo 'value=' . $Fila["id"] .'>'. $Fila["company"] . "\n";
+													}
+													mysqli_free_result ($Registro);
+													//--------------------------------------
+													?>									
 													</select>
 												</div>
 											</div>
@@ -389,8 +386,7 @@ mysqli_free_result ($RegistroA);
 											<div class="form-group">
 												<label class="input-group-text"><font color="#606060" size="3px">Departamento Receptor.:</font></label>
 												<div class="input-group-prepend">
-													<select name="dptrec" class="form-control" onChange="javascrip:form.submit()" >
-													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+													<select name="dptrec" class="form-control" onChange="javascrip:form.submit()" disabled />
 													<?PHP
 													//---------------------------------------------------------------
 													$query = "SELECT * FROM departments 
@@ -416,8 +412,7 @@ mysqli_free_result ($RegistroA);
 											<div class="form-group">
 												<label class="input-group-text"><font color="#505050" size="3px"> Usuario Receptor.:</font></label>
 												<div class="input-group-prepend">
-													<select name="usrrec" class="form-control" >
-													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+													<select name="usrrec" class="form-control" disabled />
 													<?PHP
 													//---------------------------------------------------------------
 													$query = "SELECT  * FROM positions
@@ -452,8 +447,7 @@ mysqli_free_result ($RegistroA);
 											<div class="form-group">
 												<label class="input-group-text"><font color="#606060" size="3px"> Compañia</font></label>
 												<div class="input-group-prepend">
-													<select class="form-control" name="ciarec" id="ciarec" onChange="javascrip:form.submit()">
-														<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
+													<select class="form-control" name="ciarec" id="ciarec" onChange="javascrip:form.submit()" disabled />
 														<?php
 														//------------------------------------
 														$SQL="Select * FROM companies WHERE companies.statu = 'Activo'
@@ -478,8 +472,7 @@ mysqli_free_result ($RegistroA);
 											<div class="form-group">
 												<label class="input-group-text"><font color="#606060" size="3px">Departamento Receptor.:</font></label>
 												<div class="input-group-prepend">
-													<select name="dptrec" class="form-control" onChange="javascrip:form.submit()">
-													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+													<select name="dptrec" class="form-control" onChange="javascrip:form.submit()" disabled>
 													<?PHP
 													//---------------------------------------------------------------
 													$query = "SELECT * FROM departments 
@@ -505,8 +498,7 @@ mysqli_free_result ($RegistroA);
 											<div class="form-group">
 												<label class="input-group-text"><font color="#505050" size="3px"> Usuario Receptor.:</font></label>
 												<div class="input-group-prepend">
-													<select name="usrrec" class="form-control">
-													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+													<select name="usrrec" class="form-control" disabled>
 													<?PHP
 													//---------------------------------------------------------------
 													$query = "SELECT  * FROM positions
@@ -540,8 +532,7 @@ mysqli_free_result ($RegistroA);
 									<div class="col-lg-6">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px">Departamento Despachador:</font></label>
-											<select name="dptdes" class="form-control" onChange="javascrip:form.submit()" required>
-											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+											<select name="dptdes" class="form-control" onChange="javascrip:form.submit()" disabled>
 											<?PHP
 											//---------------------------------------------------------------
 											$query = "SELECT * FROM departments 
@@ -565,8 +556,7 @@ mysqli_free_result ($RegistroA);
 									<div class="col-lg-6">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px"> Usuario Despachador.:</font></label>
-											<select name="usrdes" class="form-control" required>
-											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+											<select name="usrdes" class="form-control" disabled>
 											<?PHP
 											//---------------------------------------------------------------
 											$query = "SELECT  * FROM positions
@@ -596,8 +586,7 @@ mysqli_free_result ($RegistroA);
 									<div class="col-lg-6">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px">Departamento Aprobador:</font></label>
-											<select name="dptapr" class="form-control" onChange="javascrip:form.submit()" required>
-											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+											<select name="dptapr" class="form-control" onChange="javascrip:form.submit()" disabled>
 											<?PHP
 											//---------------------------------------------------------------
 											$query = "SELECT * FROM departments 
@@ -621,8 +610,7 @@ mysqli_free_result ($RegistroA);
 									<div class="col-lg-6">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px"> Usuario Aprobador.:</font></label>
-											<select name="usrapr" class="form-control" required>
-											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+											<select name="usrapr" class="form-control" disabled>
 											<?PHP
 											//---------------------------------------------------------------
 											$query = "SELECT  * FROM positions
@@ -652,8 +640,7 @@ mysqli_free_result ($RegistroA);
 							<Input Type="hidden" name="IDX" value="<?Php echo $IDX ?>">
 					
 							<div class="modal-footer" style="background-color:#FFFFFC">
-								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" formaction="act_movinventh.php" formmethod="post" type="submit" id="BotonUpd" name="BotonUpd"><span class="fa fa-save"></span> Grabar Cambios</button>
-								
+							
 								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 							</div>			
 						</div>

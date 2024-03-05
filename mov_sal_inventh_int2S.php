@@ -43,7 +43,7 @@ include('unico_1.php');
 </HEAD>
 <BODY bgcolor=#FFFFFF>
 <?php
-echo '<FORM ACTION="act_movinventh.php" method="Post">';
+echo '<FORM ACTION="act_sal_movinventh.php" method="Post">';
 //---------------------------------------------------------------
 if(isset($_GET["CIAX"]))$CIAX = $_GET["CIAX"];
 else $CIAX = '';
@@ -123,7 +123,7 @@ mysqli_free_result ($RegistroA);
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Agregar Documento Movimientos Almacen</font></b>
+							<b><font color="#FFFFFF" size="4px">Agregar Documento Salida Almacen</font></b>
 						</div>
 						<!-- /.card-header -->
 
@@ -159,7 +159,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label><font size="3px"> Nro.Documento.:</font></label>
 											<div class="input-group-prepend">
-												<input type="text" maxlength="15" name="movh_doc" id="movh_doc" class="form-control" placeholder="Nra. del Documento" value="<?Php echo $cont_doc ?>" readonly />
+												<input type="text" maxlength="15" name="movh_doc" id="movh_doc" class="form-control" placeholder="Nra. del Documento" value="<?Php echo $cont_doc ?>" readonly>
 											</div>
 										</div> 
 									</div>
@@ -214,98 +214,9 @@ mysqli_free_result ($RegistroA);
 										</div>
 									</div>
 							
-									<div class="col-sm-2">
-										<div class="input-group">
-											<label class="input-group-text"><font color="#990000" size="3px"> Receptor externo:</font></label>
-											<input type="checkbox" id="check" onchange="javascript:showContent()" />
-										</div>
-									</div>
-							
-									<div id="content" style="display: none;" class="col-sm-6">
-										<div class="input-group">
-											<label><font FACE="times new roman" size="3px"> Material Recibido por.:</font></label>
-											<input type="text" maxlength="60" name="movh_receptor" id="movh_receptor" class="form-control" placeholder="Receptor del Material" />
-										</div>
-									</div>
 								</div>
 							</div>
 
-							<br>
-							<div id="content2" style="display: block;" class="col-sm-12">
-								<div class="row">
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label class="input-group-text"><font color="#505050" size="3px">Compañia del Receptor.:</font></label>
-											<div class="input-group-prepend">
-												<select name="company_id" id="company_id" class="form-control">
-												<option value="">Seleccionar Compañia</option>
-												<?php echo fill_companies_list($connect); ?>
-												</select>
-											</div>
-										</div>
-									</div>								
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label class="input-group-text"><font color="#505050" size="3px">Departamento del Receptor.:</font></label>
-											<div class="input-group-prepend">
-												<select name="department_id2" id="department_id2" class="form-control">
-												<option value="">Seleccionar Departamento</option>
-												</select>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-4">
-										<div class="form-group">
-											<label class="input-group-text"><font color="#505050" size="3px"> Receptor...:</font></label>
-											<div class="input-group-prepend">
-												<select name="user_receptor" id="user_receptor" class="form-control" >
-													<option value="">Seleccionar Usuario</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-lg-6">
-									<div class="input-group">
-										<label class="input-group-text"><font color="#505050" size="3px">Departamento Despachador:</font></label>
-										<select name="department_id" id="department_id" class="form-control" required>
-											<option value="">Seleccionar Departamento</option>
-											<?php echo fill_departments_list($connect, $CIAX); ?>
-										</select>
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="input-group">
-										<label class="input-group-text"><font color="#505050" size="3px">Usuario Despachador:</font></label>
-										<select name="user_despachador" id="user_despachador" class="form-control"  required>
-											<option value="">Seleccionar Usuario</option>
-										</select>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-lg-6">
-									<div class="input-group">
-										<label class="input-group-text"><font color="#505050" size="3px">Departamento Aprobador:</font></label>
-										<select name="department_id3" id="department_id3" class="form-control" required>
-											<option value="">Seleccionar Departamento</option>
-											<?php echo fill_departments_list($connect, $CIAX); ?>
-										</select>
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="input-group">
-										<label class="input-group-text"><font color="#505050" size="3px">Usuario Aprobador:</font></label>
-										<select name="user_aprobador" id="user_aprobador" class="form-control"  required>
-											<option value="">Seleccionar Usuario</option>
-										</select>
-									</div>
-								</div>
-							</div>
 
 
 							<Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
@@ -313,7 +224,7 @@ mysqli_free_result ($RegistroA);
 							<Input Type="hidden" name="MID" value="<?Php echo $MID ?>">
 							
 							<div class="modal-footer" style="background-color:#FFFFFC">
-								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" formaction="act_movinventh.php" formmethod="post" type="submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
+								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" formaction="act_sal_movinventh.php" formmethod="post" type="submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
 								
 								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 							</div>

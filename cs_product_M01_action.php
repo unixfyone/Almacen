@@ -21,10 +21,7 @@ if(isset($_POST['btn_action']))
 		$output = '
 		<div class="">
 		<table class="table table-boredered">
-				
-			<b><font color="#0066FF" FACE="times new roman" size="3px">Año del Ejercicio..: &nbsp;&nbsp;&nbsp;</font> '.$_POST["xaa"].' &nbsp;&nbsp;&nbsp;<font color="#0066FF" FACE="times new roman" size="3px">Periodo del Ejercicio..:  &nbsp;&nbsp;&nbsp;</font>'.$_POST["xmm"].' </font></b>
-			<br>
-			<b><font color="#0066FF" FACE="times new roman" size="3px">Material..: </font> '.$_POST["desc"].' </b>
+
 			<tr>
 			<th>Fecha</th>
 			<th>Documento</th>
@@ -38,7 +35,7 @@ if(isset($_POST['btn_action']))
 		foreach($result as $row)
 		{
 			$tipom = 0;
-			if($row['movd_tmov'] == 'Entradas')
+			if($row['movd_tmov'] == 'ENTRADAS')
 			{
 				$tipom = '<font color="blue">'.number_format($row['movd_cant'], 2, ",", ".").'</font>';
 				$tipod = '<font color="blue">'.$row['movd_tmov'];

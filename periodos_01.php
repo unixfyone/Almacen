@@ -167,8 +167,8 @@ else $ZON = '';
 								//---------------------------------------------------------------
 								$SQL = "SELECT * FROM wh_periodos 
 								INNER JOIN wh_ejercicios ON wh_ejercicios.ej_aa = wh_periodos.per_aa
-								WHERE wh_ejercicios.company_id = '$CIA' and wh_ejercicios.zone_id = '$ZON' and wh_periodos.zone_id = '$ZON' and wh_periodos.per_statu = 'Abierto'
-								ORDER BY wh_periodos.per_mm DESC ";
+								WHERE wh_ejercicios.company_id = '$CIA' and wh_ejercicios.zone_id = '$ZON' and wh_periodos.zone_id = '$ZON' 
+								ORDER BY wh_periodos.per_aa DESC, wh_periodos.per_mm DESC ";
 								
 								//---------------------------------------------------------------
 								?>

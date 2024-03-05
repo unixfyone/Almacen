@@ -70,9 +70,6 @@ else $CIAX = '';
 if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
 else $ZON = '';
 //-------------
-if(isset($_GET["MID"]))$MID = $_GET["MID"];
-else $MID = '';
-//-------------
 if(isset($_GET["EDO"]))$EDO = $_GET["EDO"];
 else $EDO = '';
 //---------------------------------------------------------------
@@ -115,8 +112,9 @@ $DCIA = $FilaA["company"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
+
+$MID = 'SALIDAS';
 ?>
-<Input Type="hidden" name="MID" value="<?Php echo $MID; ?>">
 <Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <Input Type="hidden" name="EDO" value="<?Php echo $EDO ?>">
@@ -130,18 +128,14 @@ mysqli_free_result ($RegistroA);
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
-					<h2 class="m-0"><font color="#<?=$ccolor;?>" >Movimiento Almacen
-					</font></h2>
+					<h3 class="m-0"><font color="#<?=$ccolor;?>" >Salidas Internas
+					</font></h3>
 				</div>
 				<div class="col-sm-6" align='right'>
 					<?php
-					if($add == '1' and $CIAX != '' and $ZON !='' and $MID !='' and $actua == '1')
+					if($add == '1' and $CIAX != '' and $ZON !='' and $actua == '1')
 					{
-						if($MID =='ENTRADAS') {
-							echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_inventh2V2.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";						
-						} else {
-							echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_inventh2V2S.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";										
-						}
+						echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_sal_inventh_int2S.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";										
 					} else {
 						?>
 						<a><button type="button" name="add_button" id="add_button" data-toggle="modal" data-target="#" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" disabled />Agregar Documento</button></a>
@@ -160,7 +154,7 @@ mysqli_free_result ($RegistroA);
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Documentos Movimientos Almacen</font></b>
+							<b><font color="#FFFFFF" size="4px">Documentos Salidas Internas</font></b>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -225,28 +219,6 @@ mysqli_free_result ($RegistroA);
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="input-group">
-											<span class="input-group-text"><b>Tipo de Movimiento.:</b></span>
-											<select class="form-control" name="MID" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Selecconar Movimientos</option>							
-												<?php
-												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_tipmov group by tm_tipo";
-												$Registro=mysqli_query($link,$SQL);
-												//-------
-												while ($Fila=mysqli_fetch_array($Registro)){
-												//----
-												echo '<option ';
-												if($MID == $Fila["tm_tipo"])echo 'selected ';
-												echo 'value=' . $Fila["tm_tipo"] .'>'. $Fila["tm_tipo"] . "\n";
-												}
-												mysqli_free_result ($Registro);
-												//---------------------------------------------------------------
-												?>									
-											</select>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="input-group">
 											<span class="input-group-text"><b>Status Movimientos:</b></span>
 											<select class="form-control" name="EDO" onChange="javascrip:form.submit()">
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
@@ -298,13 +270,13 @@ mysqli_free_result ($RegistroA);
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and wh_movinvh.movh_statu = '$EDO' and movh_salint = '0' ORDER BY wh_movinvh.movh_doc DESC ";
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and wh_movinvh.movh_statu = '$EDO' and movh_salint = '1' ORDER BY wh_movinvh.movh_doc DESC ";
 							//---------------------------------------------------------------
 							} else {
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and movh_salint = '0' ORDER BY wh_movinvh.movh_doc DESC ";
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and movh_salint = '1' ORDER BY wh_movinvh.movh_doc DESC ";
 							//---------------------------------------------------------------								
 							}
 							?>
@@ -353,39 +325,20 @@ mysqli_free_result ($RegistroA);
 	{
 		if($edit == '1' and $actua == '1')
 		{	
-			if($MID == 'ENTRADAS' )
+			if($MID == 'SALIDAS' )
 			{				
-			$accion = '<ul class="nav navbar-nav">
-			<li class="dropdown btn-group">
-			<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
-			
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="mov_inventh3V2.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
-				<li role="presentation" class="divider"></li>
-				<li><a href="entproduct_03.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-
-				<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-
-				<li><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
-				<li role="presentation" class="divider"></li>
-				<li><a href="rep_document_pdfe.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-print"></i> Imprimir PDF</a></li>
-				
-			</ul></li></ul>';
-			} else {
 				$accion = '<ul class="nav navbar-nav">
 				<li class="dropdown btn-group">
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
 				
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="mov_inventh3V2S.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
+					<li><a href="mov_sal_inventh_int3S.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
 					<li role="presentation" class="divider"></li>
-					<li><a href="entproduct_03_Sal.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-					
-					<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-					
+					<li><a href="entproduct_03_Sal_int.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
+					<li role="presentation" class="divider"></li>
+					<li><a href="movinvd_sal_int.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
+					<li role="presentation" class="divider"></li>
 					<li><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
-					<li role="presentation" class="divider"></li>
-					<li><a href="rep_document_pdfs.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-print"></i> Imprimir PDF</a></li>
 				</ul></li></ul>';
 			}
 		} else {
@@ -399,7 +352,7 @@ mysqli_free_result ($RegistroA);
 			<li role="presentation" class="divider"></li>
 			<li class="disabled"><a href="#"><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
 			<li role="presentation" class="divider"></li>
-			<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
+			<li><a href="movinvd_sal_int.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
 			<li role="presentation" class="divider"></li>
 			<li class="disabled"><a href="#"><i class="fa fa-times"></i> Cerrar Documento</a></li>
 			
@@ -416,7 +369,7 @@ mysqli_free_result ($RegistroA);
 			<li role="presentation" class="divider"></li>
 			<li class="disabled"><a href="#"><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
 			<li role="presentation" class="divider"></li>
-			<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
+			<li><a href="movinvd_sal_int.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
 			<li role="presentation" class="divider"></li>
 			<li class="disabled"><a href="#"><i class="fa fa-times"></i> Cerrar Documento</a></li>
 			

@@ -13,7 +13,7 @@ if($_SESSION['type'] != 'Master')
 include('headerx.php');
 include('unico.php');
 ?>
-
+	<meta charset="UTF-8">
 	 <link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
 <style type="text/css">
 
@@ -106,8 +106,24 @@ else $CT1 = '0';
 //-------------
 if(isset($_GET["prod"]))$prod = $_GET["prod"];
 else $prod = '';
-
 //---------------------------------------------------------------
+
+//===============================================================
+	if ($CT1 == '0') {
+	
+	$SQLp = "SELECT * FROM wh_periodos 
+	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
+	$Registrop = mysqli_query($link,$SQLp);
+	//-----------------------------
+	while ($Filap=mysqli_fetch_array($Registrop))
+	{	
+		$AA = $Filap["per_aa"];
+		$MM = $Filap["per_mm"];
+	}
+	mysqli_free_result ($Registrop);
+
+	}
+	//===============================================================
 ?>
 <Input Type="hidden" name="CT1" value="<?Php echo $CT1=$CT1+'1';?>" />
 <Input Type="hidden" name="prod" value="<?Php echo $prod ?>">
@@ -267,9 +283,9 @@ else $prod = '';
 							if ($prod == ""	) {
 							//---------------------------------------------------------------
 							$SQL = "SELECT movd.*, mat.description_m, mat.m_statu_m, cat.category, um.name AS umname,
-							sal.sal_id, sal.saldos_e, sal.saldos_s, sal.saldos_fp
+							sal.sal_id, sal.product_id AS sproduct_id, sal.aa_s, sal.saldos_e, sal.saldos_s, sal.saldos_fp
 							FROM wh_movinvd movd
-							INNER JOIN wh_materials mat ON mat.id = movd.product_id
+							LEFT JOIN wh_materials mat ON mat.id = movd.product_id
 							LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
 							INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
 							LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
@@ -280,7 +296,7 @@ else $prod = '';
 							}  else  {
 								
 							$SQL = "SELECT movd.*, mat.description_m, mat.m_statu_m, cat.category, um.name AS umname,
-							sal.sal_id, sal.saldos_e, sal.saldos_s, sal.saldos_fp
+							sal.sal_id, sal.product_id AS sproduct_id, sal.aa_s, sal.saldos_e, sal.saldos_s, sal.saldos_fp
 							FROM wh_movinvd movd
 							INNER JOIN wh_materials mat ON mat.id = movd.product_id
 							LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
@@ -302,9 +318,16 @@ else $prod = '';
 							echo "<th>Categoria</th>";							
 							echo "<th>Uni-Med</th>";
 							echo "<th>Statu</th>";
+							//echo "<th>Existencia Actual</th>";
 							echo "</tr>";
 							echo "</thead>";
-
+							//--------
+							$MM_ANT = $MM - 1; 			// Mes periodo actual en arreglo
+							$MM_PANT = $MM;				// Mes para Saldo del Periodo anterior (13 Pos)
+							$exe = 0;
+							$exs = 0;
+							$expa = 0;
+							//--------
 							$Registro2 = mysqli_query($link,$SQL);
 							while($Fila = mysqli_fetch_array($Registro2))
 							{
@@ -315,7 +338,26 @@ else $prod = '';
 									$status = '<span class=""><font color="red" FACE="times new roman" size="3px">Inactivo</font></span>';
 								}	
 								//=============================
+								$mValore = '';
+								$mValors = '';
+								$mValorfp = '';
+								
+								//if($MM == 1)
+								//{
+								//	$MM_PANT = $MM - 1;	
+								//	$mValorfp=explode("|", $Fila["saldos_fp"]);
+								//	$expa = $mValorfp[$MM_PANT];
+								//}
+								//$mValore=explode("|", $Fila["saldos_e"]);
+								//$exe = $mValore[$MM_ANT];
 
+								//$mValors=explode("|", $Fila["saldos_s"]);
+								//$exs = $mValors[$MM_ANT];
+
+								//$existencia = $expa + $exe - $exs;
+								
+								$CPROD = $Fila['product_cod'];
+								$DPROD = $Fila['description_m'];
 								//=============================
 								echo "<tr>";
 								if($Fila['m_statu_m'] != 'Activo')
@@ -324,13 +366,14 @@ else $prod = '';
 								} else {	
 									echo "<td bgcolor=eeeeee align=Center><font size=3><a <button type='button' name='view'
 									data-expa=".$expa."
-									data-desc=".$Fila['description_m']."
+									data-desc=".$Fila["description_m"]."
 									id=".$Fila['product_id']." class='view'>".$Fila['product_cod']."</button></a></td>"; 
 								}
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
 								echo "<td align=Left><font size=2>" . $Fila['category'];
 								echo "<td align=Left><font size=2>" . $Fila['umname'];
 								echo "<td align=Center><font size=2>" . $status;
+								//echo "<Td align='center'><font size='2px'>" . number_format($existencia, 2, ',', '.');
 								echo "</tr>";
 								//---------------
 							} 
@@ -354,10 +397,17 @@ else $prod = '';
                 <form method="post" id="productdetails_form">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#<?=$ccolor;?>">
-							<h4 class="modal-title"><font color="#FFFFFF" FACE="times new roman" size="5px"><i class="fa fa-plus"></i> Detalle de Movimientos</font></h4>
+							<h4 class="modal-title"><font color="#FFFFFF" size="5px"><i class="fa fa-plus"></i> Detalle de Movimientos</font></h4>
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
+							<div class="form-group">
+								<label><font color="#660000" size="4px">Material.:  </font></label>
+								&nbsp;&nbsp;<span><font color="black" size="4px"><?Php echo $CPROD ."&nbsp;&nbsp; / &nbsp;&nbsp;". $DPROD; ?></font></span>
+								<br>
+								<label><font color="#660000" size="4px">Ejercicio.:  </font></label>
+								&nbsp;&nbsp;<span><font color="black" size="4px"><?Php echo $AA ?></font></span>
+							</div>
                             <Div id="product_details"></Div>
                         </div>
                         <div class="modal-footer" style="background-color:#FFFFFC">

@@ -40,10 +40,23 @@ include('unico.php');
 //---------------------------------------------------------------
 echo '<FORM ACTION="" method="">';
 
-$ZON = $_POST["ZON"];
-//-----------------
-$CIA = $_POST["CIA"];
-//-----------------
+$fecmin = '0';
+$fecmax = '0';
+$fecminm = '0';
+$fecmina = '0';
+
+if(isset($_GET["AA"]))$AA = $_GET["AA"];
+else $AA = '';
+//-------------
+if(isset($_GET["MM"]))$MM = $_GET["MM"];
+else $MM = '';
+//-------------
+if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
+else $CIA = $_POST["CIA"];
+//-------------
+if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
+else $ZON = $_POST["ZON"];
+//-------------
 if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 else $CT1 = '0';
 
@@ -72,7 +85,7 @@ while($Fila1 = mysqli_fetch_array($Registro1))
 $AA = $Fila1['ej_aa'];
 $CTAE = $Fila1["Cuenta2"];
 }	
-mysqli_free_result ($Registro1);	
+mysqli_free_result ($Registro1);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 $SQL = "SELECT * FROM wh_zones
@@ -186,14 +199,15 @@ if ($CTA > '0')
 		
 		if ($MES == '1') {
 			$fecminm = 12;
-			$fecmina = $AA -1;
+			$fecmina = $AA - 1;
 		} else {
+			$fecmina = $AA;
 			$fecminm = ($MES - 1);
 		}
 		
 		$fecmin = $fecmina.'-'.$fecminm.'-'.$fecmind;
 		$fecmax = $AA.'-'.$MES.'-'.$fecmaxd;
-		
+	
 		//=======================================================		
 		//==============================================================		
 		$SQL = "INSERT INTO wh_periodos (per_aa, per_mm, company_id, zone_id, fec_min, fec_max) value ('$AA', '$MES', '$CIA', '$ZON', '$fecmin', '$fecmax')";

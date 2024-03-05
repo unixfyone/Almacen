@@ -8,8 +8,9 @@
             </div>
 			<div class="modal-body">
 				<div class="container-fluid">
-					<form method="POST" action="action/EditarConsumo.php?id=<?php echo $Fila2['id_cons']; ?>">
+					<form method="" action="">
 					<div class="row">
+						<Input Type="hidden" name="id" value="<?Php echo $Fila2['id_cons'] ?>">
 						<Input Type="hidden" name="cia_cons" value="<?Php echo $cia_cons ?>">
 						<Input Type="hidden" name="zone_cons" value="<?Php echo $zone_cons ?>">
     					<label>Nombre del Consumo</label>
@@ -19,7 +20,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-outline-<?php echo $classButtonFooter; ?>" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-				<button type="submit" name="editar" class="btn btn-outline-<?php echo $classButtonFooter; ?>"><span class="glyphicon glyphicon-check"></span> Actualizar</a>
+				
+				<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" formaction="action/EditarConsumo.php" formmethod="post" type="submit" id="editar" name="editar"><span class="fa fa-save"></span> Grabar Cambios</button>
 			</div>
 			</form>
 		</div>

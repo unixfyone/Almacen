@@ -70,36 +70,17 @@ else $CIAX = '';
 if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
 else $ZON = '';
 //-------------
+if(isset($_GET["AA"]))$AA = $_GET["AA"];
+else $AA = '0';
+//--
+if(isset($_GET["MM"]))$MM = $_GET["MM"];
+else $MM = '0';
+//-------------
 if(isset($_GET["MID"]))$MID = $_GET["MID"];
 else $MID = '';
 //-------------
 if(isset($_GET["EDO"]))$EDO = $_GET["EDO"];
 else $EDO = '';
-//---------------------------------------------------------------
-//---------------------------------------------------------------
-	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
-	$Registrop = mysqli_query($link,$SQLp);
-	//-----------------------------
-	while ($Filap=mysqli_fetch_array($Registrop))
-	{	
-		$AA_P = $Filap["per_aa"];
-		$MM_P = $Filap["per_mm"];
-	}
-	mysqli_free_result ($Registrop);
-//---------------------------------------------------------------
-//---------------------------------------------------------------
-$SQL = "SELECT * FROM wh_user_menus 
-INNER JOIN wh_menu_options ON wh_menu_options.menuop_id = wh_user_menus.menuop_id
-Where wh_user_menus.user_id = '$userid' and wh_user_menus.menuop_id = '$MOP' ";
-$Registro1 = mysqli_query($link,$SQL);
-while($Fila1 = mysqli_fetch_array($Registro1))
-{
-$add = $Fila1["usermn_add"];
-$edit = $Fila1["usermn_edit"];
-$del = $Fila1["usermn_del"];
-$actua = $Fila1["menuop_act"];
-} 
-mysqli_free_result ($Registro1);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 $SQL = "SELECT * FROM wh_zones
@@ -119,10 +100,9 @@ mysqli_free_result ($RegistroA);
 <Input Type="hidden" name="MID" value="<?Php echo $MID; ?>">
 <Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
-<Input Type="hidden" name="EDO" value="<?Php echo $EDO ?>">
 <Input Type="hidden" name="MOP" value="<?Php echo $MOP ?>">
-
-
+<Input Type="hidden" name="AA" value="<?Php echo $AA ?>">
+<Input Type="hidden" name="MM" value="<?Php echo $MM ?>">
 
 <!--<span id="alert_action"></span> -->
 <div class="content-wrapper">
@@ -130,24 +110,8 @@ mysqli_free_result ($RegistroA);
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
-					<h2 class="m-0"><font color="#<?=$ccolor;?>" >Movimiento Almacen
+					<h2 class="m-0"><font color="#<?=$ccolor;?>" >Movimiento Periodos Cerrados Almacen
 					</font></h2>
-				</div>
-				<div class="col-sm-6" align='right'>
-					<?php
-					if($add == '1' and $CIAX != '' and $ZON !='' and $MID !='' and $actua == '1')
-					{
-						if($MID =='ENTRADAS') {
-							echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_inventh2V2.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";						
-						} else {
-							echo "<a type='button' class='btn btn-outline-<?php echo $classButtonHeader; ?> btn-xs elevation-1' href=\"mov_inventh2V2S.php?CIAX=$CIAX&ZON=$ZON&MID=$MID \"><i class='glyphicon glyphicon-plus'></i> Agregar Documento</a>";										
-						}
-					} else {
-						?>
-						<a><button type="button" name="add_button" id="add_button" data-toggle="modal" data-target="#" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" disabled />Agregar Documento</button></a>
-						<?php	 
-					}
-					?>
 				</div>
 			</div>
 		</div><!-- /.container-fluid -->
@@ -160,7 +124,7 @@ mysqli_free_result ($RegistroA);
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Documentos Movimientos Almacen</font></b>
+							<b><font color="#FFFFFF" size="4px">Documentos Movimientos Cerrados de Almacen</font></b>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -223,6 +187,53 @@ mysqli_free_result ($RegistroA);
 								</div>
 								<br>
 								<div class="row">
+									<div class="col-lg-3">
+										<div class="input-group">
+											<span class="input-group-text"><b>Ejercicio...:</b></span>
+											<select class="form-control" name="AA" id = "xaa" onChange="javascrip:form.submit()" >
+												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+												<?php
+												//---------------------------------------------------------------
+												$SQL="Select * From wh_ejercicios 
+												WHERE zone_id = '$ZON' ";
+												$Registro=mysqli_query($link, $SQL);
+												//-------
+												while ($Fila=mysqli_fetch_array($Registro)){
+												//----
+												echo '<option ';
+												if($AA == $Fila["ej_aa"])echo 'selected ';
+												echo 'value=' . $Fila["ej_aa"] .'>'. $Fila["ej_aa"] . "\n";
+												}
+												mysqli_free_result ($Registro);
+												//---------------------------------------------------------------
+												?>									
+											</select>
+										</div>
+									</div>								
+									<div class="col-lg-3">
+										<div class="input-group">
+											<span class="input-group-text"><b>Periodo.:</b></span>
+											<select class="form-control" name="MM" id = "xmm" onChange="javascrip:form.submit()" >
+												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+												<?php
+												//---------------------------------------------------------------
+												$SQL="Select * From wh_periodos 
+												WHERE per_statu = 'Cerrado' and zone_id = '$ZON' and per_aa = '$AA' ";
+
+												$Registro=mysqli_query($link, $SQL);
+												//-------
+												while ($Fila=mysqli_fetch_array($Registro)){
+												//----
+												echo '<option ';
+												if($MM == $Fila["per_mm"])echo 'selected ';
+												echo 'value=' . $Fila["per_mm"] .'>'. $Fila["per_mm"] . "\n";
+												}
+												mysqli_free_result ($Registro);
+												//---------------------------------------------------------------
+												?>									
+											</select>
+										</div>
+									</div>								
 									<div class="col-lg-6">
 										<div class="input-group">
 											<span class="input-group-text"><b>Tipo de Movimiento.:</b></span>
@@ -245,31 +256,9 @@ mysqli_free_result ($RegistroA);
 											</select>
 										</div>
 									</div>
-									<div class="col-lg-6">
-										<div class="input-group">
-											<span class="input-group-text"><b>Status Movimientos:</b></span>
-											<select class="form-control" name="EDO" onChange="javascrip:form.submit()">
-												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
-												<?php
-												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_movinvh group by movh_statu";
-												$Registro=mysqli_query($link,$SQL);
-												//-------
-												while ($Fila=mysqli_fetch_array($Registro)){
-												//----
-												echo '<option ';
-												if($EDO == $Fila["movh_statu"])echo 'selected ';
-												echo 'value=' . $Fila["movh_statu"] .'>'. $Fila["movh_statu"] . "\n";
-												}
-												mysqli_free_result ($Registro);
-												//---------------------------------------------------------------
-												?>	
-											</select>
-										</div>
-									</div>						
+					
 								</div>
 							</div>
-							
 						</div> 	<!-- /.PRUEBAAAAA -->
 					</div>
 				</div>
@@ -278,9 +267,6 @@ mysqli_free_result ($RegistroA);
 	</section>
 							
 	<?php if ($CIAX != '' and $ZON != '' and $MID != '') { ?>
-	
-	
-
 	<section class="content">
 		<div class="container-fluid">
 			<div class="row">
@@ -298,13 +284,13 @@ mysqli_free_result ($RegistroA);
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and wh_movinvh.movh_statu = '$EDO' and movh_salint = '0' ORDER BY wh_movinvh.movh_doc DESC ";
+							WHERE wh_periodos.per_statu = 'Cerrado' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and movh_salint = '0' and wh_movinvh.movh_ejer = '$AA' and wh_movinvh.movh_per = '$MM' ORDER BY wh_movinvh.movh_doc DESC ";
 							//---------------------------------------------------------------
 							} else {
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and movh_salint = '0' ORDER BY wh_movinvh.movh_doc DESC ";
+							WHERE wh_periodos.per_statu = 'Cerrado' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and wh_movinvh.movh_salint = '0' and wh_movinvh.movh_ejer = '$AA' and wh_movinvh.movh_per = '$MM' ORDER BY wh_movinvh.movh_doc DESC ";
 							//---------------------------------------------------------------								
 							}
 							?>
@@ -349,80 +335,33 @@ mysqli_free_result ($RegistroA);
 		$status = '<span class=""><b><font color="red" size="3px">Cerrado</font></b></span>';
 	}
 //<!-- ============
-	if($Fila2['movh_statu'] == 'Abierto')
-	{
-		if($edit == '1' and $actua == '1')
-		{	
-			if($MID == 'ENTRADAS' )
-			{				
+
+	if($MID == 'ENTRADAS' )
+	{				
 			$accion = '<ul class="nav navbar-nav">
 			<li class="dropdown btn-group">
 			<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
 			
 			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="mov_inventh3V2.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
+				<li><a href="cs_mov_inventh_1E.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Ver Documento</a></li>
 				<li role="presentation" class="divider"></li>
-				<li><a href="entproduct_03.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-
-				<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-
-				<li><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
 				<li role="presentation" class="divider"></li>
-				<li><a href="rep_document_pdfe.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-print"></i> Imprimir PDF</a></li>
-				
+				<li><a href="cs_mov_inventh_2.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
+				<li role="presentation" class="divider"></li>
 			</ul></li></ul>';
-			} else {
+	} else {
 				$accion = '<ul class="nav navbar-nav">
 				<li class="dropdown btn-group">
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
 				
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="mov_inventh3V2S.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Editar Documento</a></li>
+					<li><a href="cs_mov_inventh_1S.php?IDX='.$Fila2['movh_id'].'&MOP='. $MOP.'&MID='. $MID.' "><i class="fa fa-edit"></i>  Ver Documento</a></li>
 					<li role="presentation" class="divider"></li>
-					<li><a href="entproduct_03_Sal.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-					
-					<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-					
-					<li><a href="mov_invent_hC.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-times"></i> Cerrar Documento</a></li>
 					<li role="presentation" class="divider"></li>
-					<li><a href="rep_document_pdfs.php?IDM='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-print"></i> Imprimir PDF</a></li>
+					<li><a href="cs_mov_inventh_2.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
+					<li role="presentation" class="divider"></li>
 				</ul></li></ul>';
-			}
-		} else {
-			
-		$accion = '<ul class="nav navbar-nav">
-		<li class="dropdown btn-group">
-		<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
-		
-		<ul class="dropdown-menu dropdown-menu-right">
-			<li class="disabled"><a href="#" ><i class="fa fa-edit"></i>  Editar Documento</a></li>
-			<li role="presentation" class="divider"></li>
-			<li class="disabled"><a href="#"><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-			<li role="presentation" class="divider"></li>
-			<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-			<li role="presentation" class="divider"></li>
-			<li class="disabled"><a href="#"><i class="fa fa-times"></i> Cerrar Documento</a></li>
-			
-		</ul></li></ul>';
 		}
-		
-	} else {	
-		$accion = '<ul class="nav navbar-nav">
-		<li class="dropdown btn-group">
-		<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
-		
-		<ul class="dropdown-menu dropdown-menu-right">
-			<li class="disabled"><a href="#"><i class="fa fa-edit"></i>  Editar Documento</a></li>
-			<li role="presentation" class="divider"></li>
-			<li class="disabled"><a href="#"><i class="fa fa-plus-circle"></i>  Agregar Renglones</a></li>
-			<li role="presentation" class="divider"></li>
-			<li><a href="movinvd.php?movh_id='.$Fila2['movh_id'].'&MOP='. $MOP.' "><i class="fa fa-list"></i>  Detalle de  Renglones</a></li>
-			<li role="presentation" class="divider"></li>
-			<li class="disabled"><a href="#"><i class="fa fa-times"></i> Cerrar Documento</a></li>
-			
-		</ul></li></ul>';
-	}
-//<!-- =======================	
 
 //<!-- =================================================================================== -->	
 								?>							

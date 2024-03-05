@@ -14,7 +14,7 @@ if(isset($_POST['btn_action']))
 		INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvd.tm_id 
 		INNER JOIN wh_movinvh ON wh_movinvh.movh_id = wh_movinvd.movh_id
 		INNER JOIN wh_materials ON wh_materials.code = wh_movinvd.product_cod
-		INNER JOIN wh_measurement_units ON wh_measurement_units.id = wh_materials.wh_measurement_unit_id_m
+		LEFT JOIN wh_measurement_units ON wh_measurement_units.id = wh_materials.wh_measurement_unit_id_m
 		Where wh_movinvd.movd_id = '".$_POST["movd_id"]."'
 		";
 		$statement = $connect->prepare($query);
@@ -89,6 +89,25 @@ if(isset($_POST['btn_action']))
 		</div>
 		';
 		echo $output;
+	}
+//===============================================
+	if($_POST['btn_action'] == 'delete')
+	{
+		$query = "
+		DELETE FROM wh_movinvd
+		WHERE movd_id = :movd_id
+		";
+		$statement = $connect->prepare($query);
+		$statement->execute(
+			array(
+				':movd_id'		=>	$_POST["movd_id"]
+			)
+		);
+		$result = $statement->fetchAll();
+		if(isset($result))
+		{
+			echo 'Renglon Eliminado';
+		}
 	}
 //========================================
 }

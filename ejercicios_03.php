@@ -174,7 +174,7 @@ if ($CTA > '0')
 		$saldos13 = '0|0|0|0|0|0|0|0|0|0|0|0|0';	
 	//=======================================================
 		$query = "SELECT * FROM wh_saldosm 
-		WHERE aa_s = '".$AA_ANT."' and company_id = '".$CIA."' and zone_id = '".$ZON."'
+		WHERE aa_s = '$AA_ANT' and company_id = '$CIA' and zone_id = '$ZON'
 		";	
 		$Registro2 = mysqli_query($link,$query);			
 		while($row2 = mysqli_fetch_array($Registro2))
@@ -196,7 +196,7 @@ if ($CTA > '0')
 				mysqli_query($link,$query2);
 		
 				//--------------------------------				
-				$query3 = "SELECT * FROM wh_saldosm WHERE aa_s = '".$AA."' and product_id = '".$prodid."' ";	
+				$query3 = "SELECT * FROM wh_saldosm WHERE aa_s = '$AA' and product_id = '$prodid' ";	
 				$Registro3 = mysqli_query($link,$query3);			
 				while($row3 = mysqli_fetch_array($Registro3))			
 				{

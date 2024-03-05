@@ -136,7 +136,7 @@ btn-prima {
 
 <?php
 
-echo '<FORM ACTION="act_salpro_edit.php" method="POST">';
+echo '<FORM ACTION="act_salpro_int_edit.php" method="POST">';
 
 //--------------
 //---------------------------------------------------------------
@@ -159,10 +159,14 @@ $tasa = $_GET["TC"];
 if(isset($_GET["TT"]))$trans = $_GET["TT"];
 else $trans = '';
 $idconsumo = $_GET['TCON'];
-$OBS = $_GET['OBS'];			
+$OBS = $_GET['OBS'];
+//--------------
+			
 //---------------------------------------------------------------
 if(isset($_POST["CT1"]))$CT1 = $_POST["CT1"];
 else $CT1 = '0';
+
+//echo "<pre>"; print_r($mdtipsal); exit();
 //===============================================================
 $SQL = "SELECT * FROM wh_movinvh
 INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
@@ -265,6 +269,7 @@ mysqli_free_result ($Registro);
 <Input Type="hidden" name="prod2" value="<?Php echo $prod2 ?>" />
 <Input Type="hidden" name="pid" value="<?Php echo $prodid ?>" />
 <Input Type="hidden" name="tmid" value="<?Php echo $tmid ?>" />
+
 <Input Type="hidden" name="mhtm" value="<?Php echo $mhtmov ?>" />
 
 <Input Type="hidden" name="TCON" value="<?Php echo $idconsumo ?>" />
@@ -359,15 +364,14 @@ mysqli_free_result ($Registro);
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-5">
+									<div class="col-lg-4">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px">Cantidad de Material.:</font></label>
 											<Input class="form-control" Type="Text" name="CANT" size='8' maxlength="8" value="<?Php echo $mdcant ?>" required />
 										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-5">
+
+									<div class="col-lg-4">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#606060" size="3px">Costo Unitario Moneda Ext:</font></label>
 											<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="<?Php echo $mdcostoue ?>" required />
@@ -470,9 +474,8 @@ mysqli_free_result ($Registro);
 											</select>
 										</div>
 									</div>
-								</div> 									
-	
-
+								</div>
+								
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="input-group">
@@ -481,7 +484,93 @@ mysqli_free_result ($Registro);
 										</div>
 									</div>
 								</div>	
-											
+<!-- ====================================================== -->
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label class="input-group-text"><font color="#606060" size="3px"> Compañia Receptor</font></label>
+												<div class="input-group-prepend">
+													<select class="form-control" name="ciarec" id="ciarec" onChange="javascrip:form.submit()" >
+														<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
+														<?php
+														//------------------------------------
+														$SQL="Select * FROM companies WHERE companies.statu = 'Activo'
+														ORDER BY company ASC ";
+														
+														$Registro=mysqli_query($link,$SQL);
+														//-------
+														while ($Fila=mysqli_fetch_array($Registro)){
+														//----
+														echo '<option ';
+														if($ciarec == $Fila["id"])echo 'selected ';
+														echo 'value=' . $Fila["id"] .'>'. $Fila["company"] . "\n";
+														}
+														mysqli_free_result ($Registro);
+														//--------------------------------------
+														?>									
+													</select>
+												</div>
+											</div>
+										</div>								
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label class="input-group-text"><font color="#606060" size="3px">Departamento Receptor.:</font></label>
+												<div class="input-group-prepend">
+													<select name="dptrec" class="form-control" onChange="javascrip:form.submit()" >
+													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+													<?PHP
+													//---------------------------------------------------------------
+													$query = "SELECT * FROM departments 
+													WHERE statu = 'Activo' and company_id = '".$ciarec."'
+													ORDER BY department ASC";
+													
+													$Registro=mysqli_query($link,$query);
+													//-------
+													while ($row=mysqli_fetch_array($Registro)){
+													//-------
+													echo '<option ';
+													if($dptrec == $row["id"])echo 'selected ';
+													echo 'value=' . $row["id"] .'>'. $row["department"] . "\n";
+													}
+													mysqli_free_result ($Registro);
+													//---------------------------------------------------------------
+													?>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label class="input-group-text"><font color="#505050" size="3px"> Usuario Receptor.:</font></label>
+												<div class="input-group-prepend">
+													<select name="usrrec" class="form-control" >
+													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
+													<?PHP
+													//---------------------------------------------------------------
+													$query = "SELECT  * FROM positions
+													inner join departments on departments.id = positions.department_id
+													inner join users on users.position_id = positions.id
+													where departments.statu = 'Activo' and positions.department_id = '".$dptrec."'
+													";
+													
+													$Registro=mysqli_query($link,$query);
+													//-------
+													while ($row=mysqli_fetch_array($Registro)){
+													//-------
+													echo '<option ';
+													if($usrrec == $row["id"])echo 'selected ';
+													echo 'value=' . $row["id"] .'>'.$row["first_name"].' '.$row["last_name"]. "\n";
+													}
+													mysqli_free_result ($Registro);
+													//---------------------------------------------------------------
+													?>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+<!-- ====================================================== -->											
 								<div class="modal-footer" style="background-color:#FFFFFC">
 									<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Cancelar</button>
 

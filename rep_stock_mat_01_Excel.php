@@ -81,11 +81,11 @@ ORDER BY mat.code DESC
 //---------------------------------------------------------------
 }
 //----------
-echo "<font color='#FF6600' FACE='times new roman' size='5'><b>Stock de Materiales</b></font>";
+echo "<font color='#FF6600' size='5'><b>Stock de Materiales</b></font>";
 echo "<br>";
-echo "<font color='blue' FACE='times new roman' size='4'><b>$DCIA</b></font>";
+echo "<font color='blue' size='4'><b>$DCIA</b></font>";
 echo "<br>";
-echo "<font color='#b35900' FACE='times new roman' size='4px'><b>$ZOND</b></font>";
+echo "<font color='#b35900' size='4px'><b>$ZOND</b></font>";
 echo "<br>";
 
 echo "<Table cellspacing='0' cellpadding='0' bgcolor=#6699FF border color= 000000>";

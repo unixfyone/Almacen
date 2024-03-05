@@ -363,8 +363,8 @@ else $prod = '';
 								$exs = $mValors[$MM_ANT];
 
 								$existencia = $expa + $exe - $exs;
-								//=============================
-
+								$CPROD = $Fila['product_cod'];
+								$DPROD = $Fila['description_m'];
 								//=============================
 								echo "<tr>";
 								if($Fila['m_statu_m'] != 'Activo')
@@ -408,6 +408,13 @@ else $prod = '';
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
+							<div class="form-group">
+								<label><font color="#660000" size="4px">Material.:  </font></label>
+								&nbsp;&nbsp;<span><font color="black" size="4px"><?Php echo $CPROD ."&nbsp;&nbsp; / &nbsp;&nbsp;". $DPROD; ?></font></span>
+								<br>
+								<label><font color="#660000" size="4px">Periodo.:  </font></label>
+								&nbsp;&nbsp;<span><font color="black" size="4px"><?Php echo $AA ."&nbsp; / &nbsp;". $MM;  ?></font></span>
+							</div>
                             <Div id="product_details"></Div>
                         </div>
                         <div class="modal-footer" style="background-color:#FFFFFC">

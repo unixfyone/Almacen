@@ -253,7 +253,7 @@ else $CT1 = '0';
 							LEFT JOIN wh_suppliers su ON su.id = movh.movh_prove_id
 							LEFT JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
 							LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
-							WHERE movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' and movd.movd_per = '$MM' and movd.movd_tmov = '$MID'and sal.aa_s = '$AA' and sal.zone_id = '$ZON'
+							WHERE movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' and movd_statu = 'Cerrado' and movd.movd_per = '$MM' and movd.movd_tmov = '$MID'and sal.aa_s = '$AA' and sal.zone_id = '$ZON'
 							ORDER BY movd.product_id ASC";
 
 							//---------------------------------------------------------------

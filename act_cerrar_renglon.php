@@ -86,7 +86,13 @@ if (isset($_POST['autorizados']))
 		$tm_actcost = $row['tm_actcost'];		// Actualiza Costo
 	}
 	mysqli_free_result ($Registro);
-
+//---------------------------------------------------------------
+//---------------------------------------------------------------
+$MM_ANT = $MM - 1; 				// Mes periodo actual en arreglo (12 Pos)
+$MM_PANT = $MM - 1;				// Mes para Saldo del Periodo anterior (13 Pos)
+$existencia = 0;
+//---------------------------------------------------------------
+//---------------------------------------------------------------
 
 
 //---------------------------------------------------------------
@@ -111,7 +117,8 @@ if (isset($_POST['autorizados']))
 	$query = "SELECT * FROM wh_saldosm WHERE aa_s = '".$AA."' and product_id = '".$prodid."' ";	
 	$Registro2 = mysqli_query($link,$query);			
 	while($row2 = mysqli_fetch_array($Registro2))
-	{		
+	{
+		$SWX = '0';
 		if ($tm_tipo == 'ENTRADAS') {
 			$mdcante = $mdcant;					// Cantidad del Movimiento
 			$mdcant2 = $mdcant * 1;
@@ -131,6 +138,30 @@ if (isset($_POST['autorizados']))
 		//----------
 		} else {
 		//----------
+			//if($row['sal_id'] != null)
+			//{
+				$mValore1X = '0';
+				$mValors1X = '0';
+				$mValorfp1X = '0';
+				
+				$mValore1X=explode("|", $row2["saldos_e"]);
+				$exe = $mValore1X[$MM_ANT];
+
+				$mValors1X=explode("|", $row2["saldos_s"]);
+				$exs = $mValors1X[$MM_ANT];
+
+				$mValorfp1X=explode("|", $row2["saldos_fp"]);
+				$expa = $mValorfp1X[$MM_PANT];
+			
+			//}	else	{
+			//	$exe = 0;
+			//	$exs = 0;
+			//	$expa = 0;
+			//}
+			$existencia = ((int)$expa + (int)$exe - (int)$exs );
+//echo "<pre>"; print_r($existencia); exit();			
+			if($existencia >= $mdcant) {
+		//----------
 			$mdcants = $mdcant;					// Cantidad del Movimiento
 			$mdcant2 = $mdcant * -1;
 			//--------------------------------
@@ -146,8 +177,12 @@ if (isset($_POST['autorizados']))
 			saldos_s = '$mValors2'
 			WHERE aa_s = '$AA' and product_id = '$prodid'";
 			mysqli_query($link,$query4);
+		} else {
+			$SWX = '1';
+		}
 		}
 		//=================================
+		if ($SWX == '0') {
 		//--------------------------------
 		$mValorfp=explode("|", $row2["saldos_fp"]);
 		//--------------------------------
@@ -161,8 +196,9 @@ if (isset($_POST['autorizados']))
 		saldos_fp = '$mValorfp2'
 		WHERE aa_s = '$AA' and product_id = '$prodid'";
 		mysqli_query($link,$query4);
+		
 		//=======================================================
-	}
+	
 	mysqli_free_result ($Registro2);
 //======== Actualiza Status en movinv_d ========
 		$fechac = date("Y-m-d");
@@ -174,7 +210,8 @@ if (isset($_POST['autorizados']))
 		";
 		mysqli_query($link,$query6);
 //========
-
+		}
+	}
 //========= Actualiza Quantity en Producto ============
 
 //======== Actualiza Costo Unitario en Producto =========

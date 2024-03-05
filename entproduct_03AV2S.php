@@ -365,6 +365,8 @@ mysqli_free_result ($Registro);
 														<?php } ?>
 														
 													</div>
+													<?php
+													?>
 												</div>
 											</div>
 											<div class="row">
@@ -435,9 +437,13 @@ mysqli_free_result ($Registro);
 													</div>
 												</div>
 											</div>
-
+											
+											<Input Type="hidden" name="CANTXE" value="<?Php echo $existencia ?>" />
+											
 											<div class="modal-footer" style="background-color:#FFFFFC">
-												<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="Submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-save"></span> Grabar</button>
+												<?php if ($existencia != 0 and $PRODP != 0) { ?>
+													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="Submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-save"></span> Grabar</button>
+												<?php } ?>
 												
 												<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 											</div>

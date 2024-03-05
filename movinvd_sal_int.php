@@ -217,7 +217,7 @@ $existencia = 0;
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
-					<h1 class="m-0"><b><font color="#<?=$ccolor;?>" FACE="times new roman" size="5px"> Movimiento Almacen
+					<h1 class="m-0"><b><font color="#<?=$ccolor;?>" FACE="times new roman" size="5px"> Salidas Internas Almacen
 					</font></b></h1>
 				</div>
 				<div class="col-sm-6" align='right'>
@@ -228,7 +228,7 @@ $existencia = 0;
 						if($mhtmov == 'ENTRADAS' ) {	?>
 							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="entproduct_03.php?movh_id=<?Php echo $mhid ?> "><i class="glyphicon glyphicon-plus"></i>  Agregar Renglon</a>
 						<?php  } else { ?>
-							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="entproduct_03_Sal.php?movh_id=<?Php echo $mhid ?> "><i class="glyphicon glyphicon-plus"></i>  Agregar Renglon</a>
+							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="entproduct_03_Sal_int.php?movh_id=<?Php echo $mhid ?> "><i class="glyphicon glyphicon-plus"></i>  Agregar Renglon</a>
 						<?php }  ?>
 								
 					<?php } else { ?>
@@ -248,7 +248,7 @@ $existencia = 0;
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Movimientos de Materiales.:</font></b>
+							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Salidas de Materiales.:</font></b>
 							<b><font color="#ffffcc" FACE="times new roman" size="4px">&nbsp; Renglones por Documento</font></b>
 						</div>
 						<!-- /.card-header -->
@@ -365,8 +365,6 @@ $existencia = 0;
 											$existencia = $expa + $exe - $exs;
 										}
 										mysqli_free_result ($Registro);
-										//---------------------------------------------------------------
-										//---------------------------------------------------------------
 	//<!-- =================================================================================== -->
 	if($Fila['movd_statu'] == 'Abierto')
 	{
@@ -393,7 +391,7 @@ $existencia = 0;
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
 
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="entproduct_02V2S.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
+					<li><a href="entproduct_sal_int_02V2S.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
 					<li role="presentation" class="divider"></li>
 					
 					<li><a <button type="button" name="delete" id="'.$Fila['movd_id'].'" class="delete"><i class="fa fa-trash" ></i> Eliminar Renglon</button></a></li>
@@ -424,7 +422,7 @@ $existencia = 0;
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
 
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="entproduct_02V2S.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
+					<li><a href="entproduct_sal_int_02V2S.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
 					<li role="presentation" class="divider"></li>
 					<li class="disabled"><a <button type="button" name="" id="" class="deletex"><i class="fa fa-trash" ></i> Eliminar Renglon</button></a></li>
 					
@@ -449,16 +447,9 @@ $existencia = 0;
 //<!-- =================================================================================== -->								
 										?>
 										<Tr height= '16px'>
-											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_tmov'] == 'ENTRADAS' and $Fila['movd_costou_me'] != '0') { ?>
+												<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_costou_me'] > 0 and $existencia >= $Fila['movd_cant']) { ?>
 												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" /></td>
-											<?php }  ?>
-											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_tmov'] == 'ENTRADAS' and $Fila['movd_costou_me'] == '0') { ?>
-												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" disabled /></td>
-											<?php } ?>
-											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_costou_me'] > 0 and $existencia >= $Fila['movd_cant'] and $Fila['movd_tmov'] == 'SALIDAS') { ?>
-												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" /></td>
-											<?php } ?>
-											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_costou_me'] > 0 and $existencia < $Fila['movd_cant'] and $Fila['movd_tmov'] == 'SALIDAS') { ?>
+											<?php } else { ?>
 												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" disabled /></td>
 											<?php } ?>
 											<Td><?php echo $Fila['code']; ?></td>
@@ -467,7 +458,7 @@ $existencia = 0;
 												<Td align="right" style="background-color:#eeeeee"><b><font color="blue"><?php echo number_format($existencia, 2, ",", ".");?></font></b></td>
 											<?php } else { ?>
 												<Td align="right"><b><font color="red"><?php echo number_format($existencia, 2, ",", ".");?></font></b></td>
-											<?php } ?>
+											<?php } ?>											
 											<Td align="right"><?php echo number_format($Fila['movd_cant'], 2, ",", ".");?></td>
 											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_costou_me'] > 0) { ?>
 												<Td align="right"><?php echo number_format($Fila['movd_costou_me'], 3, ",", ".");?></td>

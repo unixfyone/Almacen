@@ -13,7 +13,7 @@ if(isset($_POST['btn_action']))
 		INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvd.tm_id
 		INNER JOIN wh_materials ON wh_materials.id = wh_movinvd.product_id
 		WHERE wh_movinvd.movd_ejer = '".$_POST["xaa"]."' and wh_movinvd.product_id = '".$_POST["product_id"]."' and wh_movinvd.movd_statu = 'Cerrado'
-		ORDER BY wh_movinvd.movd_fecha DESC
+		ORDER BY wh_movinvd.movd_id ASC
 		";
 		$statement = $connect->prepare($query);
 		$statement->execute();
@@ -21,10 +21,7 @@ if(isset($_POST['btn_action']))
 		$output = '
 		<div class="">
 		<table class="table table-boredered">
-				
-			<b><font color="#0066FF" FACE="times new roman" size="3px">Año del Ejercicio..: &nbsp;&nbsp;&nbsp;</font> '.$_POST["xaa"].' </font></b>
-			<br>
-			<b><font color="#0066FF" FACE="times new roman" size="3px">Material..: </font> '.$_POST["desc"].' </b>
+
 			<tr>
 			<th>Fecha</th>
 			<th>Documento</th>
@@ -38,7 +35,7 @@ if(isset($_POST['btn_action']))
 		foreach($result as $row)
 		{
 			$tipom = 0;
-			if($row['movd_tmov'] == 'Entradas')
+			if($row['movd_tmov'] == 'ENTRADAS')
 			{
 				$tipom = '<font color="blue">'.number_format($row['movd_cant'], 2, ",", ".").'</font>';
 				$tipod = '<font color="blue">'.$row['movd_tmov'];

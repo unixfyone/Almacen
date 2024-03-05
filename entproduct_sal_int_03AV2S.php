@@ -139,7 +139,7 @@ btn-prima {
 
 <?php
 
-echo '<FORM ACTION="act_entpro_add.php" method="POST">';
+echo '<FORM ACTION="act_salpro_int_add.php" method="POST">';
 
 //--------------
 //---------------------------------------------------------------
@@ -149,6 +149,13 @@ $prod2 = $_GET['CP'];			// Codigo de Producto
 //---------------------------------------------------------------
 if(isset($_POST["CT1"]))$CT1 = $_POST["CT1"];
 else $CT1 = '0';
+//-------------
+if(isset($_GET["CIAX"]))$CIAX = $_GET["CIAX"];
+else $CIAX = '';
+//-------------
+
+
+
 //===============================================================
 $SQL = "SELECT * FROM wh_movinvh 
 INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
@@ -181,8 +188,8 @@ mysqli_free_result ($Registro1);
 	// Asignar Datos a las variables
 	//-------------------------------
 	$DESCP = $Filap["description_m"];		// Descripcion del Producto
-	$PRODP = $Filap["cost_me"];				// Precio A del Producto
-	$UNIM = $Filap["name"];					// Nombre Unidad de Medida
+	$PRODP = $Filap["cost_me"];			// Precio A del Producto
+	$UNIM = $Filap["name"];					// Nombre Unidad de Medida	
 	}
 	mysqli_free_result ($Registrop);
 //---------------------------------------------------------------
@@ -237,11 +244,11 @@ while ($row=mysqli_fetch_array($Registro))
 }
 mysqli_free_result ($Registro);
 //---------------------------------------------------------------
-//---------------------------------------------------------------
-	
+//---------------------------------------------------------------	
 ?>
 <Input Type="hidden" name="mhid" value="<?Php echo $mhid ?>" />
 <Input Type="hidden" name="mhdoc" value="<?Php echo $mhdoc ?>" />
+<Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 <Input Type="hidden" name="mhcia" value="<?Php echo $CIA ?>" />
 <Input Type="hidden" name="mhalm" value="<?Php echo $ZON ?>" />
 <Input Type="hidden" name="mhtm" value="<?Php echo $mhtmov ?>" />
@@ -265,7 +272,7 @@ mysqli_free_result ($Registro);
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" size="4px">Agregar Documento Movimientos Almacen</font></b>
+							<b><font color="#FFFFFF" size="4px">Agregar Salidas Internas de Almacen</font></b>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -277,13 +284,13 @@ mysqli_free_result ($Registro);
 											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $DCIA ; ?></font></span>
 										</div>
 									</div>
-									<div class="col-lg-4">
+									<div class="col-lg-5">
 										<div class="form-group">
 											<label><font color="blue" size="4px">Almacen..:  </font></label>
 											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $ZOND ." / ". $ZONU; ?></font></span>
 										</div>
 									</div>
-									<div class="col-lg-4">
+									<div class="col-lg-3">
 										<div class="form-group">
 											<label><font color="blue" size="4px">Tipo Documento..:  </font></label>
 											&nbsp;&nbsp;<span><b><font color="red" size="4px"> <?Php echo $mhtmov; ?></font></b></span>
@@ -332,7 +339,11 @@ mysqli_free_result ($Registro);
 														<label class="input-group-text"><font color="blue" size="3px">Unidad de Medida.:</font></label>
 														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $UNIM ?></font></label>												
 														&nbsp;&nbsp;
-														<label class="input-group-text"><font color="blue" size="3px">Existencia:</font></label>
+														<?php if ($existencia != 0) { ?>
+															<label class="input-group-text"><font color="blue" size="3px">Existencia:</font></label>
+														<?php } else {?>
+															<label class="input-group-text"><font color="#FFFFFF" style="background-color:red;" size="3px">Existencia:</font></label>
+														<?php } ?>
 														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo number_format($existencia, 2, '.', '') ?></font></label>
 															
 														&nbsp;&nbsp;
@@ -341,7 +352,7 @@ mysqli_free_result ($Registro);
 													</div>
 												</div>
 											</div>
-
+										
 											<div class="row">
 												<div class="col-lg-8">
 													<div class="input-group">
@@ -351,42 +362,45 @@ mysqli_free_result ($Registro);
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-lg-5">
+												<div class="col-lg-4">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Cantidad de Material.:</font></label>
-														<Input class="form-control" Type="Text" name="CANT" size='8' maxlength="8" value="" required />
+														
+														<?php if ($existencia != 0) { ?>
+															<Input class="form-control" Type="Text" name="CANT" size='8' maxlength="8" value="" required />
+														<?php } else {?>
+															<Input class="form-control" Type="Text" name="CANT" size='8' maxlength="8" value="0" disabled />
+														<?php } ?>
+														
 													</div>
 												</div>
-											</div>
-											<div class="row">
-												<div class="col-lg-5">
+
+												<div class="col-lg-4">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Costo Unitario Moneda Ext:</font></label>
-														<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="0.000" required />
+														<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="<?Php echo $PRODP ?>" readonly />
 													</div>
 												</div>
 												<div class="col-lg-4">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Tasa de Cambio Bs:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Tasa Cambio Bs..:</font></label>
 														<Input class="form-control" Type="Text" name="movd_tasa_cambio" size='12' maxlength="12" value="<?Php echo $pdolar ?>" required />
 													</div>
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-lg-6">
+												<div class="col-lg-4">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Tipo de Entrada Material:</font></label>
-														<select name="tipent" class="form-control" required />						
+														<label class="input-group-text"><font color="#606060" size="3px">Tipo Salida Material..:</font></label>
+														<select name="tipsal" class="form-control" required />						
 															<option value=""></option>
-															<option value="NACIONAL">NACIONAL</option>
-															<option value="INTERNACIONAL">INTERNACIONAL</option>
-															<option value="TRANSFERENCIA">TRANSFERENCIA</option>
+															<option value="EQUIPO">EQUIPO</option>
+															<option value="INTERNA">INTERNA</option>
+															<option value="POZO">POZO</option>
 														<select>
 													</div>
 												</div>
-											</div>
-											<div class="row">
-												<div class="col-lg-6">
+												<div class="col-lg-4">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Condicion del Material...:</font></label>
 														<select name="c_id" class="form-control" required />
@@ -395,18 +409,118 @@ mysqli_free_result ($Registro);
 														</select>
 													</div>
 												</div>
-											</div>						
+												<div class="col-lg-4">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#606060" size="3px">Tipo Transacción:</font></label>
+														<select name="movd_trans" class="form-control" required />						
+															<option value=""></option>
+															<option value="N/A">N/A</option>
+															<option value="INTERNA">INTERNA</option>
+															<option value="PROPIA">PROPIA</option>
+															<option value="PRESTAMO">PRESTAMO</option>
+															<option value="NUEVA">NUEVA</option>
+														<select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-4">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#606060" size="3px">Nombre Consumo.....:</font></label>
+														<select name="movd_id_cons" id="movd_id_cons" class="form-control" required>
+															<option value="">Seleccionar Consumo</option>
+															<?php echo fill_consumo_list($connect, $ZON); ?>
+														</select>
+													</div>
+												</div>
+											</div> 
+											<div class="row">
+												<div class="col-lg-4">
+													<div class="form-group">
+														<label class="input-group-text"><font color="#505050" size="3px">Compañia del Receptor.:</font></label>
+														<div class="input-group-prepend">
+															<select name="company_id" id="company_id" class="form-control">
+															<option value="">Seleccionar Compañia</option>
+															<?php echo fill_companies_list($connect); ?>
+															</select>
+														</div>
+													</div>
+												</div>								
+												<div class="col-lg-4">
+													<div class="form-group">
+														<label class="input-group-text"><font color="#505050" size="3px">Departamento del Receptor.:</font></label>
+														<div class="input-group-prepend">
+															<select name="department_id2" id="department_id2" class="form-control">
+															<option value="">Seleccionar Departamento</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-4">
+													<div class="form-group">
+														<label class="input-group-text"><font color="#505050" size="3px"> Receptor...:</font></label>
+														<div class="input-group-prepend">
+															<select name="user_receptor" id="user_receptor" class="form-control" >
+																<option value="">Seleccionar Usuario</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-6">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#505050" size="3px">Departamento Aprobador:</font></label>
+														<select name="department_id3" id="department_id3" class="form-control" required>
+															<option value="">Seleccionar Departamento</option>
+															<?php echo fill_departments_list($connect, $CIA); ?>
+														</select>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#505050" size="3px">Usuario Aprobador:</font></label>
+														<select name="user_aprobador" id="user_aprobador" class="form-control"  required>
+															<option value="">Seleccionar Usuario</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-6">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#505050" size="3px">Departamento Despachador:</font></label>
+														<select name="department_id" id="department_id" class="form-control" required>
+															<option value="">Seleccionar Departamento</option>
+															<?php echo fill_departments_list($connect, $CIA); ?>
+														</select>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="input-group">
+														<label class="input-group-text"><font color="#505050" size="3px">Usuario Despachador:</font></label>
+														<select name="user_despachador" id="user_despachador" class="form-control"  required>
+															<option value="">Seleccionar Usuario</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											</br>
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Observacion de Entrada.:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Observacion Salida...:</font></label>
 														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" onkeyup="this.value = this.value.toUpperCase();" />
 													</div>
 												</div>
 											</div>
+											
+											<Input Type="hidden" name="CANTXE" value="<?Php echo $existencia ?>" />
 
 											<div class="modal-footer" style="background-color:#FFFFFC">
-												<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="Submit" id="BotonAdd" name="BotonAdd"><span class="glyphicon glyphicon-save"></span> Grabar</button>
+												<?php if ($existencia != 0 and $PRODP != 0) { ?>
+													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="Submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-save"></span> Grabar</button>
+												<?php } ?>
 												
 												<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-md elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 											</div>
@@ -423,5 +537,64 @@ mysqli_free_result ($Registro);
 </div>
 </form>
 <?php mysqli_close($link); ?>
+<script>
+$(document).ready(function(){
+<!-- ********************* Lista para Usuarios/departamento **************** -->
+$('#department_id').change(function(){
+        var department_id = $('#department_id').val();
+        var btn_action = 'load_usuarios';
+        $.ajax({
+            url:"mov_action.php",
+            method:"POST",
+            data:{department_id:department_id, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#user_despachador').html(data);
+            }
+        });
+    });
+$('#department_id2').change(function(){
+        var department_id2 = $('#department_id2').val();
+        var btn_action = 'load_usuarios2';
+        $.ajax({
+            url:"mov_action.php",
+            method:"POST",
+            data:{department_id2:department_id2, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#user_receptor').html(data);
+            }
+        });
+    });
+$('#department_id3').change(function(){
+        var department_id3 = $('#department_id3').val();
+        var btn_action = 'load_usuarios3';
+        $.ajax({
+            url:"mov_action.php",
+            method:"POST",
+            data:{department_id3:department_id3, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#user_aprobador').html(data);
+            }
+        });
+    });
+$('#company_id').change(function(){
+        var company_id = $('#company_id').val();
+        var btn_action = 'load_department';
+        $.ajax({
+            url:"mov_action.php",
+            method:"POST",
+            data:{company_id:company_id, btn_action:btn_action},
+            success:function(data)
+            {
+                $('#department_id2').html(data);
+            }
+        });
+    });
+//---------------
+});	
+//---------------
+</script>
 </BODY>
 </HTML> 

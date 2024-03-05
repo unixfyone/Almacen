@@ -6,7 +6,7 @@
 		$database = new Connection();
 		$db = $database->open();
 		try{
-			$id_cons = $_GET['id'];
+			$id_cons = $_POST['id'];
 			$name_cons = $_POST['name_cons'];
 			$modified = date('Y-m-d');
 

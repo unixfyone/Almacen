@@ -99,21 +99,12 @@ else $MAT = '';
 if(isset($_GET["prod"]))$prod = $_GET["prod"];
 else $prod = '';
 //-------------
+if(isset($_GET["AA"]))$AA = $_GET["AA"];
+else $AA = '';
+//===============================================================
 
 //===============================================================
-	$SQLp = "SELECT * FROM wh_periodos 
-	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
-	$Registrop = mysqli_query($link,$SQLp);
-	//-----------------------------
-	while ($Filap=mysqli_fetch_array($Registrop))
-	{	
-		$AA = $Filap["per_aa"];
-		$MM = $Filap["per_mm"];
-	}
-	mysqli_free_result ($Registrop);
-	//===============================================================
 ?>
-	
 
 <Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
@@ -140,7 +131,7 @@ else $prod = '';
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Consulta Existencia por Material</font></b>
+							<b><font color="#FFFFFF" size="4px">Consulta Existencia por Material</font></b>
 						</div>
 						<!-- /.card-header -->
 <!-- =================================================================================== -->
@@ -199,7 +190,7 @@ else $prod = '';
 												?>									
 											</select>
 										</div>
-									</div>						
+									</div>	
 								</div>
 								<br>
 							</div>
@@ -209,6 +200,23 @@ else $prod = '';
 			</div>
 		</div>
 	</section>
+<?php
+//===============================================================
+//echo "<pre>"; print_r($ZON); exit();
+
+	$SQLp = "SELECT * FROM wh_periodos 
+	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
+	$Registrop = mysqli_query($link,$SQLp);
+	//-----------------------------
+	while ($Filap=mysqli_fetch_array($Registrop))
+	{	
+		$AA = $Filap["per_aa"];
+		$MM = $Filap["per_mm"];
+	}
+	mysqli_free_result ($Registrop);
+	//===============================================================
+?>	
+<Input Type="hidden" name="AA" value="<?Php echo $AA ?>">	
 	<!-- ========================================================== -->
 	<?php if ($CIAX != '' and $ZON != '') { ?>
 	
