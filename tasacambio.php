@@ -1,7 +1,7 @@
 <?php
 
 // URL de la API
-$url = "https://pydolarvenezuela-api.vercel.app/api/v1/dollar/page?page=bcv";
+$url = "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv";
 
 // Inicializar cURL
 $ch = curl_init($url);
