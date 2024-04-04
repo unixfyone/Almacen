@@ -262,7 +262,7 @@ else $CT1 = '0';
 							echo "<thead>";
 							echo "<tr>";
 							echo "<th>Fecha</th>";
-							echo "<th>Codigo</th>";
+							echo "<th>Prefijo-Codigo</th>";
 							echo "<th>Descripción</th>";
 							echo "<th>Uni-Med</th>";
 							echo "<th>Línea</th>";														
@@ -282,7 +282,7 @@ else $CT1 = '0';
 								//=============================
 								echo "<tr>";
 								echo "<td align=Center><font size=3>" . $Fila['movd_fecha'];	
-								echo "<td align=Center><font size=3>" . $Fila['product_cod'];	
+								echo "<td align=Center><font size=3>" . $Fila['code_sap'];	
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
 								echo "<td align=Left><font size=2>" . $Fila['umname'];
 								echo "<td align=Left><font size=2>" . $Fila['namel'];
