@@ -68,7 +68,7 @@ else $tm2 = '';
 						<div class="container">
 							<!--<div class="box elevation-2"> -->
 							<div class="panel panel-default elevation-2">
-								<div class="card-header elevation-1" style="background-color:#909090">
+								<div class="card-header elevation-1" style="background-color:#1F2937">
 									<div class="panel-heading"><b><font color="#FFFFFF" size="4px">Consolidado por Compañia</font></b></div>
 								</div>
 								<div class="card-body">
@@ -231,7 +231,7 @@ else $tm2 = '';
 				<div class="col-lg-12">
 					<div class="container-fluid">
 						<div class="panel panel-default elevation-2">
-							<div class="card-header elevation-2" style="background-color:#909090">
+							<div class="card-header elevation-2" style="background-color:#1F2937">
 								<div class="panel-heading">
 									<b><font color="#FFFFFF" size="4px">Detalle Consolidado por tipo de Inventario</font></b>
 								</div>
