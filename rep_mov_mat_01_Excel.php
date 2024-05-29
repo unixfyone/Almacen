@@ -80,15 +80,19 @@ echo "<br>";
 echo "<Table cellspacing='0' cellpadding='0' bgcolor=#6699FF border color= 000000>";
 //-------------------------------
 echo "<tr>";
-echo "<th>Fecha</th>";
-echo "<th>Prefijo-Codigo</th>";
-echo "<th>Descripción</th>";
-echo "<th>Uni-Med</th>";
-echo "<th>Línea</th>";														
-echo "<th>Cantidad</th>";
+echo "<th>FECHA</th>";
+echo "<th>PREFIJO-CODIGO</th>";
+echo "<th>DESCRIPCION</th>";
+echo "<th>UNI-MED</th>";
+echo "<th>LINEA</th>";														
+echo "<th>CANTIDAD</th>";
 echo "<th>C/U</th>";
-echo "<th>Proveedor</th>";
-echo "<th>Sub Total</th>";
+
+if ($MID != 'SALIDAS') {
+	echo "<th>PROVEEDOR</th>";
+}
+
+echo "<th>SUB TOTAL</th>";
 echo "</tr>";
 
 $Registro = mysqli_query($link,$SQL);
@@ -104,7 +108,11 @@ while($Fila = mysqli_fetch_array($Registro))
 	echo "<td align=Left><font size=2>" . $Fila['acronym'];
 	echo "<td><font size=2>" . number_format($Fila['movd_cant'], 3, ',','.');
 	echo "<td><font size=2>" . number_format($Fila['movd_costou_me'], 3, ',','.');
-	echo "<td align=Center><span class='text-wrap'><font size=2>" . $Fila['prove'];
+	
+	if ($MID != 'SALIDAS') {
+		echo "<td align=Center><span class='text-wrap'><font size=2>" . $Fila['prove'];
+	}
+	
 	echo "<Td><font size='2px'>" . number_format($stotale, 3, ',','.');
 	echo "</tr>";
 }
