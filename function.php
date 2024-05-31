@@ -1,7 +1,7 @@
-﻿<html>
+<html>
 <?php
 function fill_companies_list($connect)
-//====================================
+//==================================== 
 {
 	$query = "
 	SELECT * FROM companies 
@@ -11,6 +11,7 @@ function fill_companies_list($connect)
 	$statement = $connect->prepare($query);
 	$statement->execute();
 	$result = $statement->fetchAll();
+	$output = '<option value="">"'.$row["company"].'"</option>';
 	$output = '';
 	foreach($result as $row)
 	{
@@ -35,6 +36,26 @@ function fill_zone_user_cia_list($connect, $userid, $cias)
 	foreach($result as $row)
 	{
 		$output .= '<option value="'.$row["zone_id"].'">'.$row["zone_desc"].' '.$row["zone_ubic"].'</option>';
+	}
+	return $output;
+}
+
+function fill_tm2_list($connect)
+//==================================== 
+{
+	$query = "
+	SELECT * FROM wh_type_material2 
+	WHERE statu = 'Activo' 
+	ORDER BY id ASC
+	";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$output = '<option value="">"'.$row["name"].'"</option>';
+	$output = '';
+	foreach($result as $row)
+	{
+		$output .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
 	}
 	return $output;
 }
@@ -166,7 +187,7 @@ function fill_departments_list($connect, $cia)
 	$statement = $connect->prepare($query);
 	$statement->execute();
 	$result = $statement->fetchAll();
-	$output = '';
+	$output = '<option value="">Seleccionar Departamento</option>';
 	foreach($result as $row)
 	{
 		$output .= '<option value="'.$row["id"].'">'.$row["department"].'</option>';
@@ -380,6 +401,45 @@ function get_user_name($connect, $user_id)
 	}
 }
 //------------------------------------
+function fill_type_material2($connect, $tm_id)
+//====================================
+{
+	$query = "
+	SELECT * FROM wh_type_material2
+	WHERE statu= 'Activo' and type_material_id = '".$tm_id."'
+	ORDER BY name ASC
+	";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$output = '<option value="">Seleccionar Tipo</option>';
+	foreach($result as $row)
+	{
+		$output .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
+	}
+	return $output;
+}
+//------------------------------------
+function fill_type_cmaterial2($connect, $ctm_id)
+//====================================
+{
+	$query = "
+	SELECT * FROM wh_clasificacion_tm2
+	WHERE statu= 'Activo' and id_tm2 = '".$ctm_id."'
+	ORDER BY name ASC
+	";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$output = '<option value="">Seleccionar Tipo</option>';
+	foreach($result as $row)
+	{
+		$output .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
+	}
+	return $output;
+}
+
+//------------------------------------
 function fill_conditions_list($connect)
 //====================================
 {
@@ -417,5 +477,64 @@ function fill_product_list($connect)
 	}
 	return $output;
 }
+
+
+
+function count_total_user($connect)
+{
+	$query = "
+	SELECT * FROM categories WHERE cat_statu='Activo'";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	return $statement->rowCount();
+}
+
+function get_consolidado_cias($connect)
+{
+	$query = "
+	SELECT  company, mat.zone_id, sum(mat.cost_me * mat.existence) as gtotal
+	FROM wh_materials mat
+	inner join wh_type_material2 tm2 on tm2.id = mat.type_tm2_id
+	inner join companies on companies.id = mat.company_id
+	group by mat.company_id
+	order by company_id ASC ";
+	
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$output = '
+	<div class="table-responsive">
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>Compañia</th>
+				<th>Almacen</th>
+				<th>Total</th>
+			</tr>
+	';
+	
+	$total_gtotal = 0;
+	foreach($result as $row)
+	{
+		$output .= '
+		<tr>
+			<td align="left">'.$row["company"].'</td>
+			<td align="left">'.$row["zone_id"].'</td>
+			<td align="right">'.number_format($row["gtotal"], 2, ',','.').'</td>
+		</tr>
+		';
+		
+		$total_gtotal = $total_gtotal + $row["gtotal"];
+	}
+	$output .= '
+	<tr>
+		<td align="right"><b>Total Consolidado</b></td>
+		<td></td>
+		<td align="right"><b>$ '.number_format($total_gtotal, 2, ',','.').'</b></td>
+	</tr></table></div>
+	';
+	return $output;
+	
+}
+
 ?>
 </html>

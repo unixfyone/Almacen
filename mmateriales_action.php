@@ -16,7 +16,7 @@ if(isset($_POST['btn_action']))
 		INNER JOIN wh_lines ln ON ln.id = mat.wh_line_id
 		INNER JOIN wh_categories cate ON cate.cat_id = mat.wh_category_id
 		INNER JOIN wh_subcategories scate ON scate.scat_id = mat.wh_subcategory_id
-		INNER JOIN wh_brands br ON br.brand_id = mat.wh_brand_id
+		LEFT JOIN wh_brands br ON br.brand_id = mat.wh_brand_id
 		WHERE mat.id = '".$_POST["id"]."'
 		";
 	

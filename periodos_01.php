@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('database_connection.php');
 
@@ -18,6 +18,7 @@ include('unico.php');
 <HEAD>
 <TITLE>Periodos</TITLE>
 
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
 <link rel="stylesheet" type="text/css" href="cssi/styles.css" />
 
 <style>
@@ -166,15 +167,15 @@ else $ZON = '';
 								//---------------------------------------------------------------
 								$SQL = "SELECT * FROM wh_periodos 
 								INNER JOIN wh_ejercicios ON wh_ejercicios.ej_aa = wh_periodos.per_aa
-								WHERE wh_periodos.company_id = '$CIA' and wh_periodos.zone_id = '$ZON'
-								ORDER BY wh_periodos.per_mm DESC ";
+								WHERE wh_ejercicios.company_id = '$CIA' and wh_ejercicios.zone_id = '$ZON' and wh_periodos.zone_id = '$ZON' 
+								ORDER BY wh_periodos.per_aa DESC, wh_periodos.per_mm DESC ";
 								
 								//---------------------------------------------------------------
 								?>
 								<Input Type="hidden" name="CIA" value="<?Php echo $CIA ?>">
 								<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 								
-								<table class="blueTable" align="center" width='55%'>
+								<table class="blueTable" align="center" width='70%'>
 								<thead>
 								<tr>
 								<th class="thx"><p> Nro </p></th>
@@ -182,6 +183,8 @@ else $ZON = '';
 								<th class="thx"><p> Almacén </p></th>
 								<th class="thx"><p> Año </p></th>
 								<th class="thx"><p> Mes </p></th>
+								<th class="thx"><p> Fecha Minima </p></th>
+								<th class="thx"><p> Fecha Maxima </p></th>
 								<th class="thx"><p> Status </p></th>
 								</tr>
 								</thead>
@@ -199,12 +202,14 @@ else $ZON = '';
 								echo "<Td bgcolor='#EEEEEE' Align=Center><font size=2>" . $Fila['zone_id'];
 								echo "<Td bgcolor='#EEEEEE' Align=Center><font size=2>" . $Fila['per_aa'];
 								echo "<Td bgcolor='#EEEEEE' Align=Center><font size=2>" . $Fila['per_mm'];
+								echo "<Td bgcolor='#EEEEEE' Align=Center><font size=2>" . $Fila['fec_min'];
+								echo "<Td bgcolor='#EEEEEE' Align=Center><font size=2>" . $Fila['fec_max'];
 								if ($Fila['per_statu'] == "Cerrado")
 								{
 								echo "<Td bgcolor=FFFFFF align=Center><font color='Red'>" . "Cerrado";
 								echo "</font>";
 								} else {
-								echo "<td bgcolor=ffffff align=Center><font color='Blue'><A HREF=\"periodos_02.php?AA=" .$Fila['per_aa']."&MM=" .$Fila['per_mm']."\">";
+								echo "<td bgcolor=ffffff align=Center><font color='Blue'><A HREF=\"periodos_02.php?AA=" .$Fila['per_aa']."&MM=" .$Fila['per_mm']."&CIA=" .$Fila['company_id']."&ZON=" .$Fila['zone_id']."\">";
 								echo "Abierto</a></td>";
 								echo "</font>";
 								}

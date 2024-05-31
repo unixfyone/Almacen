@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -171,7 +171,9 @@ $mhstatu = $Fila1["movh_statu"];
 mysqli_free_result ($Registro1);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-	$SQL = "SELECT * FROM wh_materials Where code = '$prod2' and zone_id = '$ZON' ";
+	$SQL = "SELECT * FROM wh_materials 
+	INNER JOIN wh_measurement_units ON wh_measurement_units.id = wh_materials.wh_measurement_unit_id_m
+	Where code = '$prod2' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQL);
 	//----------------------------------------------------------------
 	while($Filap = mysqli_fetch_array($Registrop))
@@ -179,7 +181,8 @@ mysqli_free_result ($Registro1);
 	// Asignar Datos a las variables
 	//-------------------------------
 	$DESCP = $Filap["description_m"];		// Descripcion del Producto
-	$PRODP = $Filap["cost_me"];			// Precio A del Producto
+	$PRODP = $Filap["cost_me"];				// Precio A del Producto
+	$UNIM = $Filap["name"];					// Nombre Unidad de Medida
 	}
 	mysqli_free_result ($Registrop);
 //---------------------------------------------------------------
@@ -196,6 +199,43 @@ $CIA = $FilaA["zcompany_id"];
 $DCIA = $FilaA["company"];
 } 
 mysqli_free_result ($RegistroA);
+//---------------------------------------------------------------
+//---------------------------------------------------------------
+$MM = $mhper;
+$MM_ANT = $MM - 1; 				// Mes periodo actual en arreglo (12 Pos)
+$MM_PANT = $MM - 1;				// Mes para Saldo del Periodo anterior (13 Pos)
+$existencia = 0;
+//-------------------
+$SQL = "SELECT * FROM wh_saldosm
+Where product_cod = '$prod2' and zone_id = '$ZON' and company_id = '$CIA' and aa_s = '$mhejer' 
+";
+$Registro = mysqli_query($link,$SQL);
+//-----------------------------
+while ($row=mysqli_fetch_array($Registro))
+{
+	if($row['sal_id'] != null)
+	{
+		$mValore = '';
+		$mValors = '';
+		$mValorfp = '';
+		
+		$mValore=explode("|", $row["saldos_e"]);
+		$exe = $mValore[$MM_ANT];
+
+		$mValors=explode("|", $row["saldos_s"]);
+		$exs = $mValors[$MM_ANT];
+
+		$mValorfp=explode("|", $row["saldos_fp"]);
+		$expa = $mValorfp[$MM_PANT];
+	
+	}	else	{
+		$exe = 0;
+		$exs = 0;
+		$expa = 0;
+	}
+	$existencia = $expa + $exe - $exs;
+}
+mysqli_free_result ($Registro);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 	
@@ -281,20 +321,35 @@ mysqli_free_result ($RegistroA);
 											<?Php include('function.php'); ?>
 												
 											<label><font color="blue" size="3px">Datos del Material...:</font></label>
+											&nbsp;&nbsp;
 											<font color='black' size="3px"><?Php echo $prod2 ?></font>
 											<label class="control-label"><font color="blue" size="3px">--</font></label>
 											<font color='black' size="3px"><?Php echo $DESCP ?></font>
-											<br>
-										
+
+											<div class="row">
+												<div class="col-lg-11">
+													<div class="input-group">
+														<label class="input-group-text"><font color="blue" size="3px">Unidad de Medida.:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $UNIM ?></font></label>												
+														&nbsp;&nbsp;
+														<label class="input-group-text"><font color="blue" size="3px">Existencia:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo number_format($existencia, 2, '.', '') ?></font></label>
+															
+														&nbsp;&nbsp;
+														<label class="input-group-text"><font color="blue" size="3px">Ultimo Costo:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $PRODP ?></font></label>
+													</div>
+												</div>
+											</div>
+
 											<div class="row">
 												<div class="col-lg-8">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Descripción Renglon.:</font></label>
-														<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="100" value="<?Php echo $DESCP ?>" required />
+														<Input class="form-control" Type="Text" name="dmov" size="100" maxlength="100" value='<?Php echo $DESCP ?>' readonly />
 													</div>
 												</div>
 											</div>
-											
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
@@ -303,12 +358,11 @@ mysqli_free_result ($RegistroA);
 													</div>
 												</div>
 											</div>
-											
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Unitario Moneda Extranjera:</font></label>
-														<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="0.00" required />
+														<label class="input-group-text"><font color="#606060" size="3px">Costo Unitario Moneda Ext:</font></label>
+														<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="0.000" required />
 													</div>
 												</div>
 												<div class="col-lg-4">
@@ -324,9 +378,9 @@ mysqli_free_result ($RegistroA);
 														<label class="input-group-text"><font color="#606060" size="3px">Tipo de Entrada Material:</font></label>
 														<select name="tipent" class="form-control" required />						
 															<option value=""></option>
-															<option value="Nacional">Nacional</option>
-															<option value="Internacional">Internacional</option>
-															<option value="Transferencia">Transferencia</option>
+															<option value="NACIONAL">NACIONAL</option>
+															<option value="INTERNACIONAL">INTERNACIONAL</option>
+															<option value="TRANSFERENCIA">TRANSFERENCIA</option>
 														<select>
 													</div>
 												</div>
@@ -346,7 +400,7 @@ mysqli_free_result ($RegistroA);
 												<div class="col-lg-12">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Observacion de Entrada.:</font></label>
-														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" />
+														<Input class="form-control" Type="Text" name="movd_obs" size="100" maxlength="100" onkeyup="this.value = this.value.toUpperCase();" />
 													</div>
 												</div>
 											</div>

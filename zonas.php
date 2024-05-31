@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -142,17 +142,24 @@ else $CT2 = '0';
 								</div>
 							</div>
 							<br>
-							<?php
-							//if ($CIA != '')
-							//{ ?>			  
+	  
 							<div class="panel-body">
 							<?php
+							if ($CIA != '')
+							{	
+							//---------------------------------------------------------------
+							$SQL = "SELECT * FROM wh_zones
+							INNER JOIN companies ON companies.id = wh_zones.zcompany_id
+							WHERE wh_zones.zcompany_id = '$CIA'
+							";
+							//---------------------------------------------------------------
+							} else {
 							//---------------------------------------------------------------
 							$SQL = "SELECT * FROM wh_zones
 							INNER JOIN companies ON companies.id = wh_zones.zcompany_id
 							";
-							//WHERE wh_zones.zcompany_id = '$CIA'
-							//---------------------------------------------------------------
+							//---------------------------------------------------------------								
+							}	
 							?>	
                     		<table id="zonas_data" class="table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer" border='1'>
                     			<thead>

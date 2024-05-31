@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //marcas.php
 
 include('database_connection.php');
@@ -63,7 +63,7 @@ else $ZON = '';
 					<?php
 					if($add == '1' and $actua == '1')
 					{ ?>
-						<a href="#addnew" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" data-toggle="modal" ><span class="fa fa-plus"></span> Agregar Zona</a>
+						<a href="#addnew" class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" data-toggle="modal" ><span class="fa fa-plus"></span> Agregar Consumo</a>
 						
 					<?php	} else { ?>
 					

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //entproduct.php
 
 include('database_connection.php');
@@ -167,6 +167,8 @@ if(isset($_GET["CID"]))$CID = $_GET["CID"];
 else $CID = '';
 if(isset($_GET["CONDI"]))$CONDI = $_GET["CONDI"];
 else $CONDI = '';
+if(isset($_GET["obs"]))$movd_obs = $_GET["obs"];
+else $movd_obs = '';
 //-------------
 if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 else $CT1 = '0';
@@ -214,7 +216,9 @@ mysqli_free_result ($Registro1);
 //---------------------------------------------------------------
 
 //===============================================================
-	$SQL = "SELECT * FROM wh_materials Where code = '$prod2' ";
+	$SQL = "SELECT * FROM wh_materials 
+	INNER JOIN wh_measurement_units ON wh_measurement_units.id = wh_materials.wh_measurement_unit_id_m
+	Where code = '$prod2' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQL);
 	//----------------------------------------------------------------
 	while($Filap = mysqli_fetch_array($Registrop))
@@ -222,6 +226,8 @@ mysqli_free_result ($Registro1);
 	// Asignar Datos a las variables
 	//-------------------------------
 	$DESCP= $Filap["description_m"];
+	$PRODP = $Filap["cost_me"];			// Precio A del Producto
+	$UNIM = $Filap["name"];
 	}
 	mysqli_free_result ($Registrop);
 //===============================================================
@@ -249,6 +255,43 @@ $DCIA = $FilaA["company"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
+$MM = $mhper;
+$MM_ANT = $MM - 1; 				// Mes periodo actual en arreglo (12 Pos)
+$MM_PANT = $MM - 1;				// Mes para Saldo del Periodo anterior (13 Pos)
+$existencia = 0;
+//------------------
+$SQL = "SELECT * FROM wh_saldosm
+Where product_cod = '$prod2' and zone_id = '$ZON' and company_id = '$CIA' and aa_s = '$mhejer' 
+";
+$Registro = mysqli_query($link,$SQL);
+//-----------------------------
+while ($row=mysqli_fetch_array($Registro))
+{
+	if($row['sal_id'] != null)
+	{
+		$mValore = '';
+		$mValors = '';
+		$mValorfp = '';
+		
+		$mValore=explode("|", $row["saldos_e"]);
+		$exe = $mValore[$MM_ANT];
+
+		$mValors=explode("|", $row["saldos_s"]);
+		$exs = $mValors[$MM_ANT];
+
+		$mValorfp=explode("|", $row["saldos_fp"]);
+		$expa = $mValorfp[$MM_PANT];
+	
+	}	else	{
+		$exe = 0;
+		$exs = 0;
+		$expa = 0;
+	}
+	$existencia = $expa + $exe - $exs;
+}
+mysqli_free_result ($Registro);
+//---------------------------------------------------------------
+//---------------------------------------------------------------
 ?>
 <Input Type="hidden" name="CT1" value="<?Php echo $CT1=$CT1+'1';?>" />
 <Input Type="hidden" name="IDM2" value="<?Php echo $IDM ?>" />
@@ -258,6 +301,7 @@ mysqli_free_result ($RegistroA);
 <Input Type="hidden" name="tmcod" value="<?Php echo $tmcod ?>" />
 <Input Type="hidden" name="tmtipo" value="<?Php echo $tmtipo ?>" />
 <Input Type="hidden" name="CID" value="<?Php echo $CID ?>" />
+<Input Type="hidden" name="obs" value="<?Php echo $movd_obs ?>" />
 
 <div class="content-wrapper">
 	<section class="content">
@@ -325,7 +369,22 @@ mysqli_free_result ($RegistroA);
 											<font color='black' size="3px"><?Php echo $prod2 ?></font>
 											<label class="control-label"><font color="blue" size="3px">--</font></label>
 											<font color='black' size="3px"><?Php echo $DESCP ?></font>
-											<br>
+											
+											<div class="row">
+												<div class="col-lg-11">
+													<div class="input-group">
+														<label class="input-group-text"><font color="blue" size="3px">Unidad de Medida.:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $UNIM ?></font></label>												
+														&nbsp;&nbsp;
+														<label class="input-group-text"><font color="blue" size="3px">Existencia:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo number_format($existencia, 2, '.', '') ?></font></label>
+															
+														&nbsp;&nbsp;
+														<label class="input-group-text"><font color="blue" size="3px">Ultimo Costo:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $PRODP ?></font></label>
+													</div>
+												</div>
+											</div>
 
 											<div class="row">
 												<div class="col-lg-8">
@@ -338,7 +397,7 @@ mysqli_free_result ($RegistroA);
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Cantidad de Material.:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Cantidad de Material..:</font></label>
 														<Input class="form-control" Type="Text" name="CANT" size='8' value="<?Php echo $mdcant ?>" readonly></font>
 													</div>
 												</div>
@@ -346,7 +405,7 @@ mysqli_free_result ($RegistroA);
 											<div class="row">
 												<div class="col-lg-5">
 													<div class="input-group">
-														<label class="input-group-text"><font color="#606060" size="3px">Unitario Moneda Extranjera:</font></label>
+														<label class="input-group-text"><font color="#606060" size="3px">Costo Unitario Moneda Ext:</font></label>
 														<Input class="form-control" Type="Text" name="CUNIME" size='12' maxlength="12" value="<?Php echo $mdcostoue ?>" readonly />
 													</div>
 												</div>
@@ -377,7 +436,7 @@ mysqli_free_result ($RegistroA);
 												<div class="col-lg-12">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Observacion de Entrada.:</font></label>
-														<Input class="form-control" Type="Text" name="movd_obs" value="<?Php echo $movd_obs ?>" readonly>
+														<Input class="form-control" Type="Text" name="obs" value="<?Php echo $movd_obs ?>" readonly>
 													</div>
 												</div>
 											</div>											
@@ -395,14 +454,15 @@ mysqli_free_result ($RegistroA);
 													</div>
 												</div>
 												<div class="col-sm-6" align='right'>
-													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>
+
 													<?php
-													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&TS=$mdtipsal&CD=$CID&DE=$dmov&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>"; 
-													?>
+													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&CD=$CID&DE=$dmov&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>"; 
+													?> &nbsp;&nbsp;&nbsp;&nbsp;
+													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>													
 												</div>											
 											</div>
 										</div>
-										<HR style="border-color:#cccccc;">
+										<HR style="border-color:#cccccc">
 									</div>		
 								</div>			
 							</div>				
@@ -465,7 +525,7 @@ mysqli_free_result ($RegistroA);
 							{
 							echo "<Td Align=Left><font size=2>" . $Fila['code'];	
 							}	else	{	
-							echo "<td><a href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&TS=$mdtipsal&CD=$CID \">$prod2X</a></td>"; 
+							echo "<td><a href=\"entproduct_02EV2.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&CD=$CID \">$prod2X</a></td>"; 
 							}
 							echo "<Td Align=Left><span class=text-wrap><font size=2>" . $Fila['description_m'];
 							echo "<Td Align=Center><font size=2>" . $GRPXD;

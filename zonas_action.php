@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 //almacenes_action.php
 

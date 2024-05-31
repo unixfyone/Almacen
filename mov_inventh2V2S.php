@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -80,7 +80,7 @@ $cont_sm = $FilaA["zone_doc_sm"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-	$SQLp = "SELECT *, Count(per_statu) AS Cuenta1 FROM wh_periodos WHERE per_statu = 'Abierto' ";
+	$SQLp = "SELECT *, Count(per_statu) AS Cuenta1 FROM wh_periodos WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
 	while ($Filap=mysqli_fetch_array($Registrop))
@@ -94,7 +94,7 @@ mysqli_free_result ($RegistroA);
 	mysqli_free_result ($Registrop);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
- if ($MID == 'Salidas' ) {
+ if ($MID == 'SALIDAS' ) {
 	  
  if ($cont_sm < 10000 ) {
  $cont_sm1 = str_pad($cont_sm, 5, "0", STR_PAD_LEFT);
@@ -206,7 +206,7 @@ mysqli_free_result ($RegistroA);
 											<label><font color="#505050" size="3px"> Tipo de Entrega</font></label>
 											<select name="movh_tentrega" id="movh_tentrega" class="form-control" required>
 											<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
-												<option value="NO APLICA">NO APLICA</option>
+												<option value="NO-APLICA">NO-APLICA</option>
 												<option value="TRASLADO">TRASLADO</option>
 												<option value="DEVOLUCION">DEVOLUCION</option>
 												<option value="DESINCORPORACION">DESINCORPORACION</option>
@@ -217,26 +217,27 @@ mysqli_free_result ($RegistroA);
 									<div class="col-sm-2">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#990000" size="3px"> Receptor externo:</font></label>
-											<input type="checkbox" name="check" id="check" onchange="javascript:showContent()" />
+											<input type="checkbox" id="check" onchange="javascript:showContent()" />
 										</div>
 									</div>
 							
 									<div id="content" style="display: none;" class="col-sm-6">
 										<div class="input-group">
 											<label><font FACE="times new roman" size="3px"> Material Recibido por.:</font></label>
-											<input type="text" maxlength="60" name="movh_receptor" id="movh_receptor" class="form-control" placeholder="Receptor del Material" required />
+											<input type="text" maxlength="60" name="movh_receptor" id="movh_receptor" class="form-control" placeholder="Receptor del Material" />
 										</div>
 									</div>
 								</div>
-<!-- ====================================================== -->	
-								<br>
-								<div id="content2" style="display: block;" class="col-sm-12">
+							</div>
+
+							<br>
+							<div id="content2" style="display: block;" class="col-sm-12">
 								<div class="row">
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label class="input-group-text"><font color="#505050" size="3px">Compañia del Receptor.:</font></label>
 											<div class="input-group-prepend">
-												<select name="company_id" id="company_id" class="form-control" required>
+												<select name="company_id" id="company_id" class="form-control">
 												<option value="">Seleccionar Compañia</option>
 												<?php echo fill_companies_list($connect); ?>
 												</select>
@@ -247,7 +248,7 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label class="input-group-text"><font color="#505050" size="3px">Departamento del Receptor.:</font></label>
 											<div class="input-group-prepend">
-												<select name="department_id2" id="department_id2" class="form-control" required>
+												<select name="department_id2" id="department_id2" class="form-control">
 												<option value="">Seleccionar Departamento</option>
 												</select>
 											</div>
@@ -257,88 +258,83 @@ mysqli_free_result ($RegistroA);
 										<div class="form-group">
 											<label class="input-group-text"><font color="#505050" size="3px"> Receptor...:</font></label>
 											<div class="input-group-prepend">
-												<select name="user_receptor" id="user_receptor" class="form-control"  required>
+												<select name="user_receptor" id="user_receptor" class="form-control" >
 													<option value="">Seleccionar Usuario</option>
 												</select>
 											</div>
 										</div>
 									</div>
 								</div>
-								</div>
-<!-- ====================================================== -->	
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="input-group">
-											<label class="input-group-text"><font color="#505050" size="3px">Departamento Despachador:</font></label>
-											<select name="department_id" id="department_id" class="form-control" required>
-												<option value="">Seleccionar Departamento</option>
-												<?php echo fill_departments_list($connect, $CIAX); ?>
-											</select>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="input-group">
-											<label class="input-group-text"><font color="#505050" size="3px">Usuario Despachador:</font></label>
-											<select name="user_despachador" id="user_despachador" class="form-control"  required>
-												<option value="">Seleccionar Usuario</option>
-											</select>
-										</div>
-									</div>
-								</div>
-<!-- ====================================================== -->	
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="input-group">
-											<label class="input-group-text"><font color="#505050" size="3px">Departamento Aprobador:</font></label>
-											<select name="department_id3" id="department_id3" class="form-control" required>
-												<option value="">Seleccionar Departamento</option>
-												<?php echo fill_departments_list($connect, $CIAX); ?>
-											</select>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="input-group">
-											<label class="input-group-text"><font color="#505050" size="3px">Usuario Aprobador:</font></label>
-											<select name="user_aprobador" id="user_aprobador" class="form-control"  required>
-												<option value="">Seleccionar Usuario</option>
-											</select>
-										</div>
-									</div>
-								</div>
-<!-- ====================================================== -->								
 							</div>
-							<br>
-							
+
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="input-group">
+										<label class="input-group-text"><font color="#505050" size="3px">Departamento Despachador:</font></label>
+										<select name="department_id" id="department_id" class="form-control" required>
+											<option value="">Seleccionar Departamento</option>
+											<?php echo fill_departments_list($connect, $CIAX); ?>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="input-group">
+										<label class="input-group-text"><font color="#505050" size="3px">Usuario Despachador:</font></label>
+										<select name="user_despachador" id="user_despachador" class="form-control"  required>
+											<option value="">Seleccionar Usuario</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="input-group">
+										<label class="input-group-text"><font color="#505050" size="3px">Departamento Aprobador:</font></label>
+										<select name="department_id3" id="department_id3" class="form-control" required>
+											<option value="">Seleccionar Departamento</option>
+											<?php echo fill_departments_list($connect, $CIAX); ?>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="input-group">
+										<label class="input-group-text"><font color="#505050" size="3px">Usuario Aprobador:</font></label>
+										<select name="user_aprobador" id="user_aprobador" class="form-control"  required>
+											<option value="">Seleccionar Usuario</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+
 							<Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 							<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 							<Input Type="hidden" name="MID" value="<?Php echo $MID ?>">
 							
 							<div class="modal-footer" style="background-color:#FFFFFC">
-								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="Submit" id="BotonAdd" name="BotonAdd"><span class="glyphicon glyphicon-save"></span> Agregar</button>
+								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" formaction="act_movinventh.php" formmethod="post" type="submit" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
 								
 								<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 							</div>
 							<?php } else {?>
 							
-								<div class="modal-dialog modal-md"">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h4 class="modal-title">Agregar Documentos</h4>
-											<button type="button" class="close" data-dismiss="modal">&times;</button>
-										</div>
-									<div class="modal-body">
-										<div class="alert alert-danger">
-											<strong>Atencion.! </strong> No Existe Ningun Periodo Abierto .....
-										</div>
+							<div class="modal-dialog modal-md"">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Agregar Documentos</h4>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
 									</div>
-									<div class="modal-footer">
-										<button class='btn btn-outline-<?php echo $classButtonFooter; ?>' type='Button' name='Cancel' onclick='window.history.go(-1)' data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</button>
+								<div class="modal-body">
+									<div class="alert alert-danger">
+										<strong>Atencion.! </strong> No Existe Ningun Periodo Abierto .....
 									</div>
-								</div>								
-							
+								</div>
+								<div class="modal-footer">
+									<button class='btn btn-outline-<?php echo $classButtonFooter; ?>' type='button' name='Cancel' onclick='window.history.go(-1)' data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</button>
+								</div>
+							</div>								
 							<?php } ?>
-
-							</div>			
 						</div>
 					</div>
 				</div>		
@@ -346,70 +342,6 @@ mysqli_free_result ($RegistroA);
 		</div>
 	</section>					
 </div>
-
-<?php
-if (isset($_GET["BotonAdd"]))
-{
-	//---------------------------------------------------------------
-	$aKeyword = explode(" ", $_GET['prod']);
-	$SQL ="SELECT * FROM wh_materials 
-	INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
-	WHERE wh_materials.zone_id = '$ZON' and 
-	wh_materials.company_id = '$CIA' and 
-	wh_materials.m_statu_m = 'Activo' and
-	wh_materials.code like '%" . $aKeyword[0] . "%' OR 
-	wh_materials.description_m like '%" . $aKeyword[0] . "%' OR
-	wh_categories.category like '%" . $aKeyword[0] . "%'
-	";
-	//---------------------------------------------------------------
-	//echo "<br>";
-
-	echo "<b><font color='#0066FF' FACE='times new roman' size='4px'>Lista de Materiales</font></b>";
-	echo "<Table class='table-hover' border='1' width='100%'>";
-	//-----------------------------
-	echo "<TR>";
-	echo "<TH><p style='text-align:center'>" . "Codigo";
-	echo "<TH><p style='text-align:Left'>" . "Descripción";
-	echo "<TH><p style='text-align:center'>" . "Categoria";
-	echo "<TH><p style='text-align:center'>" . "Status";
-
-	$Registro2 = mysqli_query($link,$SQL);
-	while($Fila = mysqli_fetch_array($Registro2))
-	{
-	//=============================
-	if($Fila['m_statu_m'] == 'Activo')
-	{
-		$status = '<span class=""><font color="blue" FACE="times new roman" size="3px">Activo</font></span>';
-	}	else	{
-		$status = '<span class=""><font color="red" FACE="times new roman" size="3px">Inactivo</font></span>';
-	}
-	//=============================
-	$GRPXD = '';
-	$prodid = $Fila["id"];
-	$prod2X = $Fila["code"];
-	$GRPXD =  $Fila["category"];
-	//=============================
-	echo "<Tr>";
-	//-------
-	if($Fila['m_statu_m'] != 'Activo')
-	{
-	echo "<Td Align=Left><font size=2>" . $Fila['code'];	
-	}	else	{	
-	echo "<td><a href=\"entproduct_02E.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TE=$mdtipent&TS=$mdtipsal&CD=$CID \">$prod2X</a></td>"; 
-	}
-	echo "<Td Align=Left><font size=2>" . $Fila['description_m'];
-	echo "<Td Align=Center><font size=2>" . $GRPXD;
-	echo "<Td Align=Center><font size=2>" . $status;
-	echo "</TR>";
-	//---------------
-	}
-	//---------------
-	mysqli_free_result ($Registro2);
-
-	echo "</Table>";
-	//---------------
-}
-?>
 </FORM>
 <script type="text/javascript">
     function showContent() {
@@ -418,9 +350,13 @@ if (isset($_GET["BotonAdd"]))
         check = document.getElementById("check");
         if (check.checked) {
             element.style.display='block';
+			document.getElementById('company_id').value = '';
+			document.getElementById('department_id2').value = '';
+			document.getElementById('user_receptor').value = '';
 			element2.style.display='none';
         }
         else {
+			document.getElementById('movh_receptor').value = '';
             element.style.display='none';
 			element2.style.display='block';
         }

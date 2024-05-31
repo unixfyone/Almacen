@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -89,6 +89,8 @@ $CAT = $row["wh_category_id"];
 $SCAT = $row["wh_subcategory_id"];
 $MARC = $row["wh_brand_id"];
 $type_material = $row["type_material"];
+$type_tm2_id = $row["type_tm2_id"];
+$clas_tm2_id = $row["clas_tm2_id"];
 } 
 mysqli_free_result ($Registro);
 //---------------------------------------------------------------
@@ -102,6 +104,9 @@ $CODSAP = $PREFIX1.'-'.$code;
 
 <Input Type="hidden" name="description_m" value="<?Php echo $description ?>">
 <Input Type="hidden" name="description_amp_m" value="<?Php echo $description_a ?>">
+
+<Input Type="hidden" name="type_tm2_id" value="<?Php echo $type_tm2_id ?>">
+<Input Type="hidden" name="clas_tm2_id" value="<?Php echo $clas_tm2_id ?>">
 
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 <!--  ======================================================================================= -->
@@ -148,7 +153,7 @@ $CODSAP = $PREFIX1.'-'.$code;
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label><font color="blue" size="4px">Línea.:  </font></label>
-											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $acronym ." / ". $namel; ?></font></span>
+											&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $namel; ?></font></span>
 										</div>
 									</div>	
 								</div>	
@@ -319,6 +324,8 @@ $CODSAP = $PREFIX1.'-'.$code;
 											</div>
 										</div> 
 									</div>
+								</div>	
+								<div class="row">
 									<div class="col-sm-4">
 										<div class="form-group">
 											<label><font color="#505050" size="3px"> Tipo Material</font></label>
@@ -327,19 +334,67 @@ $CODSAP = $PREFIX1.'-'.$code;
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												  echo '<option ';
-													if($type_material == 'Accesorio') echo 'selected ';
-												  echo 'value=' . 'Accesorio' .'>'. 'Accesorio' . "\n";
+													if($type_material == 'ACCESORIOS') echo 'selected ';
+												  echo 'value=' . 'ACCESORIOS' .'>'. 'ACCESORIOS' . "\n";
 													echo '<option ';
-													if($type_material == 'Consumible') echo 'selected ';
-												  echo 'value=' . 'Consumible' .'>'. 'Consumible' . "\n";
+													if($type_material == 'CONSUMIBLES') echo 'selected ';
+												  echo 'value=' . 'CONSUMIBLES' .'>'. 'CONSUMIBLES' . "\n";
 													echo '<option ';
-													if($type_material == 'Inventario') echo 'selected ';
-												  echo 'value=' . 'Inventario' .'>'. 'Inventario' . "\n";
+													if($type_material == 'INVENTARIO') echo 'selected ';
+												  echo 'value=' . 'INVENTARIO' .'>'. 'INVENTARIO' . "\n";
 												?>
 												</select>												
 											</div>
 										</div>  
 									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label><font color="#505050" size="3px">Tipo de Inventario</font></label>
+											<div class="input-group-prepend">
+												<select name="type_tm2_id" id="type_tm2_id" class="form-control" onChange="javascrip:form.submit()" disabled>
+													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>													
+													<?php
+													//---------------------------------------------------------------
+													$SQLtm="select * From wh_type_material2 where statu = 'Activo' and type_material_id ='$type_material' ORDER BY name ASC";
+													$Registro=mysqli_query($link,$SQLtm);
+													//-------
+													while ($Fila=mysqli_fetch_array($Registro)){
+													//-------
+													echo '<option ';
+													if($type_tm2_id == $Fila["id"])echo 'selected ';
+													echo 'value=' . $Fila["id"] .'>'. $Fila["name"] . "\n";
+													}
+													mysqli_free_result ($Registro);
+													//---------------------------------------------------------------
+													?>
+												</select>
+											</div>
+										</div> 
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label><font color="#505050" size="3px">Clasificacion Tipo Inventario</font></label>
+											<div class="input-group-prepend">
+												<select name="clas_tm2_id" id="clas_tm2_id" class="form-control" onChange="javascrip:form.submit()" disabled>
+													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>													
+													<?php
+													//---------------------------------------------------------------
+													$SQLtm="select * From wh_clasificacion_tm2 where statu = 'Activo' and id_tm2 ='$type_tm2_id' ORDER BY name ASC";
+													$Registro=mysqli_query($link,$SQLtm);
+													//-------
+													while ($Fila=mysqli_fetch_array($Registro)){
+													//-------
+													echo '<option ';
+													if($clas_tm2_id == $Fila["id"])echo 'selected ';
+													echo 'value=' . $Fila["id"] .'>'. $Fila["name"] . "\n";
+													}
+													mysqli_free_result ($Registro);
+													//---------------------------------------------------------------
+													?>
+												</select>
+											</div>
+										</div> 
+									</div>									
 								</div>
 								<div class="row">                                
 									<div class="col-sm-4">

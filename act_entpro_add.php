@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -28,7 +28,7 @@ echo '<FORM ACTION="" method="Post">';
 date_default_timezone_set('America/Caracas');
 
 $TMOV = $_POST['mhtm'];
-if($TMOV == 'Entradas'){
+if($TMOV == 'ENTRADAS'){
 //===============================================================
 //============== AGREGAR REGISTROS   ============================
 if (isset($_POST['BotonAdd']))

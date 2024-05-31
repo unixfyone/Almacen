@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //entproduct.php
 
 include('database_connection.php');
@@ -144,14 +144,17 @@ else $CT1 = '0';
 $varPI = '0';
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-$SQL = "SELECT * FROM wh_movinvh where movh_id = '$IDX'";
+$SQL = "SELECT * FROM wh_movinvh 
+INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
+where movh_id = '$IDX'";
 $Registro1 = mysqli_query($link,$SQL);
 while($Fila1 = mysqli_fetch_array($Registro1))
 {
 $mhid = $Fila1["movh_id"];
 $ZON = $Fila1["movh_zone"];			// Código del Almacen
 $mhdoc = $Fila1["movh_doc"];
-$mhtdoc = $Fila1["movh_tdoc"];
+$mhtdoc = $Fila1["tm_desc"];
+//$mhtdoc = $Fila1["movh_tdoc"];
 $mhtmov = $Fila1["movh_tmov"];
 $mhfecha = $Fila1["movh_fecha"];
 $mhejer = $Fila1["movh_ejer"];
@@ -284,8 +287,16 @@ mysqli_free_result ($RegistroA);
 										WHERE wh_materials.zone_id = '$ZON' and 
 										wh_materials.company_id = '$CIA' and 
 										wh_materials.m_statu_m = 'Activo' and
-										wh_materials.code like '%" . $aKeyword[0] . "%' OR 
+										wh_materials.code like '%" . $aKeyword[0] . "%' or 
+										
+										wh_materials.zone_id = '$ZON' and 
+										wh_materials.company_id = '$CIA' and 
+										wh_materials.m_statu_m = 'Activo' and										
 										wh_materials.description_m like '%" . $aKeyword[0] . "%' OR
+										
+										wh_materials.zone_id = '$ZON' and 
+										wh_materials.company_id = '$CIA' and 
+										wh_materials.m_statu_m = 'Activo' and									
 										wh_categories.category like '%" . $aKeyword[0] . "%'
 										";
 
@@ -324,7 +335,7 @@ mysqli_free_result ($RegistroA);
 										{
 										echo "<Td Align=Left><font size=2>" . $Fila['code'];	
 										}	else	{	
-										echo "<td><a href=\"entproduct_03A_Sal.php?IDH=$IDX&IDP=$prodid&CP=$prod2X \">$prod2X</a></td>"; 
+										echo "<td><a href=\"entproduct_03AV2S.php?IDH=$IDX&IDP=$prodid&CP=$prod2X \">$prod2X</a></td>"; 
 										}
 										//-------
 										echo "<Td Align=Left><font size=2>" . $Fila['description_m'];

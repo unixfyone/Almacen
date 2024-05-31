@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -137,16 +137,15 @@ mysqli_free_result ($Registro1);
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value="">Seleccionar Línea</option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_lines WHERE statu = 'Activo' ORDER BY acronym ASC";
+												$SQL="Select * FROM wh_lines WHERE statu = 'Activo' and typel = 'LIN' ORDER BY namel ASC";
 												
 												$Registro=mysqli_query($link,$SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
-												$LIND = $Fila["acronym"] ."&nbsp;&nbsp; / &nbsp;&nbsp;". $Fila["namel"];
 												//----
 												echo '<option ';
 												if($LIN == $Fila["id"])echo 'selected ';
-												echo 'value=' . $Fila["id"] .'>'. $LIND . "\n";
+												echo 'value=' . $Fila["id"] .'>'. $Fila["namel"] . "\n";
 												}
 												mysqli_free_result ($Registro);
 												//---------------------------------------------------------------
@@ -158,16 +157,22 @@ mysqli_free_result ($Registro1);
 							</div>
 							<br>
 							<?php
+							
+							//echo "<pre>"; print_r($LIN); exit();
+							
+							
 							if ($LIN != '')
 							{ ?>
 							<hr class="elevation-2" color="#CCCCCC" >		
 							<div class="panel-body">
 								<?php
 								
+								//echo "<pre>"; print_r($LIN); exit();
+								
 								//---------------------------------------------------------------
 								$SQL = "SELECT mat.*, um.id AS umid, um.name, cat.cat_id, cat.category FROM wh_master_materials mat
-								INNER JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id
-								INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id
+								LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id
+								LEFT JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id
 								WHERE mat.wh_line_id = '$LIN' 
 								ORDER BY mat.code DESC
 								";
@@ -181,7 +186,7 @@ mysqli_free_result ($Registro1);
 								$acronym = $row["acronym"];
 								$namel = $row["namel"];
 								}
-								$LIND2 = $acronym ."&nbsp;&nbsp; / &nbsp;&nbsp;". $namel;
+								//$LIND2 = $namel;
 								mysqli_free_result ($RegistroA);
 								?>
 								
@@ -304,7 +309,7 @@ $accion = '<ul class="nav navbar-nav">
 				<div class="modal-body">
 					<div class="form-group">
 						<label><font color="#660000" size="4px">Línea del Material.:  </font></label>
-						&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $LIND2; ?></font></span>
+						&nbsp;&nbsp;<span><font color="black" size="4px"> <?Php echo $namel; ?></font></span>
 					</div>
 
 					<Div id="materials_details"></Div>

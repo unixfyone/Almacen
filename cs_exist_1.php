@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -99,20 +99,12 @@ else $MAT = '';
 if(isset($_GET["prod"]))$prod = $_GET["prod"];
 else $prod = '';
 //-------------
+if(isset($_GET["AA"]))$AA = $_GET["AA"];
+else $AA = '';
+//===============================================================
 
 //===============================================================
-	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' ";
-	$Registrop = mysqli_query($link,$SQLp);
-	//-----------------------------
-	while ($Filap=mysqli_fetch_array($Registrop))
-	{	
-		$AA = $Filap["per_aa"];
-		$MM = $Filap["per_mm"];
-	}
-	mysqli_free_result ($Registrop);
-	//===============================================================
 ?>
-	
 
 <Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 <Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
@@ -139,7 +131,7 @@ else $prod = '';
 				<div class="col-12">
 					<div class="card card-<?= $cstyle; ?> elevation-2">
 						<div class="card-header elevation-1" style="background-color:#<?=$ccolor;?>">
-							<b><font color="#FFFFFF" FACE="times new roman" size="4px">Consulta Existencia por Material</font></b>
+							<b><font color="#FFFFFF" size="4px">Consulta Existencia por Material</font></b>
 						</div>
 						<!-- /.card-header -->
 <!-- =================================================================================== -->
@@ -198,7 +190,7 @@ else $prod = '';
 												?>									
 											</select>
 										</div>
-									</div>						
+									</div>	
 								</div>
 								<br>
 							</div>
@@ -208,6 +200,23 @@ else $prod = '';
 			</div>
 		</div>
 	</section>
+<?php
+//===============================================================
+//echo "<pre>"; print_r($ZON); exit();
+
+	$SQLp = "SELECT * FROM wh_periodos 
+	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
+	$Registrop = mysqli_query($link,$SQLp);
+	//-----------------------------
+	while ($Filap=mysqli_fetch_array($Registrop))
+	{	
+		$AA = $Filap["per_aa"];
+		$MM = $Filap["per_mm"];
+	}
+	mysqli_free_result ($Registrop);
+	//===============================================================
+?>	
+<Input Type="hidden" name="AA" value="<?Php echo $AA ?>">	
 	<!-- ========================================================== -->
 	<?php if ($CIAX != '' and $ZON != '') { ?>
 	
@@ -249,9 +258,9 @@ else $prod = '';
 							
 							//---------------------------------------------------------------
 							$SQL = "SELECT * FROM wh_materials 
-							INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
-							INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
-							Where wh_materials.code LIKE '%$prod%' and wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_saldosm.aa_s = '$AA'
+							LEFT JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
+							LEFT JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
+							Where wh_materials.code LIKE '%$prod%' and wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_saldosm.aa_s = '$AA' and wh_saldosm.zone_id = '$ZON'
 							Order by wh_materials.code ASC";
 							//---------------------------------------------------------------
 							echo "<b><font color='#0066FF' FACE='times new roman' size='4px'>Lista de Materiales</font></b>";
@@ -323,9 +332,9 @@ else $prod = '';
 								echo "<td Align=Left><font size=2>" . $Fila['category'];
 								echo "<td Align=Left><font size=2>" . $Fila['ubication'];
 								echo "<td Align=Center><font size=2>" . $status;
-								echo "<td Align=Center><font size=2>" . $existencia;
+								echo "<td Align=Center><font size=3>" . number_format($existencia, 2, '.', '');
 								echo "</tr>";
-								//---------------
+								//--------------- 
 							} 
 							mysqli_free_result ($Registro2);
 							echo "</table>";

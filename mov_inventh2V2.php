@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -74,7 +74,7 @@ $cont_sm = $FilaA["zone_doc_sm"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-	$SQLp = "SELECT *, Count(per_statu) AS Cuenta1 FROM wh_periodos WHERE per_statu = 'Abierto' ";
+	$SQLp = "SELECT *, Count(per_statu) AS Cuenta1 FROM wh_periodos WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
 	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
 	while ($Filap=mysqli_fetch_array($Registrop))
@@ -88,7 +88,7 @@ mysqli_free_result ($RegistroA);
 	mysqli_free_result ($Registrop);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
- if ($MID == 'Entradas' ) {
+ if ($MID == 'ENTRADAS' ) {
 	 
  if ($cont_em < 10000 ) {
  $cont_em1 = str_pad($cont_em, 5, "0", STR_PAD_LEFT);
@@ -234,7 +234,7 @@ $cont_doc = "EM".'-'.$cont_em1;
 								<Input Type="hidden" name="MID" value="<?Php echo $MID ?>">
 								
 								<div class="modal-footer" style="background-color:#FFFFFC">
-									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="bottom" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
+									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="buttom" id="BotonAdd" name="BotonAdd"><span class="fa fa-edit"></span> Agregar</button>
 									
 									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
 									

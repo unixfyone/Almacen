@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('database_connection.php');
 
@@ -18,6 +18,7 @@ include('unico.php');
 
 <?php
 
+//$ZON = $_POST["ZON"];
 
 //---------------------------------------------------------------
 
@@ -30,17 +31,18 @@ include('unico.php');
 //if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 //else $CT1 = '0';
 //===============================================================
-	$SQLp = "SELECT * FROM wh_periodos WHERE per_statu = 'Abierto' ";
-	$Registrop = mysqli_query($link,$SQLp);
+//	$SQLp = "SELECT * FROM wh_periodos 
+//	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
+//	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
-	while ($Filap=mysqli_fetch_array($Registrop))
-	{	
-		$AA = $Filap["per_aa"];
-		$MM = $Filap["per_mm"];
-	}
-	mysqli_free_result ($Registrop);
+//	while ($Filap=mysqli_fetch_array($Registrop))
+//	{	
+//		$AA = $Filap["per_aa"];
+//		$MM = $Filap["per_mm"];
+//	}
+//	mysqli_free_result ($Registrop);
 	//===============================================================
-
+//echo "<pre>"; print_r($ZON); exit();
 //===============================================================
 //---------------------------------------------------------------
 //---------------------------------------------------------------
@@ -52,10 +54,10 @@ include('unico.php');
 //if (isset($_GET['BtnOK']))
 if (isset($_POST['autorizados'])) 
 {
-	
-	$id = $_POST['id'];
-    //var_dump($id);
-    $count = count($id);
+ 	if (isset($_POST['id'])) 
+	{
+		$id = $_POST['id'];
+		$count = count($id);
 	
 	$mdcant2 = '0';
 //---------------------------------------------------------------
@@ -75,6 +77,8 @@ if (isset($_POST['autorizados']))
 		$tm_tipo = $row['movh_tmov'];			// Tipo Movimiento (E/S)
 		$cia = $row['movd_cia'];				// Id. Compañia
 		$zone = $row['movd_zone'];				// Id. Zona
+		$AA = $row['movd_ejer'];				// Ejercicio
+		$MM = $row['movd_per'];					// Periodo
 		$prodid = $row['product_id'];			// Id. de Producto
 		$prodcod = $row['product_cod'];			// Cod. de Producto
 		$mdcant = $row['movd_cant'];			// Cantidad del Movimiento
@@ -82,7 +86,13 @@ if (isset($_POST['autorizados']))
 		$tm_actcost = $row['tm_actcost'];		// Actualiza Costo
 	}
 	mysqli_free_result ($Registro);
-
+//---------------------------------------------------------------
+//---------------------------------------------------------------
+$MM_ANT = $MM - 1; 				// Mes periodo actual en arreglo (12 Pos)
+$MM_PANT = $MM - 1;				// Mes para Saldo del Periodo anterior (13 Pos)
+$existencia = 0;
+//---------------------------------------------------------------
+//---------------------------------------------------------------
 
 
 //---------------------------------------------------------------
@@ -107,10 +117,12 @@ if (isset($_POST['autorizados']))
 	$query = "SELECT * FROM wh_saldosm WHERE aa_s = '".$AA."' and product_id = '".$prodid."' ";	
 	$Registro2 = mysqli_query($link,$query);			
 	while($row2 = mysqli_fetch_array($Registro2))
-	{		
-		if ($tm_tipo == 'Entradas') {
+	{
+		$SWX = '0';
+		if ($tm_tipo == 'ENTRADAS') {
 			$mdcante = $mdcant;					// Cantidad del Movimiento
 			$mdcant2 = $mdcant * 1;
+			$exipro = $mdcant;				// para actualizar existencia producto entrada
 			//--------------------------------
 			$mValore=explode("|", $row2["saldos_e"]);
 			//--------------------------------
@@ -127,6 +139,31 @@ if (isset($_POST['autorizados']))
 		//----------
 		} else {
 		//----------
+			//if($row['sal_id'] != null)
+			//{
+				$mValore1X = '0';
+				$mValors1X = '0';
+				$mValorfp1X = '0';
+				$exipro = $mdcant * -1; 		// para actualizar existencia producto salida
+				
+				$mValore1X=explode("|", $row2["saldos_e"]);
+				$exe = $mValore1X[$MM_ANT];
+
+				$mValors1X=explode("|", $row2["saldos_s"]);
+				$exs = $mValors1X[$MM_ANT];
+
+				$mValorfp1X=explode("|", $row2["saldos_fp"]);
+				$expa = $mValorfp1X[$MM_PANT];
+			
+			//}	else	{
+			//	$exe = 0;
+			//	$exs = 0;
+			//	$expa = 0;
+			//}
+			$existencia = ((int)$expa + (int)$exe - (int)$exs );
+//echo "<pre>"; print_r($existencia); exit();			
+			if($existencia >= $mdcant) {
+		//----------
 			$mdcants = $mdcant;					// Cantidad del Movimiento
 			$mdcant2 = $mdcant * -1;
 			//--------------------------------
@@ -142,8 +179,12 @@ if (isset($_POST['autorizados']))
 			saldos_s = '$mValors2'
 			WHERE aa_s = '$AA' and product_id = '$prodid'";
 			mysqli_query($link,$query4);
+		} else {
+			$SWX = '1';
+		}
 		}
 		//=================================
+		if ($SWX == '0') {
 		//--------------------------------
 		$mValorfp=explode("|", $row2["saldos_fp"]);
 		//--------------------------------
@@ -157,8 +198,9 @@ if (isset($_POST['autorizados']))
 		saldos_fp = '$mValorfp2'
 		WHERE aa_s = '$AA' and product_id = '$prodid'";
 		mysqli_query($link,$query4);
+		
 		//=======================================================
-	}
+	
 	mysqli_free_result ($Registro2);
 //======== Actualiza Status en movinv_d ========
 		$fechac = date("Y-m-d");
@@ -170,20 +212,29 @@ if (isset($_POST['autorizados']))
 		";
 		mysqli_query($link,$query6);
 //========
-
+		}
+	}
 //========= Actualiza Quantity en Producto ============
 
 //======== Actualiza Costo Unitario en Producto =========
-	if ($tm_tipo == 'Entradas' and $tm_actcost == 'Si')
+	if ($tm_tipo == 'ENTRADAS' and $tm_actcost == 'Si')
 	{
 		$mdcost2 = $mdcost;
 //========
 		$query9 = "
 		UPDATE wh_materials
-		SET cost_me = '$mdcost2'
-		WHERE id = '".$prodid."'
+		SET cost_me = '$mdcost2',
+		existence = (existence + '$exipro')
+		WHERE id = '$prodid'
 		";
 		mysqli_query($link,$query9);		
+	} else {
+		$query10 = "
+		UPDATE wh_materials
+		SET existence = (existence + '$exipro')
+		WHERE id = '$prodid'
+		";
+		mysqli_query($link,$query10);		
 	}
 //========	
 }
@@ -193,7 +244,14 @@ alert('!Renglones Cerrados Correctamente...')
 window.history.go(-1)
 </script>";
 //==========
+} else {
+	echo"<script type='text/javascript'>
+	alert('!No se Seleccionaron Renglones.........')
+	window.history.go(-1)
+	</script>";
 }
+//==========
+} 
 //===============================================================
 ?>
 </div>

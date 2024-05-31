@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -203,7 +203,9 @@ mysqli_free_result ($RegistroA);
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="SELECT * FROM wh_periodos ORDER BY per_aa, per_mm DESC";
+												$SQL="SELECT * FROM wh_periodos 
+												WHERE zone_id = '$ZON'
+												ORDER BY per_aa, per_mm DESC";
 												$Registro=mysqli_query($link,$SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){

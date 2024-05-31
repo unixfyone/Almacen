@@ -9,10 +9,6 @@ $userid= $_SESSION['user_id'];
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>UnixFyOneS | Dashboard</title>
-
-  
-
-
 	
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -31,9 +27,9 @@ $userid= $_SESSION['user_id'];
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-
+<!--
 <div class="wrapper">
-  <!-- Navbar -->
+   Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark elevation-2">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -41,7 +37,7 @@ $userid= $_SESSION['user_id'];
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index_whpa.php" class="nav-link">Home</a>
+        <a href="index2.php" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -110,9 +106,18 @@ $classButtonList = 'btn btn-outline-light text-dark border border-dark btn-ms mr
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index_whpa.php" class="nav-link">
+                <a href="index2.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Home</p>
+                  <p>Dashboard General</p>
+                </a>
+              </li>
+            </ul>
+			
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="index2_C.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard Detalle</p>
                 </a>
               </li>
             </ul>
@@ -135,7 +140,7 @@ $classButtonList = 'btn btn-outline-light text-dark border border-dark btn-ms mr
 					$opcion53 = "Reportes de Mantenimientos";
 					?>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="javascript:void(0)" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Actualizaciones
@@ -527,10 +532,10 @@ $classButtonList = 'btn btn-outline-light text-dark border border-dark btn-ms mr
    -->
   <!-- /.control-sidebar -->
 
-  <!-- Main Footer -->
+  <!-- Main Footer 
 
 </div>
-<!-- ./wrapper -->
+ ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
 
@@ -558,7 +563,7 @@ $classButtonList = 'btn btn-outline-light text-dark border border-dark btn-ms mr
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<script src="dist/js/pages/dashboard.js"></script>
+<!-- <script src="dist/js/pages/dashboard.js"></script> -->
 
 
 </body>

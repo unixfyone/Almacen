@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ini_set('display_errors', 1);
 
@@ -23,8 +23,10 @@ include('headerx.php');
 include('unico.php');
 ?>
 
-<style type="text/css">
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
+<link rel="stylesheet" type="text/css" href="cssi/styles.css" />
 
+<style type="text/css">
 .div2 {
   background-color: #f2f2f2;
   width: 600px;
@@ -33,25 +35,36 @@ include('unico.php');
   padding: 50px;
   margin: 20px;
 }
-
 </style>
 <?Php
 //---------------------------------------------------------------
 echo '<FORM ACTION="" method="">';
 
-if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
-else $ZON = $_POST["ZON"];
-//-----------------
+$fecmin = '0';
+$fecmax = '0';
+$fecminm = '0';
+$fecmina = '0';
+
+if(isset($_GET["AA"]))$AA = $_GET["AA"];
+else $AA = '';
+//-------------
+if(isset($_GET["MM"]))$MM = $_GET["MM"];
+else $MM = '';
+//-------------
 if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
 else $CIA = $_POST["CIA"];
-//-----------------
+//-------------
+if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
+else $ZON = $_POST["ZON"];
+//-------------
 if(isset($_GET["CT1"]))$CT1 = $_GET["CT1"];
 else $CT1 = '0';
 
 $CTA = '0';
 $CTAE = '0';
 //===============================================================
-$SQLx = "SELECT Count(per_aa) AS Cuenta FROM wh_periodos WHERE per_statu = 'Abierto' ";
+$SQLx = "SELECT Count(per_aa) AS Cuenta FROM wh_periodos 
+WHERE per_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
 
 $Registro2 = mysqli_query($link, $SQLx);
 while ($Fila2=mysqli_fetch_array($Registro2))
@@ -62,7 +75,8 @@ $CTA = $Fila2["Cuenta"];
 //--------------------------------------------
 mysqli_free_result ($Registro2);
 //===============================================================
-$SQL1 = "SELECT *, Count(ej_aa) AS Cuenta2 FROM wh_ejercicios WHERE ej_statu = 'Abierto' ";
+$SQL1 = "SELECT *, Count(ej_aa) AS Cuenta2 FROM wh_ejercicios 
+WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
 
 $Registro1 = mysqli_query($link, $SQL1);
 //-----------------------------
@@ -71,7 +85,7 @@ while($Fila1 = mysqli_fetch_array($Registro1))
 $AA = $Fila1['ej_aa'];
 $CTAE = $Fila1["Cuenta2"];
 }	
-mysqli_free_result ($Registro1);	
+mysqli_free_result ($Registro1);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 $SQL = "SELECT * FROM wh_zones
@@ -174,20 +188,36 @@ if ($CTA > '0')
 		</div>
 	</section>
 	
-		<?php
-		if (isset($_GET['BtnOK']))
-		{
+	<?php
+	if (isset($_GET['BtnOK']))
+	{
 		$MES = $_GET["mes"];
+		
+		//========
+		$fecmind = 26;
+		$fecmaxd =	25;
+		
+		if ($MES == '1') {
+			$fecminm = 12;
+			$fecmina = $AA - 1;
+		} else {
+			$fecmina = $AA;
+			$fecminm = ($MES - 1);
+		}
+		
+		$fecmin = $fecmina.'-'.$fecminm.'-'.$fecmind;
+		$fecmax = $AA.'-'.$MES.'-'.$fecmaxd;
+	
 		//=======================================================		
 		//==============================================================		
-		$SQL = "INSERT INTO wh_periodos (per_aa, per_mm, company_id, zone_id) value ('$AA', '$MES', '$CIA', '$ZON')";
+		$SQL = "INSERT INTO wh_periodos (per_aa, per_mm, company_id, zone_id, fec_min, fec_max) value ('$AA', '$MES', '$CIA', '$ZON', '$fecmin', '$fecmax')";
 		mysqli_query ($link, $SQL);
 		//--------------------------
 			echo"<script type='text/javascript'>
 			alert('!Periodo Agregado correctamente...','$MES')
 			window.history.go(-2)
 			</script>";
-		}
+	}
 	//========		
 	}
 	} else {
@@ -196,7 +226,7 @@ if ($CTA > '0')
 		window.history.back()
 		</script>';	
 //--------------------------------------------
-}
+	}
 mysqli_close($link);
 ?>
 </div>

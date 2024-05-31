@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //marcas.php
 
 include('database_connection.php');

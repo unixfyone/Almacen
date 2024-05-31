@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('database_connection.php');
 
@@ -21,10 +21,7 @@ if(isset($_POST['btn_action']))
 		$output = '
 		<div class="">
 		<table class="table table-boredered">
-				
-			<b><font color="#0066FF" FACE="times new roman" size="3px">Año del Ejercicio..: &nbsp;&nbsp;&nbsp;</font> '.$_POST["xaa"].' &nbsp;&nbsp;&nbsp;<font color="#0066FF" FACE="times new roman" size="3px">Periodo del Ejercicio..:  &nbsp;&nbsp;&nbsp;</font>'.$_POST["xmm"].' </font></b>
-			<br>
-			<b><font color="#0066FF" FACE="times new roman" size="3px">Material..: </font> '.$_POST["desc"].' </b>
+
 			<tr>
 			<th>Fecha</th>
 			<th>Documento</th>
@@ -38,7 +35,7 @@ if(isset($_POST['btn_action']))
 		foreach($result as $row)
 		{
 			$tipom = 0;
-			if($row['movd_tmov'] == 'Entradas')
+			if($row['movd_tmov'] == 'ENTRADAS')
 			{
 				$tipom = '<font color="blue">'.number_format($row['movd_cant'], 2, ",", ".").'</font>';
 				$tipod = '<font color="blue">'.$row['movd_tmov'];
@@ -54,7 +51,7 @@ if(isset($_POST['btn_action']))
 				<td><font size="2px">'.$row["movh_doc"].'</font></td>
 				<td><font size="2px">'.$row["tm_desc"].'</font></td>
 				<td align="left"><b><font size="2px">'.$tipod.'</font></b></td>
-				<td align="right"><font size="2px">'.number_format($row['movd_costou_me'], 2, ",", ".").'</font></td>
+				<td align="right"><font size="2px">'.number_format($row['movd_costou_me'], 3, ",", ".").'</font></td>
 				<td align="right"><b><font size="2px">'.$tipom.'</font></b></td>
 			</tr>
 

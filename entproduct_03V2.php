@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //entproduct.php
 
 include('database_connection.php');
@@ -302,7 +302,7 @@ mysqli_free_result ($RegistroA);
 	{
 		$status = '<span class=""><font color="green" size="3px">Abierto</font></span>';
 
-		if($mhtmov == 'Entradas' ) {
+		if($mhtmov == 'ENTRADAS' ) {
 			$accion = '<ul class="nav navbar-nav">
 			<li class="dropdown btn-group">
 			<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
@@ -313,13 +313,13 @@ mysqli_free_result ($RegistroA);
 				<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
 			</ul></li></ul>';
 		}
-		if($mhtmov == 'Salidas' ) {
+		if($mhtmov == 'SALIDAS' ) {
 			$accion = '<ul class="nav navbar-nav">
 			<li class="dropdown btn-group">
 			<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
 
 			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="entproduct_02_Sal.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
+				<li><a href="entproduct_02V2S.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
 				<li role="presentation" class="divider"></li>
 				<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
 				

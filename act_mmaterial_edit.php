@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -43,6 +43,8 @@ $CAT = $_POST["CAT"];
 $SCAT = $_POST["SCAT"];
 $MARC = $_POST["MARC"];
 $type_material = $_POST["type_material"];
+$wh_tinv_id = $_POST["type_tm2_id"];
+$wh_clastm2_id = $_POST["clas_tm2_id"];
 $fecha = date("Y-m-d");
 //-------------------------- 
 //--------------------------
@@ -55,6 +57,8 @@ wh_category_id = '$CAT',
 wh_subcategory_id = '$SCAT', 
 wh_brand_id = '$MARC', 
 type_material = '$type_material',
+type_tm2_id = '$wh_tinv_id',
+clas_tm2_id = '$wh_clastm2_id',
 modified = '$fecha'
 WHERE id = '$IDX' ";
 //--------------------------

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -73,6 +73,12 @@ else $CAT = '';
 if(isset($_GET["type_material"]))$type_material = $_GET["type_material"];
 else $type_material = '';
 //-------------
+if(isset($_GET["type_tm2_id"]))$type_tm2_id = $_GET["type_tm2_id"];
+else $type_tm2_id = '';
+//-------------
+if(isset($_GET["clas_tm2_id"]))$clas_tm2_id = $_GET["clas_tm2_id"];
+else $clas_tm2_id = '';
+//-------------
 if(isset($_GET["ubication"]))$ubication = $_GET["ubication"];
 else $ubication = '';
 //-------------
@@ -111,6 +117,8 @@ mysqli_free_result ($RegistroA);
 <Input Type="hidden" name="CAT" value="<?Php echo $CAT ?>" />
 <Input Type="hidden" name="SCAT" value="<?Php echo $SCAT ?>" />
 <Input Type="hidden" name="type_material" value="<?Php echo $type_material ?>" />
+<Input Type="hidden" name="type_tm2_id" value="<?Php echo $type_tm2_id ?>" />
+<Input Type="hidden" name="clas_tm2_id" value="<?Php echo $clas_tm2_id ?>" />
 
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 
@@ -132,6 +140,8 @@ $CAT = $row["wh_category_id"];
 $SCAT = $row["wh_subcategory_id"];
 $MARC = $row["wh_brand_id"];
 $type_material = $row["type_material"];
+$type_tm2_id = $row["type_tm2_id"];
+$clas_tm2_id = $row["clas_tm2_id"];
 } 
 mysqli_free_result ($Registro);
 }
@@ -191,7 +201,7 @@ mysqli_free_result ($Registro);
 										<div class="form-group">
 											<label><font color="#505050" FACE="times new roman" size="3px"> Descripción del Material</font></label>
 											<div class="input-group-prepend">
-												<input type="text" maxlength="200" name="description" id="description" class="form-control" value="<?Php echo $description; ?>"  required />
+												<input type="text" maxlength="200" name="description" id="description" class="form-control" value='<?Php echo $description; ?>' onkeyup="this.value = this.value.toUpperCase();" required />
 											</div>
 										</div>                                 
 									</div>
@@ -199,7 +209,7 @@ mysqli_free_result ($Registro);
 										<div class="form-group">
 											<label><font color="#505050" FACE="times new roman" size="3px"> Descripción Ampliada del Material</font></label>
 											<div class="input-group-prepend">
-												<input type="text" maxlength="200" name="description_a" id="description_a" class="form-control" value="<?Php echo $description_a; ?>" placeholder="Descripción Ampliada del Material" />
+												<input type="text" maxlength="200" name="description_a" id="description_a" class="form-control" value='<?Php echo $description_a; ?>' placeholder="Descripción Ampliada del Material" onkeyup="this.value = this.value.toUpperCase();" />
 											</div>
 										</div>                                 
 									</div>
@@ -209,7 +219,7 @@ mysqli_free_result ($Registro);
 										<div class="form-group">
 											<label><font color="#505050" FACE="times new roman" size="3px"> Número de Parte</font></label>
 											<div class="input-group-prepend">
-												<input type="text" maxlength="45" name="part_number" id="part_number" class="form-control" value="<?Php echo $part_number; ?>" />
+												<input type="text" maxlength="45" name="part_number" id="part_number" class="form-control" value="<?Php echo $part_number; ?>" onkeyup="this.value = this.value.toUpperCase();" />
 											</div>
 										</div> 
 									</div>
@@ -311,28 +321,78 @@ mysqli_free_result ($Registro);
 												</select>									
 											</div>
 										</div> 
-									</div> 
+									</div>
+								</div>
+								<div class="row">
 									<div class="col-sm-4">
 										<div class="form-group">
 											<label><font color="#505050" FACE="times new roman" size="3px"> Tipo Material</font></label>
 											<div class="input-group-prepend">
-												<select name="type_material" id="type_material" class="form-control" required>
+												<select name="type_material" id="type_material" class="form-control" onChange="javascrip:form.submit()">
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												  echo '<option ';
-													if($type_material == 'Accesorio') echo 'selected ';
-												  echo 'value=' . 'Accesorio' .'>'. 'Accesorio' . "\n";
+													if($type_material == 'ACCESORIOS') echo 'selected ';
+												  echo 'value=' . 'ACCESORIOS' .'>'. 'ACCESORIOS' . "\n";
 													echo '<option ';
-													if($type_material == 'Consumible') echo 'selected ';
-												  echo 'value=' . 'Consumible' .'>'. 'Consumible' . "\n";
+													if($type_material == 'CONSUMIBLES') echo 'selected ';
+												  echo 'value=' . 'CONSUMIBLES' .'>'. 'CONSUMIBLES' . "\n";
 													echo '<option ';
-													if($type_material == 'Inventario') echo 'selected ';
-												  echo 'value=' . 'Inventario' .'>'. 'Inventario' . "\n";
+													if($type_material == 'INVENTARIO') echo 'selected ';
+												  echo 'value=' . 'INVENTARIO' .'>'. 'INVENTARIO' . "\n";
 												?>
 												</select>												
 											</div>
 										</div> 
-									</div>										
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label><font color="#505050" size="3px">Tipo de Inventario</font></label>
+											<div class="input-group-prepend">
+												<select name="type_tm2_id" class="form-control" onChange="javascrip:form.submit()" required>
+													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>													
+													<?php
+													//---------------------------------------------------------------
+													$SQLtm="select * From wh_type_material2 where statu = 'Activo' and type_material_id ='$type_material' ORDER BY name ASC";
+													$Registro=mysqli_query($link,$SQLtm);
+													//-------
+													while ($Fila=mysqli_fetch_array($Registro)){
+													//-------
+													echo '<option ';
+													if($type_tm2_id == $Fila["id"])echo 'selected ';
+													echo 'value=' . $Fila["id"] .'>'. $Fila["name"] . "\n";
+													}
+													mysqli_free_result ($Registro);
+													//---------------------------------------------------------------
+													?>
+												</select>
+											</div>
+										</div> 
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<label><font color="#505050" size="3px">Clasificacion Tipo Inventario</font></label>
+											<div class="input-group-prepend">
+												<select name="clas_tm2_id" class="form-control" onChange="javascrip:form.submit()" required>
+													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>													
+													<?php
+													//---------------------------------------------------------------
+													$SQLtm="select * From wh_clasificacion_tm2 where statu = 'Activo' and id_tm2 ='$type_tm2_id' ORDER BY name ASC";
+													$Registro=mysqli_query($link,$SQLtm);
+													//-------
+													while ($Fila=mysqli_fetch_array($Registro)){
+													//-------
+													echo '<option ';
+													if($clas_tm2_id == $Fila["id"])echo 'selected ';
+													echo 'value=' . $Fila["id"] .'>'. $Fila["name"] . "\n";
+													}
+													mysqli_free_result ($Registro);
+													//---------------------------------------------------------------
+													?>
+												</select>
+											</div>
+										</div> 
+									</div>	
 								</div>
 								<div class="modal-footer" style="background-color:#FFFFFC">
 									<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>

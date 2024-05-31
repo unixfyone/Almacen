@@ -8,18 +8,18 @@
             </div>
             <div class="modal-body">
 				<div class="container-fluid">
-					<form method="POST" action="action/AgregarNuevoConsumo.php">
-					
+					<form method="" action="">
 					<Input Type="hidden" name="cia_cons" id="cia_cons" value="<?Php echo $CIA ?>">
 					<Input Type="hidden" name="zone_cons" id="zone_cons" value="<?Php echo $ZON ?>">	
 					<label>Nombre del Consumo</label>
-					<input type="text" name="name_cons" id="name_cons" maxlength="45" class="form-control" required />					
+					<input type="text" name="name_cons" id="name_cons" maxlength="45" class="form-control" required />
 				</div> 
 			</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-<?php echo $classButtonFooter; ?>" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-                <button type="submit" name="agregar" class="btn btn-outline-<?php echo $classButtonFooter; ?>"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar Registro</button>
-			</form>
+				
+				<button class="btn btn-outline-<?php echo $classButtonFooter; ?>" formaction="action/AgregarNuevoConsumo.php" formmethod="post" type="submit" id="agregar" name="agregar"><span class="fa fa-save"></span> Grabar Cambios</button>				
+				</form>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //entproduct.php
 
 include('database_connection.php');
@@ -290,6 +290,7 @@ $IDM = $Fila1["movh_id"];			// Id de Documento
 $ZON = $Fila1["movh_zone"];			// Código del Almacen
 $mhdoc = $Fila1["movh_doc"];		// Nro. de Documento
 $mhtdoc = $Fila1["movh_tdoc"];		// Tipo de Documento
+$tmcod = $Fila1["movh_tmid"];		// Tipo de Movimiento
 $mhtmov = $Fila1["movh_tmov"];		// Tipo Movimiento (E/S)
 $mhfecha = $Fila1["movh_fecha"];	// Fecha del Documento
 $mhejer = $Fila1["movh_ejer"];		// Ejercicio / Año
@@ -332,6 +333,16 @@ $cerrados = $row["renglones"];
 	
 }
 mysqli_free_result ($Registro3);
+//---------------------------------------------------------------
+//---------------------------------------------------------------
+	$SQLtm="Select * From wh_tipmov where tm_id = '$tmcod' ";
+	$RegistroTM=mysqli_query($link,$SQLtm);
+	//------------------------------------------------------
+	while ($FilaTM=mysqli_fetch_array($RegistroTM))
+	{
+	$DESCTM= $FilaTM["tm_desc"];
+	}
+	mysqli_free_result ($RegistroTM);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 ?>
@@ -396,7 +407,7 @@ mysqli_free_result ($Registro3);
 								</tr></thead>
 								<tr>
 									<td><b><input class="form-control2" style='text-align:center' Type="text2" name="movh_doc" id="movh_doc" size='12'  value="<?Php echo $mhdoc; ?>" readonly /></b></td>
-									<td><b><input class="form-control2" Type="text2" name="movh_tdoc" id="movh_tdoc" size='30' value="<?Php echo $mhtdoc;?>" readonly /></b></td>
+									<td><b><input class="form-control2" Type="text2" name="movh_tdoc" id="movh_tmov" size='30' value="<?Php echo $DESCTM;?>" readonly /></b></td>
 									<td><b><input class="form-control2" style='text-align:center' type="text2" name="movh_tmov" id="movh_tmov" size='10' value="<?Php echo $mhtmov; ?>" readonly /></b></td>
 									<td><input class="form-control2" type="date" name="movh_fecha" id="movh_fecha" size='13' value="<?Php echo $mhfecha; ?>" readonly /></td>
 									<td><input class="form-control2" style="text-align:center" Type="text2" name="movh_ejer" id="movh_ejer" size='4' maxlength="4" value="<?Php echo $mhejer; ?>" readonly></td>
@@ -463,7 +474,7 @@ mysqli_free_result ($Registro3);
 								<Tr height= '16px'>
 									<Td><font size="2px"><?php echo $Fila['tm_desc']; ?></font></td>
 									<Td><font size="2px"><?php echo $Fila['code']; ?></font></td>
-									<Td><font size="2px"><?php echo $Fila['movd_desc']; ?></font></td>
+									<Td><font size="2px"><span class='text-wrap'><?php echo $Fila['movd_desc']; ?></font></span></td>
 									<Td align="right"><font size="2px"><?php echo number_format($Fila['movd_cant'], 3, ",", ".");?></font></td>
 									<Td align="right"><font size="2px"><?php echo number_format($Fila['movd_costou_me'], 2, ",", ".");?>
 									<td align="center"><b><?php echo $status; ?></b></td>

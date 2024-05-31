@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('database_connection.php');
 
@@ -14,6 +14,7 @@ if($_SESSION['type'] != 'Master')
 include('headerx.php');
 include('unico.php');
 ?>
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
 
 <style type="text/css">
 
@@ -34,13 +35,19 @@ echo '<FORM ACTION="" method="GET">';
 
 if(isset($_GET["AA"]))$AA = $_GET["AA"];
 else $AA = $_POST["AA"];
+//-------------
+if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
+else $CIA = $_POST["CIA"];
+//-------------
+if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
+else $ZON = $_POST["ZON"];
 
 //===============================================================
 
 //===============================================================
 	$query2 = "
 	SELECT *, Count(per_id) AS Cuenta1 FROM wh_periodos
-	WHERE per_statu = 'Abierto'
+	WHERE per_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON'
 	";	
 	$Registro2 = mysqli_query($link,$query2);
 	while($row2 = mysqli_fetch_array($Registro2))
@@ -51,6 +58,8 @@ else $AA = $_POST["AA"];
 //========
 ?>
 <Input Type="hidden" name="AA" value="<?Php echo $AA ?>">
+<Input Type="hidden" name="CIA" value="<?Php echo $CIA ?>">
+<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 
 <?Php
 	if ($CTA2 > '0')			// Existen Renglones Abiertos
@@ -63,7 +72,7 @@ else $AA = $_POST["AA"];
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 			<div class="modal-body">
-				<div class="alert alert-info">
+				<div class="alert alert-danger">
 					<strong>Atencion.! </strong> Existe Periodo Abierto .....
 				</div>
 			</div>
@@ -100,7 +109,7 @@ else $AA = $_POST["AA"];
 		//--------------------------
 		$SQL = "UPDATE wh_ejercicios SET 
 		ej_statu = 'Cerrado' 
-		WHERE ej_aa = '$AA' and ej_statu ='Abierto' ";
+		WHERE ej_aa = '$AA' and ej_statu ='Abierto' and company_id = '$CIA' and zone_id = '$ZON'";
 		mysqli_query ($link, $SQL);
 		//--------------------------
 			echo"<script type='text/javascript'>

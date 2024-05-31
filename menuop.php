@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //menuop.php
 
 include('database_connection.php');

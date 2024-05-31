@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -179,7 +179,7 @@ include('unico_2.php');
 											<label><font size="3px">Sigla</font></label>
 											<div class="input-group-prepend">
 												<span class="input-group-text"><i class="fas fa-spell-check"></i></span>
-												<input type="text" name="acronym" id="acronym" maxlength="4" class="form-control" required />
+												<input type="text" name="acronym" id="acronym" maxlength="4" class="form-control" onkeyup="this.value = this.value.toUpperCase();" required />
 											</div>
 										</div> 
 									</div>                        
@@ -188,7 +188,7 @@ include('unico_2.php');
 											<label><font size="3px">Descripción de la Categoria</font></label>
 											<div class="input-group-prepend">
 												<span class="input-group-text"><i class="fas fa-object-ungroup"></i></span>
-													<input type="text" name="category" id="category" maxlength="100" class="form-control" required />
+													<input type="text" name="category" id="category" maxlength="100" class="form-control" onkeyup="this.value = this.value.toUpperCase();" required />
 											</div>
 										</div>                                 
 									</div>

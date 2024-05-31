@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //entproduct.php
 
 include('database_connection.php');

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //users.php
 
 include('database_connection.php');

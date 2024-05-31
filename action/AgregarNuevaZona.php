@@ -1,5 +1,6 @@
 <?php
 //session_start();
+
 include_once('../config/dbconect.php');
 
 if(isset($_POST['agregar'])){

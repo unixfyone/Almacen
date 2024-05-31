@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //marcas.php
 
 include('database_connection.php');
@@ -204,7 +204,7 @@ dataTables_length select {  width: auto;  display: inline-block;}
     				</div>
     				<div class="modal-body">
     					<label>Incluya Nombre de la Marca</label>
-						<input type="text" name="brand_name" id="brand_name" maxlength="100" class="form-control" required />
+						<input type="text" name="brand_name" id="brand_name" maxlength="100" class="form-control" onkeyup="this.value = this.value.toUpperCase();" required />
     				</div>
     				<div class="modal-footer" style="background-color:#FFFFFC">
     					<input type="hidden" name="brand_id" id="brand_id"/>

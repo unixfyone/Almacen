@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -176,7 +176,7 @@ include('unico_2.php');
 									<label><font FACE="times new roman" size="3px">Razón Social</font></label>
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="far fa-address-card"></i></span>
-										<input type="text" name="prove" id="prove" maxlength="80" class="form-control"  placeholder="Descripción del Proveedor" required />
+										<input type="text" name="prove" id="prove" maxlength="80" class="form-control"  placeholder="Descripción del Proveedor" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div> 
 							</div> 
@@ -185,7 +185,7 @@ include('unico_2.php');
 									<label><font FACE="times new roman" size="3px">Nro. de RIF</font></label>
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-spell-check"></i></span>
-										<input type="text" name="rif" id="rif" maxlength="20" class="form-control" required />
+										<input type="text" name="rif" id="rif" maxlength="20" class="form-control" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div> 
 							</div> 
@@ -196,7 +196,7 @@ include('unico_2.php');
 									<label><font FACE="times new roman" size="3px">Dirección</font></label>
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fa fa-globe"></i></span>
-										<textarea maxlength="100" name="address" id="address" class="form-control" rows="1" placeholder="Dirección del Proveedor" required></textarea>
+										<textarea maxlength="100" name="address" id="address" class="form-control" rows="1" placeholder="Dirección del Proveedor" onkeyup="this.value = this.value.toUpperCase();" required></textarea>
 									</div>
 								</div> 
 							</div>
@@ -218,7 +218,7 @@ include('unico_2.php');
 									<label><font FACE="times new roman" size="3px">Persona Contacto</font></label>
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="far fa-address-book"></i></span>
-										<input type="text" name="contact_name" id="contact_name" maxlength="60" class="form-control" placeholder="Nombre del contacto" required />
+										<input type="text" name="contact_name" id="contact_name" maxlength="60" class="form-control" placeholder="Nombre del contacto" onkeyup="this.value = this.value.toUpperCase();" required />
 									</div>
 								</div> 
 							</div> 

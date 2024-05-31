@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('database_connection.php');
 
@@ -14,6 +14,8 @@ if($_SESSION['type'] != 'Master')
 include('headerx.php');
 include('unico.php');
 ?>
+<link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
+<link rel="stylesheet" type="text/css" href="cssi/styles.css" />
 
 <style type="text/css">
 
@@ -37,12 +39,18 @@ else $AA = $_POST["AA"];
 
 if(isset($_GET["MM"]))$MM = $_GET["MM"];
 else $MM = $_POST["MM"];
+//-------------
+if(isset($_GET["CIA"]))$CIA = $_GET["CIA"];
+else $CIA = '';
+//-------------
+if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
+else $ZON = '';
 //===============================================================
 
 //===============================================================
 	$query2 = "
 	SELECT *, Count(movh_id) AS Cuenta1 FROM wh_movinvh 
-	WHERE movh_statu = 'Abierto'
+	WHERE movh_statu = 'Abierto' and movh_cia = '$CIA' and movh_zone = '$ZON'
 	";	
 	$Registro2 = mysqli_query($link,$query2);
 	while($row2 = mysqli_fetch_array($Registro2))
@@ -54,6 +62,8 @@ else $MM = $_POST["MM"];
 ?>
 <Input Type="hidden" name="AA" value="<?Php echo $AA ?>">
 <Input Type="hidden" name="MM" value="<?Php echo $MM ?>">
+<Input Type="hidden" name="CIA" value="<?Php echo $CIA ?>">
+<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 <?Php
 	if ($CTA2 > '0')			// Existen Renglones Abiertos
 	{
@@ -73,7 +83,6 @@ else $MM = $_POST["MM"];
 				<button class='btn btn-outline-<?php echo $classButtonFooter; ?>' type='Button' name='Cancel' onclick='window.history.go(-1)' data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</button>
 			</div>
 		</div>
-
 		<?Php 
 	} else {
 		
@@ -98,8 +107,9 @@ else $MM = $_POST["MM"];
 		<?php
 		if (isset($_GET['BtnOK']))
 		{
-		$query = "SELECT * FROM wh_saldosm WHERE aa_s = '".$AA."' ";	
-		$Registro2 = mysqli_query($link,$query);			
+		$query = "SELECT * FROM wh_saldosm 
+		WHERE aa_s = '$AA' and company_id = '$CIA' and zone_id = '$ZON' ";	
+		$Registro2 = mysqli_query($link,$query);
 		while($row2 = mysqli_fetch_array($Registro2))
 		{
 		//=======================================================
@@ -118,22 +128,23 @@ else $MM = $_POST["MM"];
 		//--------------------------------				
 		$query4 = "UPDATE wh_saldosm SET 
 		saldos_fp = '$mValorfp2'
-		WHERE aa_s = '$AA' and product_id = '$PROD'";
+		WHERE aa_s = '$AA' and product_id = '$PROD' and company_id = '$CIA' and zone_id = '$ZON'
+		";
 		mysqli_query($link,$query4);
-		
 		}
 		mysqli_free_result ($Registro2);
 		//=======================================================
-		$SQL = "UPDATE wh_periodos 
+		$SQLx = "UPDATE wh_periodos 
 		SET per_statu ='Cerrado' 
-		WHERE per_aa = '$AA' and per_mm = '$MM' and per_statu ='Abierto' ";
-		mysqli_query ($link, $SQL);
+		WHERE per_aa = '$AA' and per_mm = '$MM' and per_statu ='Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
+		mysqli_query ($link, $SQLx);
 		//--------------------------
 			echo"<script type='text/javascript'>
 			alert('!Periodo Cerrado correctamente...','$AA')
 			window.history.go(-2)
 			</script>";
 		}
+	//echo "<pre>"; print_r($ZON); exit();
 	//========		
 	}
 //===============================================================

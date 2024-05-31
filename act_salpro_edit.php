@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -27,38 +27,28 @@ echo '<FORM ACTION="" method="Post">';
 
 date_default_timezone_set('America/Caracas');
 
-//echo 'AAAAAAAAAAAAAAAAAAAAAAAA';
-//echo $_POST['drecibe'];
-//echo $_POST['recibe'];
 //===============================================================
 //============== Editar REGISTROS   ============================
 if (isset($_POST['BotonEdit']))
 {
-$CDOCD = $_POST['IDM2'];		// Codigo de Detalle Documento
+$CDOCD = $_POST['mdid'];		// Codigo de Detalle Documento
 $CDOCH = $_POST['mhid']; 		// Codigo de Cabezera Documento
-$CMOV = $_POST['tmcod']; 		// Codigo del Movimiento
 $TMOV = $_POST['mhtm'];			// Tipo Movimiento (E/S)
 $PROID = $_POST['pid']; 		// ID. Producto
 $PROD = $_POST['prod2']; 		// Codigo Producto
-$CANT = $_POST['mdcant'];			// Cantidad del Producto
+$CANT = $_POST['CANT'];			// Cantidad del Producto
 $CostoUE = $_POST["CUNIME"];		//Costo Unitario ME
 $tasac = $_POST["tasa"];		//Tasa de cambio
 //-----
 $DMOV = $_POST['dmov'];			// Descripcion Movimiento
-$TSAL = $_POST['tipsal'];		// Tipo de Salida
-$CID = $_POST['c_id'];					// Condicion del Material
+$TSAL = $_POST['mdtipsal'];		// Tipo de Salida
+$CID = $_POST['CONDI'];					// Condicion del Material
 $movd_trans = $_POST['movd_trans'];		// Tipo de Transaccion
-$DEPREC = $_POST['drecibe'];		// Depart Receptor
-$USERREC = $_POST['recibe'];		// Usuario Receptor
-$DEPAPR = $_POST['daprueba'];		// Depart Aprobador
-$USERAPR = $_POST['aprueba'];	// Usuario Aprobador
-$consumo = $_POST['consumo'];		// ID del Consumo
-$obs = $_POST['movd_obs'];				// Observaciones
+$consumo = $_POST['TCON'];		// ID del Consumo
+$obs = $_POST['OBS'];				// Observaciones
 $FECMOD = date("Y-m-d");		// Fecha de Modificar
 //--------------------------
 $SQL = "UPDATE wh_movinvd SET 
-tm_id = '$CMOV',
-movd_tmov = '$TMOV',
 product_id = '$PROID',
 product_cod = '$PROD',
 movd_cant = '$CANT',
@@ -69,19 +59,8 @@ movd_tipsal = '$TSAL',
 movd_cond = '$CID',
 movd_id_cons = '$consumo',
 movd_trans = '$movd_trans',
-dep_receptor = '$DEPREC',
-user_receptor = '$USERREC',
-dep_aprobador = '$DEPAPR',
-user_aprobador = '$USERAPR',
 modified = '$FECMOD'
 WHERE movd_id = '$CDOCD' ";
-
-//echo 'AAAAAAAAAAAAAAAAAAAAAAAA';
-//echo $DEPREC;
-//echo $USERREC;
-//echo $DEPAPR;
-//echo $USERAPR;  
-//echo "<pre>"; print_r($SQL); exit();
 
 //--------------------------
 mysqli_query ($link, $SQL);

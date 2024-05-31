@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('database_connection.php');
 
 if(!isset($_SESSION['type']))
@@ -115,15 +115,15 @@ mysqli_free_result ($Registro1);
 							<div class="panel-body">
 								<?php
 								//---------------------------------------------------------------
-								$SQL = "SELECT * FROM wh_lines";
+								$SQL = "SELECT * FROM wh_lines where typel = 'LIN'";
 								//---------------------------------------------------------------
 								?>
 								<table id="lines_data" class="table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer" role="grid" border='1'>
 								  <thead class="text-dark">
 									<tr>
 									<th>ID</th>
-									<th>Sigla</th>
 									<th>Descripción</th>
+									<th>Prefijo Cod SAP</th>
 									<th>Tipo</th>
 									<th>Consecutivo</th>
 									<th>Status</th>
@@ -175,8 +175,8 @@ mysqli_free_result ($Registro1);
 									?>								
 									<Tr height= '16px'>
 										<Td><?php echo $Fila2['id']; ?></font></td>
-										<Td><?php echo $Fila2['acronym'];?></font></td>
 										<Td><?php echo $Fila2['namel'];?></font></td>
+										<Td><?php echo $Fila2['acronym'];?></font></td>
 										<Td><?php echo $Fila2['typel'];?></font></td>
 										<Td><?php echo $Fila2['cont_cod'];?></font></td>
 										<td align="center"><?php echo $status; ?></td>
@@ -243,7 +243,7 @@ $(document).ready(function(){
 				"orderable":false,
 			},
 		],
-		"pageLength": 10
+		"pageLength": 20
 	});
 <!-- ************************************************************************* -->
 });

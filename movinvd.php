@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('database_connection.php');
 
@@ -198,11 +198,19 @@ $actua = $Fila1["menuop_act"];
 mysqli_free_result ($Registro1);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
+$AA = $mhejer;
+$MM = $mhper;
+$MM_ANT = $MM - 1; 				// Mes periodo actual en arreglo (12 Pos)
+$MM_PANT = $MM - 1;				// Mes para Saldo del Periodo anterior (13 Pos)
+$existencia = 0;
+//---------------------------------------------------------------
+//---------------------------------------------------------------
 ?>
 </form>
 <Input Type="hidden" name="CT1" size=11 value="<?Php echo $CT1=$CT1+'1';?>">
 <Input Type="hidden" name="IDX2" size=11 value="<?Php echo $IDX?>">
 <Input Type="hidden" name="MOP" value="<?Php echo $MOP ?>">
+
 <!--  ======================================================================================= -->
 <div class="content-wrapper">
     <section class="content-header">
@@ -217,7 +225,7 @@ mysqli_free_result ($Registro1);
 					if($add == '1' and $ZON !='' and $mhstatu != 'Cerrado' and $actua == '1')
 					{
 
-						if($mhtmov == 'Entradas' ) {	?>
+						if($mhtmov == 'ENTRADAS' ) {	?>
 							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="entproduct_03.php?movh_id=<?Php echo $mhid ?> "><i class="glyphicon glyphicon-plus"></i>  Agregar Renglon</a>
 						<?php  } else { ?>
 							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="entproduct_03_Sal.php?movh_id=<?Php echo $mhid ?> "><i class="glyphicon glyphicon-plus"></i>  Agregar Renglon</a>
@@ -289,7 +297,7 @@ mysqli_free_result ($Registro1);
 									INNER JOIN wh_movinvd ON wh_movinvd.movh_id = wh_movinvh.movh_id
 									INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvd.tm_id
 									INNER JOIN wh_materials ON wh_materials.zone_id = wh_movinvd.movd_zone and wh_materials.code = wh_movinvd.product_cod
-									Where wh_movinvh.movh_id = '$IDX' ORDER BY wh_movinvd.movd_id ASC";
+									Where wh_movinvh.movh_id = '$IDX' ORDER BY wh_movinvd.product_cod ASC";
 									//---------------------------------------------------------------
 									?>
 									<div class="col-sm-12 table-responsive">
@@ -300,6 +308,7 @@ mysqli_free_result ($Registro1);
 											<th class="thy"></th>
 											<th class="thy"><p>Cod. Material</p></th>
 											<th class="thy"><p>Descripción</p></th>
+											<th class="thy"><p>Existencia</p></th>
 											<th class="thy"><p>Cantidad</p></th>
 											<th class="thy"><p>Unit ME</p></th>
 											<th class="thy"><p>Tasa Cambio</p></th>
@@ -317,21 +326,59 @@ mysqli_free_result ($Registro1);
 										$accion = '';
 										//==============================
 										$prod2 = $Fila["code"];
-										$DESCP = $Fila["description_m"];
+										$DESCP = $Fila['description_m'];
 										$DESCTM = $Fila["tm_desc"];
-										$dmov = $Fila["movd_desc"];
+										$dmov = $Fila['movd_desc'];
 										$mdcant = $Fila["movd_cant"];
 										$mdcostoue = $Fila["movd_costou_me"];
 										$mdcostoul = $Fila["movd_costou_ml"];
 										$rprod = $Fila["movd_recprod"];
+										//---------------------------------------------------------------
+										//---------------------------------------------------------------
+										$SQL = "SELECT * FROM wh_saldosm
+										Where product_cod = '$prod2' and zone_id = '$ZON' and aa_s = '$AA' 
+										";
+										$Registro = mysqli_query($link,$SQL);
+										//-----------------------------
+										while ($row=mysqli_fetch_array($Registro))
+										{
+											$existencia = 0;
+												$exe = 0;
+												$exs = 0;
+												$expa = 0;											
+											if($row['sal_id'] != null)
+											{
+												$mValore1 = '';
+												$mValors1 = '';
+												$mValorfp1 = '';
+
+												$mValore1=explode("|", $row["saldos_e"]);
+												$exe = $mValore1[$MM_ANT];
+
+												$mValors1=explode("|", $row["saldos_s"]);
+												$exs = $mValors1[$MM_ANT];
+
+												$mValorfp1=explode("|", $row["saldos_fp"]);
+												$expa = $mValorfp1[$MM_PANT];
+											
+											}	else	{
+												$exe = 0;
+												$exs = 0;
+												$expa = 0;
+											}
+											$existencia = $expa + $exe - $exs;
+										}
+										mysqli_free_result ($Registro);
+										//---------------------------------------------------------------
+										//---------------------------------------------------------------
 	//<!-- =================================================================================== -->
 	if($Fila['movd_statu'] == 'Abierto')
 	{
 		$status = '<span class=""><font color="green" >Abierto</font></span>';
 		
-		if($edit == '1' and $actua == '1')
+		if($edit == '1' and $actua == '1' and $del == '1')
 		{
-			if($mhtmov == 'Entradas' ) {
+			if($mhtmov == 'ENTRADAS' ) {
 				$accion = '<ul class="nav navbar-nav">
 				<li class="dropdown btn-group">
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
@@ -339,33 +386,57 @@ mysqli_free_result ($Registro1);
 				<ul class="dropdown-menu dropdown-menu-right">
 					<li><a href="entproduct_02V2.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
 					<li role="presentation" class="divider"></li>
+					<li><a <button type="button" name="delete" id="'.$Fila['movd_id'].'" class="delete"><i class="fa fa-trash" ></i> Eliminar Renglon</button></a></li>
+					<li role="presentation" class="divider"></li>
 					<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
 				</ul></li></ul>';
 			}
-			if($mhtmov == 'Salidas' ) {
+			if($mhtmov == 'SALIDAS' ) {
 				$accion = '<ul class="nav navbar-nav">
 				<li class="dropdown btn-group">
 				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
 
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="entproduct_02_Sal.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
+					<li><a href="entproduct_02V2S.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
 					<li role="presentation" class="divider"></li>
+					
+					<li><a <button type="button" name="delete" id="'.$Fila['movd_id'].'" class="delete"><i class="fa fa-trash" ></i> Eliminar Renglon</button></a></li>
+					
+					<li role="presentation" class="divider"></li>					
 					<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
 				</ul></li></ul>';
 			}			
-			
-		}	else	{
-			
-		$accion = '<ul class="nav navbar-nav">
-		<li class="dropdown btn-group">
-		<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
+		}
+		if($edit == '1' and $actua == '1' and $del == '0')
+		{
+			if($mhtmov == 'ENTRADAS' ) {
+				$accion = '<ul class="nav navbar-nav">
+				<li class="dropdown btn-group">
+				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
 
-		<ul class="dropdown-menu dropdown-menu-right">
-			<li class="disabled"><a href="entproduct_02.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
-			<li role="presentation" class="divider"></li>
-			<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
-		</ul></li></ul>';			
-		}	
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="entproduct_02V2.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
+					<li role="presentation" class="divider"></li>
+					<li class="disabled"><a <button type="button" name="" id="" class="deletex"><i class="fa fa-trash" disabled ></i> Eliminar Renglon</button></a></li>
+					<li role="presentation" class="divider"></li>
+					<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
+				</ul></li></ul>';
+			}
+			if($mhtmov == 'SALIDAS' ) {
+				$accion = '<ul class="nav navbar-nav">
+				<li class="dropdown btn-group">
+				<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
+
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="entproduct_02V2S.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
+					<li role="presentation" class="divider"></li>
+					<li class="disabled"><a <button type="button" name="" id="" class="deletex"><i class="fa fa-trash" ></i> Eliminar Renglon</button></a></li>
+					
+					<li role="presentation" class="divider"></li>					
+					<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
+				</ul></li></ul>';
+			}
+		}
 		
 	}	else	{
 		$status = '<span class=""><font color="red" >Cerrado</font></span>';
@@ -373,13 +444,8 @@ mysqli_free_result ($Registro1);
 		$accion = '<ul class="nav navbar-nav">
 		<li class="dropdown btn-group">
 		<button type="button" class="butt-mesas btn-prima btn-xs dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i> <span class="caret"></span></button>
-
-		<ul class="dropdown-menu dropdown-menu-right">
-
-		<li class="disabled"><a href="entproduct_02.php?movd_id='.$Fila['movd_id'].' "><i class="fa fa-edit"></i> Editar Renglon</a></li>
-
-		<li role="presentation" class="divider"></li>
-
+		
+		<ul class="dropdown-menu dropdown-menu-right"
 		<li><a <button type="button" name="view" id="'.$Fila['movd_id'].'" class="view"><i class="fa fa-list" ></i> Detalle del Renglon</button></a></li>
 		
 		</ul></li></ul>';										
@@ -387,15 +453,36 @@ mysqli_free_result ($Registro1);
 //<!-- =================================================================================== -->								
 										?>
 										<Tr height= '16px'>
-											<?php if($Fila['movd_statu'] == 'Abierto') {	?>
-											<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" /></td>
-											<?php } else { ?>
-											<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" disabled /></td>
+											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_tmov'] == 'ENTRADAS' and $Fila['movd_costou_me'] != '0') { ?>
+												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" /></td>
+											<?php }  ?>
+											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_tmov'] == 'ENTRADAS' and $Fila['movd_costou_me'] == '0') { ?>
+												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" disabled /></td>
 											<?php } ?>
+											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_costou_me'] > 0 and $existencia >= $Fila['movd_cant'] and $Fila['movd_tmov'] == 'SALIDAS') { ?>
+												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" /></td>
+											<?php } ?>
+											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_costou_me'] > 0 and $existencia < $Fila['movd_cant'] and $Fila['movd_tmov'] == 'SALIDAS') { ?>
+												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" disabled /></td>
+											<?php } ?>
+											
+											<?php if($Fila['movd_statu'] == 'Cerrado' ) { ?>
+												<td><input type="checkbox" name="id[]" value="<?php echo $Fila['movd_id']; ?>" disabled /></td>
+											<?php } ?>
+
 											<Td><?php echo $Fila['code']; ?></td>
-											<Td><span class="text-wrap"><?php echo $Fila['movd_desc']; ?></span></td>
-											<Td align="right"><?php echo number_format($Fila['movd_cant'], 3, ",", ".");?></td>
-											<Td align="right"><?php echo number_format($Fila['movd_costou_me'], 2, ",", ".");?></td>
+											<Td><span class='text-wrap'><?php echo $Fila['movd_desc']; ?></span></td>
+											<?php if($existencia > 0) { ?>
+												<Td align="right" style="background-color:#eeeeee"><b><font color="blue"><?php echo number_format($existencia, 2, ",", ".");?></font></b></td>
+											<?php } else { ?>
+												<Td align="right"><b><font color="red"><?php echo number_format($existencia, 2, ",", ".");?></font></b></td>
+											<?php } ?>
+											<Td align="right"><?php echo number_format($Fila['movd_cant'], 2, ",", ".");?></td>
+											<?php if($Fila['movd_statu'] == 'Abierto' and $Fila['movd_costou_me'] > 0) { ?>
+												<Td align="right"><?php echo number_format($Fila['movd_costou_me'], 3, ",", ".");?></td>
+											<?php } else { ?>
+												<Td align="right" style="background-color:#CCCCCC"><?php echo number_format($Fila['movd_costou_me'], 3, ",", ".");?></td>
+											<?php } ?>
 											<Td align="right"><?php echo number_format($Fila['movd_tasa_cambio'], 2, ",", ".");?></td>
 											<td align="center"><?php echo $status; ?></td>
 											<td><?php echo $accion; ?></td>
@@ -499,10 +586,6 @@ mysqli_free_result ($Registro1);
 					
                         </div>
                         <div class="modal-footer" style="background-color:#ecf9ec">
-
-							
-
-							
 							<button class="btn btn-info btn-xs" type="Submit" id="BotonClose" name="BotonClose" onclick="('<?php echo $mhid?>');"><span class="glyphicon glyphicon-save"></span> Cerrar Renglon</button>
 							
 							<button type="button" class="btn btn-success btn-md" data-dismiss="modal"><span class="glyphicon glyphicon-arrow-left"></span> Retornar</button>
@@ -536,7 +619,7 @@ $(document).ready(function(){
 				"orderable":false,
 			},
 		],
-		"pageLength": 10
+		"pageLength": 25
 	});	
 <!-- ************************************************************************* -->
     $(document).on('click', '.view', function(){
@@ -554,6 +637,28 @@ $(document).ready(function(){
             }
         })
 	});	
+<!-- ********************* eliminar del Registros ******************************** -->
+	$(document).on('click', '.delete', function(){
+		var movd_id = $(this).attr('id');
+		var btn_action = 'delete';
+		if(confirm("¿Seguro que quieres Eliminar el Renglon.?"))
+		{
+			$.ajax({
+				url:"movinvd_action.php",
+				method:"POST",
+				data:{movd_id:movd_id, btn_action:btn_action},
+				success:function(data)
+				{
+					$('#alert_action').fadeIn().html('<div class="alert alert-info">'+data+'</div>');
+					location.reload();
+				}
+			})
+		}
+		else
+		{
+			return false;
+		}
+	});
 <!-- ************************************************************************* -->	
 	
 	

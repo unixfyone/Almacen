@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //menugr.php
 
 include('database_connection.php');
