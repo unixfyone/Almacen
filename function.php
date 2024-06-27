@@ -176,12 +176,12 @@ function fill_sectores_list($connect)
 	return $output;
 }
 
-function fill_departments_list($connect, $cia)
+function fill_departments_list($connect)
 //====================================
 {
 	$query = "
 	SELECT * FROM departments 
-	WHERE statu = 'Activo' and company_id = '".$cia."'
+	WHERE statu = '1' 
 	ORDER BY department ASC
 	";
 	$statement = $connect->prepare($query);
@@ -190,7 +190,7 @@ function fill_departments_list($connect, $cia)
 	$output = '<option value="">Seleccionar Departamento</option>';
 	foreach($result as $row)
 	{
-		$output .= '<option value="'.$row["id"].'">'.$row["department"].'</option>';
+		$output .= '<option value="'.$row["id"].'">'.utf8_encode($row["department"]).'</option>';
 	}
 	return $output;
 }

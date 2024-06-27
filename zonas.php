@@ -118,11 +118,10 @@ else $CT2 = '0';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select zn.*, uz.*, co.id, co.company FROM wh_zones zn
-												INNER JOIN companies co ON co.id = zn.zcompany_id
-												INNER JOIN wh_user_zones uz ON uz.uzcompany_id = zn.zcompany_id
-												WHERE uz.user_id = '$userid' and uz.userz_statu = 'Activo'
-												GROUP BY zn.zcompany_id
+												$SQL="Select distinct  uz.user_id, co.id, co.company FROM wh_user_zones uz
+												INNER JOIN companies co ON co.id = uz.uzcompany_id
+												WHERE uz.user_id = $userid and uz.userz_statu = 'Activo' 
+												ORDER BY co.id ASC
 												"; 
 												//---------------------------------------------------------------
 												$Registro=mysqli_query($link,$SQL);
