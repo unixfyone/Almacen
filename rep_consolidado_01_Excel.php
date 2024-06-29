@@ -165,14 +165,14 @@ while($Fila = mysqli_fetch_array($Registro))
 	$mValors = '';
 	$mValorfp = '';
 	//----------------------------
-	$query = "SELECT *, Count(sal_id) AS Cuenta1 FROM wh_saldosm 
+	$query = "SELECT * FROM wh_saldosm 
 	WHERE product_id = '$prodid2' and aa_s = '$AA' and zone_id = '$ZON' ";
 	$Registro3 = mysqli_query($link,$query);			
 	while($row3 = mysqli_fetch_array($Registro3))
 	{
-		$CTA2 = $row3['Cuenta1'];
+		//$CTA2 = $row3['Cuenta1'];
 		//=======================================================
-	if ($CTA2 > '0') 
+		if ($row3['sal_id'] != '0') 
 	{ 
 		$MM_ANT = $MM - 1; 		// Mes periodo actual en arreglo (12 Pos)
 		$MM_PANT = $MM - 1;		// Mes para Saldo del Periodo anterior (13 Pos)

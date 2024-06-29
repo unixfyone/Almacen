@@ -178,7 +178,6 @@ mysqli_free_result ($RegistroA);
 												WHERE uz.user_id = $userid and uz.userz_statu = 'Activo' 
 												ORDER BY co.id ASC
 												";
-												
 												$Registro=mysqli_query($link,$SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){

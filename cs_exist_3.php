@@ -154,10 +154,10 @@ else $LIN = '';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select uz.*, co.id, co.company FROM wh_user_zones uz
+												$SQL="Select distinct  uz.user_id, co.id, co.company FROM wh_user_zones uz
 												INNER JOIN companies co ON co.id = uz.uzcompany_id
-												WHERE uz.user_id = '$userid' and uz.userz_statu = 'Activo' 
-												GROUP BY uz.uzcompany_id
+												WHERE uz.user_id = $userid and uz.userz_statu = 'Activo' 
+												ORDER BY co.id ASC
 												";
 												$Registro=mysqli_query($link,$SQL);
 												//-------
@@ -235,12 +235,8 @@ else $LIN = '';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL = "SELECT * FROM wh_materials 
-												INNER JOIN wh_lines on wh_lines.id = wh_materials.wh_line_id_m
-												INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
-												INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
-												Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_line_id_m = '$LIN' and wh_materials.m_statu_m = 'Activo' and wh_saldosm.aa_s = '$AA'
-												GROUP by wh_categories.category ASC";								
+												$SQL="Select * FROM wh_categories WHERE cat_statu = 'Activo' 
+												ORDER BY category";									
 												
 												$Registro=mysqli_query($link,$SQL);
 												//-------

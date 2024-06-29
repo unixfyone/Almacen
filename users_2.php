@@ -117,7 +117,7 @@ else $CT1 = '0';
 													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 													<?php
 													//------------------------------------
-													$SQL="Select * FROM companies WHERE companies.statu = 'Activo'
+													$SQL="Select * FROM companies WHERE companies.statu = '1'
 													ORDER BY company ASC ";
 													
 													$Registro=mysqli_query($link,$SQL);
@@ -144,7 +144,7 @@ else $CT1 = '0';
 													<?php
 													//---------------------------------------------------------------
 													$SQL="SELECT * FROM departments 
-													WHERE statu = 'Activo' and company_id = '$CIA'
+													WHERE statu = '1'
 													ORDER BY department ASC";
 													
 													$Registro=mysqli_query($link,$SQL);
@@ -172,19 +172,18 @@ else $CT1 = '0';
 													<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 													<?php
 													//---------------------------------------------------------------
-													$SQL="SELECT  *, users.id as idu FROM positions
-													inner join departments on departments.id = positions.department_id
-													inner join users on users.position_id = positions.id
-													where departments.statu = 'Activo' and positions.department_id = '$DEP' 
-													";
+													$SQL="	SELECT us.id, us.username, us.department_id, dp.department, us.company_id, co.company,us.first_name, us.last_name FROM users us
+													INNER JOIN departments dp on dp.id = us.department_id
+													INNER JOIN companies co on co.id = us.company_id
+													WHERE us.statu = 'Activo' and us.department_id = '$DEP'  and us.company_id = '$CIA' ";
 													$Registro=mysqli_query($link,$SQL);
 													//-------
 													while ($Fila=mysqli_fetch_array($Registro)){
 													$fullname = $Fila["first_name"] ." ". $Fila["last_name"];
 													//----
 													echo '<option ';
-													if($ASU == $Fila["idu"])echo 'selected ';
-													echo 'value=' . $Fila["idu"] .'>'. $fullname . "\n";
+													if($ASU == $Fila["id"])echo 'selected ';
+													echo 'value=' . $Fila["id"] .'>'. $fullname . "\n";
 													}
 													mysqli_free_result ($Registro);
 													//---------------------------------------------------------------

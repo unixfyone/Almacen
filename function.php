@@ -187,7 +187,7 @@ function fill_departments_list($connect)
 	$statement = $connect->prepare($query);
 	$statement->execute();
 	$result = $statement->fetchAll();
-	$output = '<option value="">Seleccionar Departamento</option>';
+	$output = '';
 	foreach($result as $row)
 	{
 		$output .= '<option value="'.$row["id"].'">'.utf8_encode($row["department"]).'</option>';
@@ -195,14 +195,16 @@ function fill_departments_list($connect)
 	return $output;
 }
 
-function fill_user_department_list($connect, $department_id)
+function fill_user_department_list($connect, $department_id, $cia)
 //====================================
 {
 	$query = "
-	SELECT  * FROM positions
-	inner join departments on departments.id = positions.department_id
-	inner join users on users.position_id = positions.id
-	where departments.statu = 'Activo' and positions.department_id = '".$department_id."'
+	SELECT us.id, us.username, us.department_id, dp.department, us.company_id, co.company,
+	us.first_name, us.last_name
+	FROM users us
+	INNER JOIN departments dp on dp.id = us.department_id
+	INNER JOIN companies co on co.id = us.company_id
+	WHERE us.statu = 'Activo' and us.department_id = '".$department_id."'  and us.company_id = '".$cia."'
 	";
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -454,7 +456,7 @@ function fill_conditions_list($connect)
 	$output = '';
 	foreach($result as $row)
 	{
-		$output .= '<option value="'.$row["c_id"].'">'.$row["c_description"].'</option>';
+		$output .= '<option value="'.$row["c_id"].'">'.utf8_encode($row["c_description"]).'</option>';
 	}
 	return $output;
 }
@@ -492,12 +494,12 @@ function count_total_user($connect)
 function get_consolidado_cias($connect)
 {
 	$query = "
-	SELECT  company, mat.zone_id, sum(mat.cost_me * mat.existence) as gtotal
+	SELECT c.company, mat.zone_id, SUM(mat.cost_me * mat.existence) AS gtotal
 	FROM wh_materials mat
-	inner join wh_type_material2 tm2 on tm2.id = mat.type_tm2_id
-	inner join companies on companies.id = mat.company_id
-	group by mat.company_id
-	order by company_id ASC ";
+	INNER JOIN wh_type_material2 tm2 ON tm2.id = mat.type_tm2_id
+	INNER JOIN companies c ON c.id = mat.company_id
+	GROUP BY  c.company, mat.zone_id
+	ORDER BY c.company ASC ";
 	
 	$statement = $connect->prepare($query);
 	$statement->execute();
