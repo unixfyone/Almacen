@@ -494,12 +494,12 @@ function count_total_user($connect)
 function get_consolidado_cias($connect)
 {
 	$query = "
-	SELECT c.company, mat.zone_id, SUM(mat.cost_me * mat.existence) AS gtotal
+	SELECT c.company, c.id, mat.zone_id, SUM(mat.cost_me * mat.existence) AS gtotal
 	FROM wh_materials mat
 	INNER JOIN wh_type_material2 tm2 ON tm2.id = mat.type_tm2_id
 	INNER JOIN companies c ON c.id = mat.company_id
-	GROUP BY  c.company, mat.zone_id
-	ORDER BY c.company ASC ";
+	GROUP BY  c.company, c.id, mat.zone_id
+	ORDER BY c.id ASC ";
 	
 	$statement = $connect->prepare($query);
 	$statement->execute();
