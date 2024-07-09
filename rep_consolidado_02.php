@@ -129,8 +129,7 @@ else $CT2 = '0';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select * From wh_ejercicios 
-												group by ej_aa";
+												$SQL="Select distinct ej_aa From wh_ejercicios";
 												$Registro=mysqli_query($link, $SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
@@ -152,8 +151,8 @@ else $CT2 = '0';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select * From wh_periodos 
-												WHERE per_aa = '$AA' group by per_mm ";
+												$SQL="select distinct per_aa, per_mm From wh_periodos
+												where per_aa = '$AA' ";
 												$Registro=mysqli_query($link, $SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
@@ -181,54 +180,57 @@ else $CT2 = '0';
 								<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "rep_consolidado_02_Excel.php?AA=$AA&PER=$MM"; ?> "> Descargar en Excel</a>
 								<br><br>
 								<?php
-								$SQL = "SELECT *, wh_measurement_units.name AS nameum, wh_lines.namel, wh_materials.id AS matid,  wh_categories.category, wh_type_material2.name AS nametm2, wh_clasificacion_tm2.name AS namecl2
-								FROM wh_materials 
-								INNER join companies on companies.id = wh_materials.company_id
-								left join wh_measurement_units on wh_measurement_units.id = wh_materials.wh_measurement_unit_id_m
-								left join wh_lines on wh_lines.id = wh_materials.wh_line_id_m
-								left join wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
-								left join wh_type_material2 on wh_type_material2.id = wh_materials.type_tm2_id
-								left join wh_clasificacion_tm2 on wh_clasificacion_tm2.id = wh_materials.clas_tm2_id
-								ORDER BY wh_materials.zone_id DESC, wh_materials.code ASC
+								$query1 = "SELECT co.company, mat.code_sap, mat.code, mat.description_m, um.name as nameum, li.namel, 
+								mat.type_material_m, tm2.name as nametm2, tm2.name as namecl2, mat.cost_me, sal.saldos_fp,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',2),'|',-1) AS ENE, 
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',3),'|',-1) AS FEB, 
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',4),'|',-1) AS MAR, 
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',5),'|',-1) AS ABR,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',6),'|',-1) AS MAY,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',7),'|',-1) AS JUN,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',8),'|',-1) AS JUL,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',9),'|',-1) AS AGO,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',10),'|',-1) AS SEP,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',11),'|',-1) AS OCT,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',12),'|',-1) AS NOV,
+								SUBSTRING_INDEX(SUBSTRING_INDEX(saldos_fp,'|',13),'|',-1) AS DIC
+								FROM wh_materials mat
+								inner join companies co on co.id = mat.company_id
+								left join wh_measurement_units um on um.id = mat.wh_measurement_unit_id_m
+								left join wh_lines li on li.id = mat.wh_line_id_m
+								left join wh_type_material2 tm2 on tm2.id = mat.type_tm2_id
+								left join wh_clasificacion_tm2  cla on cla.id = mat.clas_tm2_id
+								inner join wh_saldosm sal on sal.product_id = mat.id
+								where sal.aa_s = '$AA'
+								ORDER BY mat.company_id ASC, mat.code ASC
 								";
-								//----------------------------
-								$RegistroX2 = mysqli_query($link,$SQL);
-								while($FilaX2 = mysqli_fetch_array($RegistroX2))
+								$totale1X = 0;
+								//=======================================================
+								$Registro1 = mysqli_query($link,$query1);			
+								while($row1 = mysqli_fetch_array($Registro1))
 								{
-								$mValore1X = '';
-								$mValors1X= '';
-								$mValorfp1X = '';
-								$prodid2X = $FilaX2["matid"];
-								
-								$query = "SELECT * FROM wh_saldosm 
-								WHERE product_id = '$prodid2X' and aa_s = '$AA' ";	
-										
-									$Registro1X = mysqli_query($link,$query);			
-									while($row1X = mysqli_fetch_array($Registro1X))
-									{
-										$existencia1X = 0;
-									//=======================================================
-										$MM_ANT = $MM - 1; 		// Mes periodo actual en arreglo (12 Pos)
-										$MM_PANT = $MM - 1;		// Mes para Saldo del Periodo anterior (13 Pos)
-										
-										$mValore=explode("|", $row1X["saldos_e"]);
-										$exe1x = $mValore[$MM_ANT];
+									$cost = $row1["cost_me"];
 
-										$mValors=explode("|", $row1X["saldos_s"]);
-										$exs1x = $mValors[$MM_ANT];
+									if ($MM == '1'){$TMX = $row1["ENE"]; }
+									if ($MM == '2'){$TMX = $row1["FEB"]; }
+									if ($MM == '3'){$TMX = $row1["MAR"]; }
+									if ($MM == '4'){$TMX = $row1["ABR"]; }
+									if ($MM == '5'){$TMX = $row1["MAY"]; }
+									if ($MM == '6'){$TMX = $row1["JUN"]; }
+									if ($MM == '7'){$TMX = $row1["JUL"]; }
+									if ($MM == '8'){$TMX = $row1["AGO"]; }
+									if ($MM == '9'){$TMX = $row1["SEP"]; }
+									if ($MM == '10'){$TMX = $row1["OCT"]; }
+									if ($MM == '11'){$TMX = $row1["NOV"]; }
+									if ($MM == '12'){$TMX = $row1["DIC"]; }
 
-										$mValorfp=explode("|", $row1X["saldos_fp"]);
-										$expa1x = $mValorfp[$MM_PANT];
+									$totale1X = $TMX * $cost;
+									$totale1XG = $totale1XG + $totale1X;
 
-										$existencia1X = ((int)$expa1x + (int)$exe1x - (int)$exs1x );
-									
-										$totale1X = $existencia1X * $FilaX2["cost_me"];
-										$totale1XG = $totale1XG + ($existencia1X * $FilaX2["cost_me"]);
-									}	
+								} mysqli_free_result ($Registro1);
+								//======================================================= 
+							    ?>
 
-								} mysqli_free_result ($RegistroX2);
-								//=======================================================								
-								?>
 								<div class="col-lg-12" align = "right">
 									<div class="form-group">
 										<label><font color="blue" size="4px">Total General..:  </font></label>
@@ -255,67 +257,44 @@ else $CT2 = '0';
 									<th>Total</th>
 								  </tr>
 								  </thead>
-								  <tbody>			  
+								  <tbody>
+
 									<?php
-									$Registro2 = mysqli_query($link,$SQL);
-									while($Fila2 = mysqli_fetch_array($Registro2))
+									//=======================================================
+									$totale = 0;
+									$Registro2 = mysqli_query($link,$query1);			
+									while($row2 = mysqli_fetch_array($Registro2))
 									{
-										$status = '';
-										$accion = '';
-										$btnVer = '';
-										$total = '0';
-										//$existencia = 0 * 1;
-										$prodid2 = $Fila2["matid"];
-										$ZON = $Fila2["zone_id"];
-										//----------------------------
-										$mValore = '';
-										$mValors = '';
-										$mValorfp = '';
-										//----------------------------
-										$query = "SELECT * FROM wh_saldosm 
-										WHERE product_id = '$prodid2' and aa_s = '$AA' and zone_id = '$ZON' ";	
-										
-										$Registro3 = mysqli_query($link,$query);			
-										while($row3 = mysqli_fetch_array($Registro3))
-										{
-											//$CTA2 = $row3['Cuenta1'];
-											//=======================================================
-											if ($row3['sal_id'] != '0') 
-											{ 
-												$MM_ANT = $MM - 1; 		// Mes periodo actual en arreglo (12 Pos)
-												$MM_PANT = $MM - 1;		// Mes para Saldo del Periodo anterior (13 Pos)
-												
-												$mValore=explode("|", $row3["saldos_e"]);
-												$exe = $mValore[$MM_ANT];
+										$cost = $row2["cost_me"];
 
-												$mValors=explode("|", $row3["saldos_s"]);
-												$exs = $mValors[$MM_ANT];
+										if ($MM == '1'){$TMX = $row2["ENE"]; }
+										if ($MM == '2'){$TMX = $row2["FEB"]; }
+										if ($MM == '3'){$TMX = $row2["MAR"]; }
+										if ($MM == '4'){$TMX = $row2["ABR"]; }
+										if ($MM == '5'){$TMX = $row2["MAY"]; }
+										if ($MM == '6'){$TMX = $row2["JUN"]; }
+										if ($MM == '7'){$TMX = $row2["JUL"]; }
+										if ($MM == '8'){$TMX = $row2["AGO"]; }
+										if ($MM == '9'){$TMX = $row2["SEP"]; }
+										if ($MM == '10'){$TMX = $row2["OCT"]; }
+										if ($MM == '11'){$TMX = $row2["NOV"]; }
+										if ($MM == '12'){$TMX = $row2["DIC"]; }
 
-												$mValorfp=explode("|", $row3["saldos_fp"]);
-												$expa = $mValorfp[$MM_PANT];	
-												
-											}	else	{
-												$exe = 0;
-												$exs = 0;
-												$expa = 0;
-											}
-										}
-										$existencia = ((int)$expa + (int)$exe - (int)$exs );
-										$totale = $existencia * $Fila2["cost_me"];
-										//=======================================================	
-										if ($existencia != 0) {
+										$totale = $TMX * $cost;
+										//======================================================= 
+										if ($TMX != 0) {
 										?>								
 										<Tr height= '16px'>
-										<Td><font size="2px"><?php echo $Fila2['company']; ?></font></td>
-										<Td><font size="2px"><?php echo $Fila2['code_sap']; ?></font></td>
-										<Td><span class="text-wrap"><font size="2px"><?php echo $Fila2['description_m']; ?></font></span></td>
-										<Td><font size="2px"><?php echo $Fila2['nameum'];?></font></td>
-										<Td><font size="2px"><?php echo $Fila2['namel'];?></font></td>
-										<Td><font size="2px"><?php echo $Fila2['type_material_m'];?></font></td>
-										<Td><font size="2px"><?php echo $Fila2['nametm2'];?></font></td>
-										<Td><font size="2px"><?php echo $Fila2['namecl2'];?></font></td>
-										<Td><font size="2px"><?php echo $Fila2['cost_me'];?></font></td>
-										<Td><font size="2px"><?php echo $existencia;?></font></td>
+										<Td><font size="2px"><?php echo $row2['company']; ?></font></td>
+										<Td><font size="2px"><?php echo $row2['code_sap']; ?></font></td>
+										<Td><span class="text-wrap"><font size="2px"><?php echo $row2['description_m']; ?></font></span></td>
+										<Td><font size="2px"><?php echo $row2['nameum'];?></font></td>
+										<Td><font size="2px"><?php echo $row2['namel'];?></font></td>
+										<Td><font size="2px"><?php echo $row2['type_material_m'];?></font></td>
+										<Td><font size="2px"><?php echo $row2['nametm2'];?></font></td>
+										<Td><font size="2px"><?php echo $row2['namecl2'];?></font></td>
+										<Td><font size="2px"><?php echo $row2['cost_me'];?></font></td>
+										<Td><font size="2px"><?php echo $TMX;?></font></td>
 										<Td><font size="2px"><?php echo $totale;?></font></td>
 										</tr>
 									<?php
