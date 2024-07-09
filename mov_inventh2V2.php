@@ -15,6 +15,7 @@ include('unico_1.php');
 ?>
 <HTML>
 <HEAD>
+<meta charset="utf-8">
 <title>Materiales</title>
 
 <link rel="stylesheet" href="dist/css/<?=$cstyle;?>.css">
@@ -73,8 +74,15 @@ $cont_sm = $FilaA["zone_doc_sm"];
 } 
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
-//---------------------------------------------------------------
-	$SQLp = "SELECT *, Count(per_statu) AS Cuenta1 FROM wh_periodos WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
+//---------------------------------------------------------------$ZON
+	$SQLp = "SELECT wp.*, (
+          SELECT Count(per_statu) 
+          FROM wh_periodos 
+          WHERE per_statu = 'Abierto' AND zone_id = '$ZON'
+          ) AS Cuenta1 
+          FROM wh_periodos wp 
+          WHERE per_statu = 'Abierto' AND zone_id = '$ZON' ";
+
 	$Registrop = mysqli_query($link,$SQLp);
 	//-----------------------------
 	while ($Filap=mysqli_fetch_array($Registrop))
@@ -215,7 +223,7 @@ $cont_doc = "EM".'-'.$cont_em1;
 											<label class="input-group-text"><font color="#505050" size="3px">Departamento del Receptor.:</font></label>
 											<select name="department_id2" id="department_id2" class="form-control" required>
 												<option value="">Seleccionar Departamento</option>
-												<?php echo fill_departments_list($connect, $CIAX); ?>
+												<?php echo fill_departments_list($connect); ?>
 											</select>
 										</div>
 									</div>
