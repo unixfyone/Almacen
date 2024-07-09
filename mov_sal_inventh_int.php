@@ -167,10 +167,10 @@ $MID = 'SALIDAS';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select uz.*, co.id, co.company FROM wh_user_zones uz
+												$SQL="Select distinct  uz.user_id, co.id, co.company FROM wh_user_zones uz
 												INNER JOIN companies co ON co.id = uz.uzcompany_id
-												WHERE uz.user_id = '$userid' and uz.userz_statu = 'Activo' 
-												GROUP BY uz.uzcompany_id
+												WHERE uz.user_id = $userid and uz.userz_statu = 'Activo' 
+												ORDER BY co.id ASC
 												";
 												
 												$Registro=mysqli_query($link,$SQL);
@@ -224,7 +224,7 @@ $MID = 'SALIDAS';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select * FROM wh_movinvh group by movh_statu";
+												$SQL="Select distinct movh_statu FROM wh_movinvh";
 												$Registro=mysqli_query($link,$SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){

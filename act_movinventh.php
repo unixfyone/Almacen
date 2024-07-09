@@ -56,6 +56,9 @@ VALUES
 ";
 mysqli_query ($link, $SQL);
 //--------------------------
+
+//echo "<pre>"; print_r($SQL); exit();
+
 //--------------------------
 $SQL = "SELECT * FROM wh_zones
 Where zone_id = '$ZON' ";

@@ -7,18 +7,33 @@ if(isset($_POST['btn_action']))
 //========================================
 	if($_POST['btn_action'] == 'product_details')
 	{
+		$label1 = '<b><font color="#660000" size="4px">Material.:  </font>';
+		echo $label1;
+		echo '    ';
+		
+		echo $_POST['pcod'];
+		echo '  /  ';
+		echo $_POST['desc'];
+		echo $label2 ='<br>';
+		$label3 = '<font color="#660000" size="4px">Ejercicio.:  </font>';
+		echo $label3;
+		echo $_POST['xaa'];
+		echo $label4 ='</b></br>';
+
 		$query = "
-		SELECT * FROM wh_movinvd 
+		SELECT *, description_m FROM wh_movinvd 
 		INNER JOIN wh_movinvh ON wh_movinvh.movh_id = wh_movinvd.movh_id
 		INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvd.tm_id
 		INNER JOIN wh_materials ON wh_materials.id = wh_movinvd.product_id
 		WHERE wh_movinvd.movd_ejer = '".$_POST["xaa"]."' and wh_movinvd.product_id = '".$_POST["product_id"]."' and wh_movinvd.movd_statu = 'Cerrado'
-		ORDER BY wh_movinvd.movd_id ASC
+		ORDER BY wh_movinvd.movd_fecha ASC, wh_movinvd.movd_id ASC
 		";
 		$statement = $connect->prepare($query);
 		$statement->execute();
 		$result = $statement->fetchAll();
+      
 		$output = '
+
 		<div class="">
 		<table class="table table-boredered">
 

@@ -7,6 +7,22 @@ if(isset($_POST['btn_action']))
 //========================================
 	if($_POST['btn_action'] == 'product_details')
 	{
+		$label1 = '<b><font color="#660000" size="4px">Material.:  </font>';
+		echo $label1;
+		echo '    ';
+		echo $_POST['pcod'];
+		echo '  /  ';
+		echo $_POST['desc'];
+		echo $label2 ='<br>';
+
+		$label3 = '<font color="#660000" size="4px">Periodo.:   </font>';
+		echo $label3;
+		echo $_POST['xaa'];
+		echo '  /  ';
+		echo $_POST["xmm"];
+		echo $label4 ='</b></br>';
+
+
 		$query = "
 		SELECT * FROM wh_movinvd 
 		INNER JOIN wh_movinvh ON wh_movinvh.movh_id = wh_movinvd.movh_id

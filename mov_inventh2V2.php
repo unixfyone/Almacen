@@ -227,6 +227,7 @@ $cont_doc = "EM".'-'.$cont_em1;
 											</select>
 										</div>
 									</div>
+									
 									<div class="col-lg-6">
 										<div class="input-group">
 											<label class="input-group-text"><font color="#505050" size="3px"> Usuario Receptor.:</font></label>
@@ -236,6 +237,7 @@ $cont_doc = "EM".'-'.$cont_em1;
 										</div>
 									</div>
 								</div>
+								<Input Type="hidden" name="cia" id="cia" value="<?Php echo $CIAX ?>">
 								
 								<Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 								<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
@@ -278,18 +280,23 @@ $cont_doc = "EM".'-'.$cont_em1;
 $(document).ready(function(){
 <!-- ********************* Lista para Usuarios/departamento **************** -->
 $('#department_id2').change(function(){
-        var department_id2 = $('#department_id2').val();
-        var btn_action = 'load_usuarios2';
-        $.ajax({
-            url:"mov_action.php",
-            method:"POST",
-            data:{department_id2:department_id2, btn_action:btn_action},
-            success:function(data)
-            {
-                $('#user_receptor').html(data);
-            }
-        });
-    });
+var department_id2 = $('#department_id2').val();
+var cia = $('#cia').val();
+var btn_action = 'load_usuarios2';
+// Verificar que los datos estén válidos antes de enviar la solicitud
+if (department_id2 && cia) {
+	$.ajax({
+		url: "mov_action.php",
+		method: "POST",
+		data: { department_id2: department_id2, cia: cia, btn_action: btn_action },
+		success: function(data) {
+			$('#user_receptor').html(data);
+		}
+	});
+} else {
+	console.log('Error: Parámetros inválidos');
+}
+});
 });	
 //---------------
 </script>

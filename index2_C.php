@@ -57,14 +57,14 @@ if(isset($_GET["tm2"]))$tm2 = $_GET["tm2"];
 else $tm2 = '';	
 //------------ Ultimo Periodo -----------------------------------
 //---------------------------------------------------------------
-$SQL1 = "select DISTINCT b.per_aa, b.per_mm, concat(b.per_aa,'-', b.per_mm) AS AAMM from
-(
-    select per_aa, max(per_mm) as per_mm  from wh_periodos
-    where per_aa = year(now())
-    group by per_aa 
+$SQL1 = "SELECT DISTINCT b.per_aa,  b.per_mm, CONCAT(b.per_aa, '-', b.per_mm) AS AAMM
+FROM  (
+	SELECT per_aa, MAX(per_mm) AS per_mm 
+	FROM wh_periodos 
+	 WHERE per_aa = YEAR(NOW()) 
+	GROUP BY per_aa, per_mm 
 ) a
-join wh.wh_periodos b
-on a.per_aa = b.per_aa AND a.per_mm = b.per_mm ";
+JOIN wh_periodos b ON a.per_aa = b.per_aa AND a.per_mm = b.per_mm; ";
 
 $RegistroA = mysqli_query($link,$SQL1);
 while($FilaA = mysqli_fetch_array($RegistroA))
@@ -112,17 +112,19 @@ mysqli_free_result ($RegistroA);
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value "">Seleccione Empresa...</option>
 												<?php
 												//---------------------------------------------------------------<option hidden selected>Selecciona una opción</option>
-												$SQL="SELECT zcompany_id, company FROM wh_zones
-													inner join companies on id = wh_zones.zcompany_id
-													group by zcompany_id";
+												$SQL="SELECT c.id, c.company
+												FROM wh_zones wz
+												INNER JOIN companies c ON c.id = wz.zcompany_id
+												GROUP BY c.id, c.company
+												ORDER BY c.id ASC";
 												//---------------------------------------------------------------
 												$Registro=mysqli_query($link,$SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
 												//----
 												echo '<option ';
-												if($CIA == $Fila["zcompany_id"])echo 'selected ';
-												echo 'value=' . $Fila["zcompany_id"] .'>'. $Fila["company"] . "\n";
+												if($CIA == $Fila["id"])echo 'selected ';
+												echo 'value=' . $Fila["id"] .'>'. $Fila["company"] . "\n";
 												}
 												mysqli_free_result ($Registro);
 												//---------------------------------------------------------------

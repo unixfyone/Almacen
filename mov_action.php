@@ -10,9 +10,13 @@ if(isset($_POST['btn_action']))
 		echo fill_user_department_list($connect, $_POST['department_id']);
 	}
 		
-	if($_POST['btn_action'] == 'load_usuarios2')
-	{
-		echo fill_user_department_list($connect, $_POST['department_id2']);
+	if ($_POST['btn_action'] == 'load_usuarios2') {
+
+		if (isset($_POST['department_id2']) && !empty($_POST['department_id2']) && isset($_POST['cia']) && !empty($_POST['cia'])) {
+			echo fill_user_department_list($connect, $_POST['department_id2'], $_POST['cia']);
+		} else {
+			echo 'Error: Parámetros inválidos';
+		}
 	}
 		
 	if($_POST['btn_action'] == 'load_usuarios3')

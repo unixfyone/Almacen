@@ -146,10 +146,10 @@ else $prod = '';
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev" value=""></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select uz.*, co.id, co.company FROM wh_user_zones uz
+												$SQL="Select distinct  uz.user_id, co.id, co.company FROM wh_user_zones uz
 												INNER JOIN companies co ON co.id = uz.uzcompany_id
-												WHERE uz.user_id = '$userid' and uz.userz_statu = 'Activo' 
-												GROUP BY uz.uzcompany_id
+												WHERE uz.user_id = $userid and uz.userz_statu = 'Activo' 
+												ORDER BY co.id ASC
 												";
 												//---------------------------------------------------------------
 												$Registro=mysqli_query($link,$SQL);
@@ -290,16 +290,18 @@ else $prod = '';
 							if (isset($_GET["boton1"])){
 							if ($prod == ""	) {
 							//---------------------------------------------------------------
-							$SQL = "SELECT movd.*, mat.description_m, mat.m_statu_m, cat.category, um.name AS umname,
-							sal.sal_id, sal.product_id AS sproduct_id, sal.aa_s, sal.saldos_e, sal.saldos_s, sal.saldos_fp
+							$SQL = "SELECT movd.product_cod, movd.product_id, mat.description_m, mat.m_statu_m, 
+							cat.category, um.name AS umname, sal.sal_id, sal.product_id AS sproduct_id, sal.aa_s, 
+							sal.saldos_e, sal.saldos_s, sal.saldos_fp
 							FROM wh_movinvd movd
-							INNER JOIN wh_materials mat ON mat.id = movd.product_id
+							LEFT JOIN wh_materials mat ON mat.id = movd.product_id
 							LEFT JOIN wh_categories cat ON cat.cat_id = mat.wh_category_id_m
 							INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
-							LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
-							WHERE movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' and movd.movd_per = '$MM' and sal.zone_id = '$ZON'
-							GROUP BY movd.product_id
-							ORDER BY movd.product_id ASC";
+							LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id AND sal.aa_s = movd.movd_ejer
+							WHERE movd.movd_cia = '$CIA' AND movd.movd_zone = '$ZON' AND movd.movd_ejer = '$AA' 
+							AND sal.zone_id = '$ZON'
+							GROUP BY movd.product_cod, movd.product_id, mat.description_m, mat.m_statu_m, cat.category, um.name, sal.sal_id, sal.product_id, sal.aa_s, sal.saldos_e, sal.saldos_s, sal.saldos_fp
+							ORDER BY  movd.product_id ASC" ;
 							
 							}  else  {
 								
@@ -326,7 +328,7 @@ else $prod = '';
 							echo "<th>Categoria</th>";							
 							echo "<th>UniMed</th>";
 							echo "<th>Statu</th>";
-							echo "<th>Existencia</th>";
+							echo "<th>Cantidad</th>";
 							echo "</tr>";
 							echo "</thead>";
 							//--------
@@ -373,7 +375,8 @@ else $prod = '';
 								} else {	
 									echo "<td bgcolor=eeeeee align=Center><font size=3><a <button type='button' name='view'
 									data-expa=".$expa."
-									data-desc=".$Fila['description_m']."
+									data-desc='".$Fila["description_m"]."'
+									data-pcod='".$Fila["product_cod"]."'
 									id=".$Fila['product_id']." class='view'>".$Fila['product_cod']."</button></a></td>"; 
 								}
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
@@ -408,13 +411,7 @@ else $prod = '';
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
-							<div class="form-group">
-								<label><font color="#660000" size="4px">Material.:  </font></label>
-								&nbsp;&nbsp;<span><font color="black" size="4px"><?Php echo $CPROD ."&nbsp;&nbsp; / &nbsp;&nbsp;". $DPROD; ?></font></span>
-								<br>
-								<label><font color="#660000" size="4px">Periodo.:  </font></label>
-								&nbsp;&nbsp;<span><font color="black" size="4px"><?Php echo $AA ."&nbsp; / &nbsp;". $MM;  ?></font></span>
-							</div>
+
                             <Div id="product_details"></Div>
                         </div>
                         <div class="modal-footer" style="background-color:#FFFFFC">
@@ -460,6 +457,7 @@ $(document).ready(function(){
 		var xmm = $("#xmm").val();
 		var expa = $(this).data("expa");
 		var desc = $(this).data("desc");
+		var pcod = $(this).data("pcod");
         $.ajax({
             url:"cs_product_M01_action.php",
             method:"POST",
@@ -469,7 +467,8 @@ $(document).ready(function(){
 			xaa:xaa, 
 			xmm:xmm, 
 			expa:expa, 
-			desc:desc
+			desc:desc,
+			pcod:pcod
 			},
             success:function(data){
                 $('#productdetailsModal').modal('show');
