@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <?php
-	session_start();
-	session_destroy();
+//	session_start();
+//	session_destroy();
+//	echo '<script>
+//	window.open();
+//	window.close();
+//	</script>';
+//	exit;
 ?>
+
+
+
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
@@ -11,7 +19,7 @@
 <body>
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
-			<!--  <a class="navbar-brand" href="https://configuroweb.com">ConfiguroWeb</a> -->
+			<!--  <a class="navbar-brand" href="https://configuroweb.com">ConfiguroWeb</a> --> 
 		</div>
 	</nav>
 	<div class="col-md-3"></div>
@@ -21,5 +29,17 @@
 		<center><h3>Se ha cerrado sesión por Inactividad</h3></center>
 		<!-- <a href="index.php">Volver a acceder</a> -->
 	</div>
+
+<?php
+session_start();
+session_destroy();
+echo '<script>
+window.open();
+window.close();
+</script>';
+header('Location: https://www.google.com/');
+
+?>
+
 </body>
 </html>

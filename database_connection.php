@@ -10,7 +10,9 @@ $password = $env['DB_PASSWORD'];
 
 $connect = new PDO("mysql:host=$host;dbname=$database", $username, $password);
 session_start();
-if((time() - $_SESSION['time']) > 10){
-    header('location: logout_page.php');
-}
+
+
+//if((time() - $_SESSION['time']) > 5){
+//    header('location: logout_page.php');
+//} 
 ?>
