@@ -75,6 +75,9 @@ $USR = $id;
 		{
 			if($row['user_statu'] == 'Activo')
 			{
+
+
+
 				$_SESSION['type'] = $row['user_type'];
 				$_SESSION['time'] = time();
 				$_SESSION['user_id'] = $row['user_id'];
