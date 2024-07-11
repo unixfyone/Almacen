@@ -31,22 +31,21 @@ $base64UrlSignature = base64UrlEncode($signature);
 $signatureProvided = $tokenParts[2];
 $signatureValid = ($base64UrlSignature === $signatureProvided);
 
-echo "Header:\n" . $header . "\n";
-echo "Payload:\n" . $payload . "\n";
-
+//echo "Header:\n" . $header . "\n";
+//echo "Payload:\n" . $payload . "\n";
 
 if ($tokenExpired) {
-    echo "Token has expired.\n";
+    //echo "Token has expired.\n";
 	//echo "<pre>"; print_r("Token has expired.\n"); exit();
 } else {
-    echo "Token has not expired yet.\n";
+    //echo "Token has not expired yet.\n";
 	//echo "<pre>"; print_r("Token has not expired yet.\n"); exit();
 }
 if ($signatureValid) {
-    echo "The signature is valid.\n";
+    //echo "The signature is valid.\n";
 	//echo "<pre>"; print_r("The signature is valid.\n"); exit();
 } else {
-    echo "The signature is NOT valid\n";
+    //echo "The signature is NOT valid\n";
 	//echo "<pre>"; print_r("The signature is NOT valid\n"); exit();
 }
 
@@ -54,8 +53,6 @@ $message = '';
 //echo 'Usuario no Autorizado';
 //$USR = $_GET["xr1"];
 $USR = $id;
-
-//echo "<pre>"; print_r($id); exit();
 //****************************************
 	$query = "
 	SELECT * FROM wh_user_details 
@@ -75,9 +72,6 @@ $USR = $id;
 		{
 			if($row['user_statu'] == 'Activo')
 			{
-
-
-
 				$_SESSION['type'] = $row['user_type'];
 				$_SESSION['time'] = time();
 				$_SESSION['user_id'] = $row['user_id'];
@@ -88,7 +82,8 @@ $USR = $id;
 				$_SESSION['corporate_color2'] = $row['corporate_color2'];
 				$_SESSION['corporate_rgb'] = $row['corporate_rgb'];
 				$_SESSION['logo'] = $row['logo'];
-				header("location:index2.php");
+				header("Location:/index2.php");
+				exit;
 			}
 			else
 			{
