@@ -95,7 +95,7 @@ $ORCO = $Fila["movh_oc"];
 mysqli_free_result ($Registro);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-$SQL = "SELECT *, COUNT(movh_id) AS renglones FROM wh_movinvd where movh_id = '$IDX'";
+$SQL = "SELECT movh_id, COUNT(movh_id) AS renglones FROM wh_movinvd where movh_id = '$IDX'";
 $Registro = mysqli_query($link,$SQL);
 while($Fila = mysqli_fetch_array($Registro))
 {

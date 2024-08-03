@@ -82,14 +82,15 @@ $CTA = '0';
 
 
 //===============================================================
-$SQLx = "SELECT Count(ej_aa) AS Cuenta FROM wh_ejercicios 
-WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
+$SQLx = "SELECT company_id, zone_id, ej_statu, Count(ej_aa) AS cuenta FROM wh_ejercicios 
+WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON'
+group by company_id, zone_id";
 
 $Registro2 = mysqli_query($link,$SQLx);
 while ($Fila2=mysqli_fetch_array($Registro2))
 //---------------------------------------------------------------
 {
-$CTA = $Fila2["Cuenta"];
+$CTA = $Fila2["cuenta"];
 }
 //---------------------------------------------------------------
 mysqli_free_result ($Registro2);
@@ -172,7 +173,7 @@ if ($CTA > '0')
 		$MM_SIG = 0;			//Primera Posicion del Arreglo
 		$saldos = '0|0|0|0|0|0|0|0|0|0|0|0';
 		$saldos13 = '0|0|0|0|0|0|0|0|0|0|0|0|0';	
-	//=======================================================
+		//=======================================================
 		$query = "SELECT * FROM wh_saldosm 
 		WHERE aa_s = '$AA_ANT' and company_id = '$CIA' and zone_id = '$ZON'
 		";	

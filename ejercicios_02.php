@@ -46,9 +46,9 @@ else $ZON = $_POST["ZON"];
 
 //===============================================================
 	$query2 = "
-	SELECT *, Count(per_id) AS Cuenta1 FROM wh_periodos
+	SELECT company_id, zone_id, per_statu, Count(per_id) AS Cuenta1 FROM wh_periodos
 	WHERE per_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON'
-	";	
+	group by company_id, zone_id ";	
 	$Registro2 = mysqli_query($link,$query2);
 	while($row2 = mysqli_fetch_array($Registro2))
 	{

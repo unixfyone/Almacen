@@ -17,6 +17,7 @@ $id = $jsonDecoded['id'];
 $expiration = Carbon::createFromTimestamp(json_decode($payload)->exp);
 $tokenExpired = (Carbon::now()->diffInSeconds($expiration, false) < 0);
 
+//echo "<pre>"; print_r($expiration.'date'); exit();
 // Define the base64UrlEncode function
 
 function base64UrlEncode($input) {
@@ -36,19 +37,19 @@ $signatureValid = ($base64UrlSignature === $signatureProvided);
 
 if ($tokenExpired) {
     //echo "Token has expired.\n";
-	//echo "<pre>"; print_r("Token has expired.\n"); exit();
+	echo "<pre>"; print_r("Token has expired.\n"); exit();
 } else {
     //echo "Token has not expired yet.\n";
 	//echo "<pre>"; print_r("Token has not expired yet.\n"); exit();
-}
-if ($signatureValid) {
+//}
+//if ($signatureValid) {
     //echo "The signature is valid.\n";
 	//echo "<pre>"; print_r("The signature is valid.\n"); exit();
-} else {
+//} else {
     //echo "The signature is NOT valid\n";
 	//echo "<pre>"; print_r("The signature is NOT valid\n"); exit();
-}
-
+//}
+//}
 $message = '';
 //echo 'Usuario no Autorizado';
 //$USR = $_GET["xr1"];
@@ -105,6 +106,11 @@ $USR = $id;
 
 //}
 
+//************ */
+//} else {
+	echo "<pre>"; print_r("The signature is NOT valid\n"); exit();
+//}
+}
 ?>
 
 <!DOCTYPE html>
