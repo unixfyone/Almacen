@@ -1,6 +1,4 @@
-﻿<!-- Manual de PHP de WebEstilo.com --> 
-<?php 
-// Carga las variables de entorno desde el archivo .env
+﻿<?php 
 $env = parse_ini_file('.env');
 
 // Asigna las variables de entorno a constantes
@@ -9,24 +7,16 @@ define('DB_PORT', $env['DB_PORT']);
 define('DB_NAME', $env['DB_NAME']);
 define('DB_USER', $env['DB_USER']);
 define('DB_PASSWORD', $env['DB_PASSWORD']);
- 
-function Conectarse()
+define('FILE_ROOT', $env['File_Root']); // Corregido: mayúsculas y minúsculas en el nombre de la constante
+
+// Función para conectarse a la base de datos
+function conectarse()
 {
-   if (!($link=mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT))) 
-   { 
-      echo "Error conectando a la base de datos."; 
-      exit(); 
-   } 
-   if (!mysqli_select_db($link, DB_NAME))
-   { 
-      echo "Error seleccionando la base de datos."; 
-      exit(); 
-   } 
-	if (!mysqli_set_charset($link,'utf8')) 
-	{
-		echo "Error: No se pudo establecer el conjunto de caracteres.\n";
-		exit();
-	}
-   return $link; 
-} 
+    $link = mysqli_init();
+    mysqli_ssl_set($link, NULL, NULL, FILE_ROOT, NULL, NULL); // Corregido: uso de la constante FILE_ROOT
+    mysqli_real_connect($link, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, MYSQLI_CLIENT_SSL);
+   
+    return $link; 
+}
+
 ?>

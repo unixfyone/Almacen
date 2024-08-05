@@ -63,27 +63,29 @@ else $CT1 = '0';
 $CTA = '0';
 $CTAE = '0';
 //===============================================================
-$SQLx = "SELECT Count(per_aa) AS Cuenta FROM wh_periodos 
-WHERE per_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
+$SQLx = "SELECT company_id, zone_id, per_statu, Count(per_aa) AS cuenta FROM wh_periodos 
+WHERE per_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON'
+group by company_id, zone_id";
 
 $Registro2 = mysqli_query($link, $SQLx);
 while ($Fila2=mysqli_fetch_array($Registro2))
 //-------------------------------------------
 {
-$CTA = $Fila2["Cuenta"];
+$CTA = $Fila2["cuenta"];
 }
 //--------------------------------------------
 mysqli_free_result ($Registro2);
 //===============================================================
-$SQL1 = "SELECT *, Count(ej_aa) AS Cuenta2 FROM wh_ejercicios 
-WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON' ";
+$SQL1 = "SELECT ej_aa, company_id, zone_id, ej_statu, Count(ej_aa) AS cuenta2 FROM wh_ejercicios 
+WHERE ej_statu = 'Abierto' and company_id = '$CIA' and zone_id = '$ZON'
+GROUP BY ej_aa, company_id, zone_id ";
 
 $Registro1 = mysqli_query($link, $SQL1);
 //-----------------------------
 while($Fila1 = mysqli_fetch_array($Registro1))
 {
 $AA = $Fila1['ej_aa'];
-$CTAE = $Fila1["Cuenta2"];
+$CTAE = $Fila1["cuenta2"];
 }	
 mysqli_free_result ($Registro1);
 //---------------------------------------------------------------
@@ -102,7 +104,7 @@ $CIA = $FilaA["id"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-if ($CTAE > '0')
+if ($CTAE != '0')
 {
 if ($CTA > '0')
 {

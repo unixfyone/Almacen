@@ -251,7 +251,8 @@ mysqli_free_result ($RegistroA);
 												<option tal:repeat="link sequence" tal:attributes="selected python:link==prev"></option>
 												<?php
 												//---------------------------------------------------------------
-												$SQL="Select distinct movh_statu FROM wh_movinvh";
+												$SQL="Select distinct movh_statu FROM wh_movinvh
+												where movh_statu != 'Pendiente'";
 												$Registro=mysqli_query($link,$SQL);
 												//-------
 												while ($Fila=mysqli_fetch_array($Registro)){
@@ -297,13 +298,15 @@ mysqli_free_result ($RegistroA);
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and wh_movinvh.movh_statu = '$EDO' and movh_salint = '0' ORDER BY wh_movinvh.movh_doc DESC ";
-							//---------------------------------------------------------------
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and wh_movinvh.movh_statu = '$EDO' and movh_salint = '0'  
+							ORDER BY wh_movinvh.movh_doc DESC ";
+							//---------------------------------------------------------------  and wh_movinvh.movh_statu != 'Pendiente'
 							} else {
 							$SQL = "SELECT * FROM wh_movinvh 
 							INNER JOIN wh_periodos ON wh_periodos.per_aa = wh_movinvh.movh_ejer and wh_periodos.per_mm = wh_movinvh.movh_per
 							INNER JOIN wh_tipmov ON wh_tipmov.tm_id = wh_movinvh.movh_tmid
-							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and movh_salint = '0' ORDER BY wh_movinvh.movh_doc DESC ";
+							WHERE wh_periodos.per_statu = 'Abierto' and wh_periodos.zone_id = '$ZON' and wh_movinvh.movh_tmov = '$MID' and wh_movinvh.movh_zone = '$ZON' and wh_movinvh.movh_cia = '$CIAX' and movh_salint = '0'
+							ORDER BY wh_movinvh.movh_doc DESC ";
 							//---------------------------------------------------------------								
 							}
 							?>
@@ -342,11 +345,13 @@ mysqli_free_result ($RegistroA);
 										mysqli_free_result ($Registro3);
 //<!-- ====================================================== -->
 	if($Fila2['movh_statu'] == 'Abierto')
-	{
-		$status = '<span class=""><b><font color="green" size="3px">Abierto</font></b></span>';
-	} else { 
-		$status = '<span class=""><b><font color="red" size="3px">Cerrado</font></b></span>';
-	}
+	{ $status = '<span class=""><b><font color="green" size="3px">Abierto</font></b></span>'; } 
+
+	if($Fila2['movh_statu'] == 'Cerrado')
+	{	$status = '<span class=""><b><font color="red" size="3px">Cerrado</font></b></span>'; }
+
+	//if($Fila2['movh_statu'] == 'Pendiente')
+	//{	$status = '<span class=""><b><font color="blue" size="3px">Pendiente</font></b></span>'; }
 //<!-- ============
 	if($Fila2['movh_statu'] == 'Abierto')
 	{
