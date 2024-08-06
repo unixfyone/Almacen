@@ -15,11 +15,11 @@ services:
     image: mysql:5.7
     container_name: mysql_db
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: rootpassword
+    #   MYSQL_DATABASE: mydatabase
+    #   MYSQL_USER: myuser
+    #   MYSQL_PASSWORD: mypassword
     ports:
       - "3306:3306"
     volumes:
