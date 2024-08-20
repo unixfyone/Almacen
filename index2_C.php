@@ -235,7 +235,7 @@ mysqli_free_result ($RegistroA);
 									  <thead>
 									  <tr>
 										<th></th>
-										<th>PetroAlianza Oriente, C.A.</th>
+										<th>Longkeda</th>
 										<th>Integra Well Services, C.A.</th>
 										<th>Xenix Services</th>
 									  </tr>

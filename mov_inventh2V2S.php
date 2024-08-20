@@ -129,7 +129,6 @@ mysqli_free_result ($RegistroA);
 							<b><font color="#FFFFFF" size="4px">Agregar Documento Movimientos Almacen</font></b>
 						</div>
 						<!-- /.card-header -->
-
 						<div class="card-body">
 							<div class="panel-body">						
 								<div class="row">
@@ -311,7 +310,7 @@ mysqli_free_result ($RegistroA);
 							</div>
 
 
-							<Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
+							<Input Type="hidden" name="CIAX"  id="CIAX" value="<?Php echo $CIAX ?>">
 							<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
 							<Input Type="hidden" name="MID" value="<?Php echo $MID ?>">
 							
@@ -346,6 +345,9 @@ mysqli_free_result ($RegistroA);
 	</section>					
 </div>
 </FORM>
+
+
+	
 <script type="text/javascript">
     function showContent() {
         element = document.getElementById("content");
@@ -370,11 +372,13 @@ $(document).ready(function(){
 <!-- ********************* Lista para Usuarios/departamento **************** -->
 $('#department_id').change(function(){
         var department_id = $('#department_id').val();
+		var CIAX = $('#CIAX').val();
+
         var btn_action = 'load_usuarios';
         $.ajax({
             url:"mov_action.php",
             method:"POST",
-            data:{department_id:department_id, btn_action:btn_action},
+            data:{department_id:department_id, CIAX:CIAX, btn_action:btn_action},
             success:function(data)
             {
                 $('#user_despachador').html(data);
@@ -383,11 +387,12 @@ $('#department_id').change(function(){
     });
 $('#department_id2').change(function(){
         var department_id2 = $('#department_id2').val();
+		var company_id = $('#company_id').val();
         var btn_action = 'load_usuarios2';
         $.ajax({
             url:"mov_action.php",
             method:"POST",
-            data:{department_id2:department_id2, btn_action:btn_action},
+            data:{department_id2:department_id2, company_id:company_id, btn_action:btn_action},
             success:function(data)
             {
                 $('#user_receptor').html(data);
@@ -396,11 +401,12 @@ $('#department_id2').change(function(){
     });
 $('#department_id3').change(function(){
         var department_id3 = $('#department_id3').val();
+		var CIAX = $('#CIAX').val();
         var btn_action = 'load_usuarios3';
         $.ajax({
             url:"mov_action.php",
             method:"POST",
-            data:{department_id3:department_id3, btn_action:btn_action},
+            data:{department_id3:department_id3, CIAX:CIAX, btn_action:btn_action},
             success:function(data)
             {
                 $('#user_aprobador').html(data);

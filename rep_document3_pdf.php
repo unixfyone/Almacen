@@ -157,7 +157,7 @@ mysqli_free_result ($RegistroA);
 	{
 	$DPROVE= $Filapr["prove"];
 	}
-	mysqli_free_result ($RegistroTM);
+	mysqli_free_result ($Registropr);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 	$SQL = "SELECT * FROM departments ";
@@ -172,7 +172,7 @@ mysqli_free_result ($RegistroA);
 			$DRECEP= $Fila["department"]; 	//Departamento Receptor
 		}
 	}
-	mysqli_free_result ($RegistroTM);
+	mysqli_free_result ($Registro);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 	$SQL = "SELECT * FROM users ";

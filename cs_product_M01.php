@@ -305,7 +305,7 @@ else $prod = '';
 							
 							}  else  {
 								
-							$SQL = "SELECT movd.*, mat.description_m, mat.m_statu_m, cat.category, um.name AS umname,
+							$SQL = "SELECT movd.product_cod, movd.product_id, mat.description_m, mat.m_statu_m, cat.category, um.name AS umname,
 							sal.sal_id, sal.product_id AS sproduct_id, sal.aa_s, sal.saldos_e, sal.saldos_s, sal.saldos_fp
 							FROM wh_movinvd movd
 							INNER JOIN wh_materials mat ON mat.id = movd.product_id

@@ -1,14 +1,9 @@
-<!DOCTYPE html>
 <?php
-//entproduct.php
-
 include('database_connection.php');
-
 if(!isset($_SESSION['type']))
 {
 	header('location:login.php');
 }
-
 if($_SESSION['type'] != 'Master')
 {
 	header("location:index2.php");
@@ -325,7 +320,7 @@ $DCIA = $FilaA["company"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-$query = "SELECT *, COUNT(movh_id) AS renglones FROM wh_movinvd 
+$query = "SELECT movh_id, movd_statu, COUNT(movh_id) AS renglones FROM wh_movinvd 
 WHERE movh_id = '$IDM' GROUP BY movd_statu";
 
 $Registro3 = mysqli_query($link,$query);
@@ -425,7 +420,7 @@ mysqli_free_result ($Registro3);
 	<div class="panel-body">	
 		<?Php
 		$query4 = "
-		SELECT *, Count(movh_id) AS Cuenta1 FROM wh_movinvd 
+		SELECT movh_id, movd_statu, Count(movh_id) AS Cuenta1 FROM wh_movinvd 
 		WHERE movh_id = '$IDM' and movd_statu = 'Abierto'
 		";	
 		$Registro4 = mysqli_query($link,$query4);

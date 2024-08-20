@@ -1,12 +1,13 @@
 <html>
 <?php
+
 function fill_companies_list($connect)
 //==================================== 
 {
 	$query = "
 	SELECT * FROM companies 
-	WHERE statu = 'Activo' 
-	ORDER BY company ASC
+	WHERE statu = '1' 
+	ORDER BY id ASC
 	";
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -199,12 +200,11 @@ function fill_user_department_list($connect, $department_id, $cia)
 //====================================
 {
 	$query = "
-	SELECT us.id, us.username, us.department_id, dp.department, us.company_id, co.company,
+	SELECT us.id, us.username, us.department_id, us.company_id, co.company,
 	us.first_name, us.last_name
 	FROM users us
-	INNER JOIN departments dp on dp.id = us.department_id
 	INNER JOIN companies co on co.id = us.company_id
-	WHERE us.statu = 'Activo' and us.department_id = '".$department_id."'  and us.company_id = '".$cia."'
+	WHERE us.statu = 'Activo' and us.department_id = '".$department_id."' and us.company_id = '".$cia."'
 	";
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -212,7 +212,7 @@ function fill_user_department_list($connect, $department_id, $cia)
 	$output = '<option value="">Seleccionar Usuario</option>';
 	foreach($result as $row)
 	{
-		$output .= '<option value="'.$row["id"].'">'.$row["first_name"].' '.$row["last_name"].'</option>';
+		$output .= '<option value="'.$row["id"].'">'.$row["first_name"].' '.$row["last_name"].'  '.$row["company"].'</option>';
 	}
 	return $output;
 }
