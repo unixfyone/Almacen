@@ -44,7 +44,7 @@ $type_material = $_POST["wh_type_material"];
 $wh_tinv_id = $_POST["wh_tinv_id"];
 $wh_clastm2_id = $_POST["wh_clastm2_id"];
 //-------------------------- 
-$query = "select *, COUNT(code) AS ctacode from wh_master_materials
+$query = "select code, COUNT(code) AS ctacode from wh_master_materials
 where code = '$code'
 ";
 		$Registro = mysqli_query($link,$query);
