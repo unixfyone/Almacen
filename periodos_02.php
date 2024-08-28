@@ -49,7 +49,7 @@ else $ZON = '';
 
 //===============================================================
 	$query2 = "
-	SELECT *, Count(movh_id) AS Cuenta1 FROM wh_movinvh 
+	SELECT Count(movh_id) AS Cuenta1 FROM wh_movinvh 
 	WHERE movh_statu = 'Abierto' and movh_cia = '$CIA' and movh_zone = '$ZON'
 	";	
 	$Registro2 = mysqli_query($link,$query2);

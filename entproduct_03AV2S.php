@@ -316,7 +316,35 @@ mysqli_free_result ($Registro);
 								<div class="col-lg-12">
 									<div class="panel panel-default">
 										<div class="container-fluid">
-											<?Php include_once('tasacambio.php'); ?>					
+											<?Php 
+											// URL de la API
+											$url = 'https://pydolarve.org/api/v1/dollar?page=bcv';
+
+											// Inicializar cURL
+											$ch = curl_init($url);
+
+											// Configurar opciones de cURL
+											curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+											// Ejecutar la solicitud cURL y obtener la respuesta
+											$response = curl_exec($ch);
+
+											// Verificar si hubo errores
+											if (curl_errno($ch)) {
+												echo 'Error en la solicitud cURL: ' . curl_error($ch);
+											}
+
+											// Cerrar la sesión cURL
+											curl_close($ch);
+
+											// Decodificar la respuesta JSON
+											$data = json_decode($response, true);
+
+											// Imprimir la información del dólar estadounidense
+											$usdInfo = $data['monitors']['usd'];
+											$pdolar = $usdInfo['price'];											
+											
+											?>					
 											<?Php include('function.php'); ?>
 												
 											<label><font color="blue" size="3px">Datos del Material...:</font></label>
