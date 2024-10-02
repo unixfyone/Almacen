@@ -272,8 +272,8 @@ else $AA = '';
 							echo "<th>Descripción</th>";
 							echo "<th>Categoria</th>";							
 							echo "<th>Ubicación</th>";
-							echo "<th>Statu</th>";
 							echo "<th>Existencia</th>";
+							echo "<th>Statu</th>";
 							echo "</tr>";
 							echo "</thead>";
 							$Registro2 = mysqli_query($link,$SQL);
@@ -331,8 +331,8 @@ else $AA = '';
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
 								echo "<td Align=Left><font size=2>" . $Fila['category'];
 								echo "<td Align=Left><font size=2>" . $Fila['ubication'];
-								echo "<td Align=Center><font size=2>" . $status;
 								echo "<td Align=Center><font size=3>" . number_format($existencia, 2, '.', '');
+								echo "<td Align=Center><font size=2>" . $status;
 								echo "</tr>";
 								//--------------- 
 							} 
