@@ -246,7 +246,7 @@ mysqli_free_result ($RegistroA);
 							<div class="col-lg-4">
 								<div class="input-group">
 									<span class="input-group-text"><font color="#660000" FACE="times new roman" size="3px">Tasa de Cambio Bs:</font></span>
-									<Input class="form-control" Type="Text" name="movd_tasa_cambio" size='12' maxlength="12" value="<?Php echo $pdolar ?>" required />
+									<Input class="form-control" Type="Text" name="movd_tasa_cambio" size='12' maxlength="12" value="<?Php echo number_format($dolarHoy, 2) ?>" required />
 								</div>
 							</div>
 						</div>
