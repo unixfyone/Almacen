@@ -8,7 +8,7 @@ $userid= $_SESSION['user_id'];
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UnixFyOneS | Dashboard</title>
+  <title>Proyecto| Dashboard</title>
 	
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -136,8 +136,9 @@ $classButtonList = 'btn btn-outline-light text-dark border border-dark btn-ms mr
 					$opcion42 = "Consultas Movimientos";
 					$opcion43 = "Consultas de Mantenimientos";
 					$opcion51 = "Reportes Materiales";
-					$opcion52 = "Reportes de Movimientos";
-					$opcion53 = "Reportes de Mantenimientos";
+					$opcion52 = "Reportes Consolidados";
+					$opcion53 = "Reportes de Movimientos";
+					$opcion54 = "Reportes de Mantenimientos";
 					?>
           <li class="nav-item">
             <a href="javascript:void(0)" class="nav-link">
@@ -501,8 +502,48 @@ $classButtonList = 'btn btn-outline-light text-dark border border-dark btn-ms mr
 						?>
 					</ul>	
 				</li>
-				<?php mysqli_close($link); ?>
 			</ul>
+
+            <ul class="nav nav-treeview">
+				<li class="nav-item">
+					<a href="#" class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p>Reportes Consolidados</p>
+						<i class="fas fa-angle-left right"></i>
+					</a>
+					<ul class="nav nav-treeview">
+						<?php
+							$SQLx = "SELECT * FROM wh_user_menus
+							INNER JOIN wh_user_details ON wh_user_details.user_id = wh_user_menus.user_id
+							INNER JOIN wh_menu_groups ON wh_menu_groups.menugr_id = wh_user_menus.menugr_id
+							INNER JOIN wh_menu_options ON wh_menu_options.menuop_id = wh_user_menus.menuop_id
+							WHERE wh_user_details.user_id = '$userid' and wh_menu_groups.menugr_name = '$opcion52' and wh_user_menus.usermn_statu = 'Activo' and wh_menu_options.menuop_statu= 'Activo' ORDER BY wh_menu_options.menuop_desc";
+							//--------
+
+							$Registro31 = mysqli_query($link,$SQLx);
+							while ($Fila=mysqli_fetch_array($Registro31))
+							{ 
+						?>
+						<li class="nav-item"> 
+							<?= "<a href={$Fila['menuop_run_mn']}?MOP=" .$Fila['menuop_id']. " class='nav-link'>"?>
+								<i class="far fa-dot-circle nav-icon"></i>
+								<p><?= $Fila['menuop_desc']; ?></p>
+							</a>
+						</li>
+						<?php
+						}
+						mysqli_free_result ($Registro31);
+						
+						//================================================
+						//mysqli_close($link);
+						?>
+					</ul>	
+				</li>
+				<?php mysqli_close($link); ?>
+			</ul>			
+			
+			
+			
 		</li>
 
 

@@ -473,7 +473,7 @@ mysqli_free_result ($Registro);
 														<label class="input-group-text"><font color="#505050" size="3px">Departamento Aprobador:</font></label>
 														<select name="department_id3" id="department_id3" class="form-control" required>
 															<option value="">Seleccionar Departamento</option>
-															<?php echo fill_departments_list($connect, $CIA); ?>
+															<?php echo fill_departments_list($connect, $CIAX); ?>
 														</select>
 													</div>
 												</div>
@@ -492,7 +492,7 @@ mysqli_free_result ($Registro);
 														<label class="input-group-text"><font color="#505050" size="3px">Departamento Despachador:</font></label>
 														<select name="department_id" id="department_id" class="form-control" required>
 															<option value="">Seleccionar Departamento</option>
-															<?php echo fill_departments_list($connect, $CIA); ?>
+															<?php echo fill_departments_list($connect, $CIAX); ?>
 														</select>
 													</div>
 												</div>
@@ -514,7 +514,8 @@ mysqli_free_result ($Registro);
 													</div>
 												</div>
 											</div>
-											
+		
+											<Input Type="hidden" name="CIAX"  id="CIAX" value="<?Php echo $CIA ?>">
 											<Input Type="hidden" name="CANTXE" value="<?Php echo $existencia ?>" />
 
 											<div class="modal-footer" style="background-color:#FFFFFC">
@@ -542,11 +543,12 @@ $(document).ready(function(){
 <!-- ********************* Lista para Usuarios/departamento **************** -->
 $('#department_id').change(function(){
         var department_id = $('#department_id').val();
+		var CIAX = $('#CIAX').val();
         var btn_action = 'load_usuarios';
         $.ajax({
             url:"mov_action.php",
             method:"POST",
-            data:{department_id:department_id, btn_action:btn_action},
+            data:{department_id:department_id, CIAX:CIAX, btn_action:btn_action},
             success:function(data)
             {
                 $('#user_despachador').html(data);
@@ -555,11 +557,12 @@ $('#department_id').change(function(){
     });
 $('#department_id2').change(function(){
         var department_id2 = $('#department_id2').val();
+		var company_id = $('#company_id').val();
         var btn_action = 'load_usuarios2';
         $.ajax({
             url:"mov_action.php",
             method:"POST",
-            data:{department_id2:department_id2, btn_action:btn_action},
+            data:{department_id2:department_id2, company_id:company_id, btn_action:btn_action},
             success:function(data)
             {
                 $('#user_receptor').html(data);
@@ -568,11 +571,12 @@ $('#department_id2').change(function(){
     });
 $('#department_id3').change(function(){
         var department_id3 = $('#department_id3').val();
+		var CIAX = $('#CIAX').val();
         var btn_action = 'load_usuarios3';
         $.ajax({
             url:"mov_action.php",
             method:"POST",
-            data:{department_id3:department_id3, btn_action:btn_action},
+            data:{department_id3:department_id3, CIAX:CIAX, btn_action:btn_action},
             success:function(data)
             {
                 $('#user_aprobador').html(data);
