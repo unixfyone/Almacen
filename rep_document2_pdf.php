@@ -227,6 +227,9 @@ mysqli_free_result ($RegistroA);
 	$pdf->Cell(23,6,'CANTIDAD',1,0,'C',1);
 	$pdf->Cell(24,6,'COSTO',1,0,'C',1);
 	$pdf->Cell(20,6,'STATUS',1,1,'C',1);
+	//$pdf->Cell(60,6,utf8_decode('Observación:'),1,0,'C',1);
+	
+	
 
 	//---------------------------------------------------------------
 	$SQL3 = "SELECT * FROM wh_movinvh 
@@ -244,13 +247,20 @@ mysqli_free_result ($RegistroA);
 				//$pdf->Cell(10);
 				$pdf->SetFont('Arial','',10);
 				$pdf->SetTextColor(0,0,0);				
-				$pdf->Cell(28,5,utf8_decode($Fila3['product_cod']),1,0,'L');
+				$pdf->Cell(28,6,utf8_decode($Fila3['product_cod']),1,0,'L');
 				$pdf->SetFont('Arial','',8);
-				$pdf->Cell(100,5,utf8_decode($DESCORTA),1,0,'L');
+				$pdf->Cell(100,6,utf8_decode($DESCORTA),1,0,'L');
 				$pdf->SetFont('Arial','',10);
-				$pdf->Cell(23,5,number_format($Fila3['movd_cant'], 2, ",", "."),1,0,'R');
-				$pdf->Cell(24,5,number_format($Fila3['movd_costou_me'], 3, ",", "."),1,0,'R');
-				$pdf->Cell(20,5,utf8_decode($Fila3['movd_statu']),1,1,'C');
+				$pdf->Cell(23,6,number_format($Fila3['movd_cant'], 2, ",", "."),1,0,'R');
+				$pdf->Cell(24,6,number_format($Fila3['movd_costou_me'], 3, ",", "."),1,0,'R');
+				$pdf->Cell(20,6,utf8_decode($Fila3['movd_statu']),1,1,'C');
+				
+				$pdf->SetX(18);
+				$pdf->SetTextColor(0,0,0);
+				$pdf->SetFillColor(244,244,255);
+				$pdf->SetFont('Arial','',9);
+				$pdf->Cell(40,6,utf8_decode('OBSERVACION:'),1,0,'C',1);
+				$pdf->Cell(147,6,utf8_decode($Fila3['movd_obs']),1,1,'L');
 				
 			}
 			mysqli_free_result ($Registro3);
