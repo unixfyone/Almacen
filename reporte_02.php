@@ -253,12 +253,18 @@ else $LIN = '';
 					
 						<div class="container-fluid">
 							<?php
-							$SQL = "SELECT * FROM wh_materials 
-							INNER JOIN wh_lines on wh_lines.id = wh_materials.wh_line_id_m
-							INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
-							INNER JOIN wh_saldosm on wh_saldosm.product_id = wh_materials.id
-							Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_line_id_m = '$LIN' and wh_materials.m_statu_m = 'Activo' and wh_saldosm.aa_s = '$AA'
-							Order by wh_materials.code ASC";
+							$SQL = "SELECT 
+							m.id, m.code, m.description_m, m.ubication, l.namel, c.category, s.aa_s
+							FROM wh_materials m
+							INNER JOIN wh_lines l ON l.id = m.wh_line_id_m
+							INNER JOIN wh_saldosm s ON s.product_id = m.id
+							LEFT JOIN wh_categories c ON c.cat_id = m.wh_category_id_m
+							WHERE m.zone_id = '$ZON' 
+							  AND m.company_id = '$CIAX' 
+							  AND m.wh_line_id_m = '$LIN' 
+							  AND m.m_statu_m = 'Activo' 
+							  AND s.aa_s = '$AA'
+							  ORDER BY m.code ASC";
 							//--------------------------------------------------------------								
  
 							echo "<Table id='exist_mat' class='table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer' role='grid' border='1'>";
@@ -283,7 +289,7 @@ else $LIN = '';
 								$existencia = 0;
 								
 								$SQLS = "SELECT 
-									product_cod AS 'Código del Producto',
+									product_cod,
 									SUM(IF(movd_tmov = 'ENTRADAS', movd_cant, 0)) AS 'Entradas',
 									SUM(IF(movd_tmov = 'SALIDAS', movd_cant, 0)) AS 'Salidas',
 									SUM(IF(movd_tmov = 'ENTRADAS', movd_cant, 0)) - SUM(IF(movd_tmov = 'SALIDAS', movd_cant, 0)) AS 'Stock'

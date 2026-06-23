@@ -259,7 +259,7 @@ else $LIN = '';
 							//---------------------------------------------------------------
 							$SQL = "SELECT * FROM wh_materials 
 							INNER JOIN wh_lines on wh_lines.id = wh_materials.wh_line_id_m
-							INNER JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
+							LEFT JOIN wh_categories on wh_categories.cat_id = wh_materials.wh_category_id_m
 							Where wh_materials.zone_id = '$ZON' and wh_materials.company_id = '$CIAX' and wh_materials.wh_line_id_m = '$LIN' and wh_materials.m_statu_m = 'Activo' 
 							Order by wh_materials.code ASC";
 							//--------------------------------------------------------------								
