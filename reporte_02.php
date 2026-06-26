@@ -248,32 +248,44 @@ else $LIN = '';
 						</div>
 					<!-------------------------------------- -->
 						<div class="container-fluid">
+							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "reporte_02_excel.php?CIA=$CIAX&ZON=$ZON&LIN=$LIN "; ?> "> Descargar en Excel</a>
+							
 							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "reporte_02_pdf.php?CIA=$CIAX&ZON=$ZON&LIN=$LIN "; ?> " target="_blank">  Imprimir en PDF</a>
 							<br><br>
 					
 						<div class="container-fluid">
 							<?php
 							$SQL = "SELECT 
-							m.id, m.code, m.description_m, m.ubication, l.namel, c.category, s.aa_s
+								m.id, m.code, m.description_m, m.ubication, m.wh_line_id_m, c.category,
+								COALESCE(s.Entradas, 0) AS Entradas,
+								COALESCE(s.Salidas, 0) AS Salidas,
+								COALESCE(s.Stock, 0) AS Stock
 							FROM wh_materials m
-							INNER JOIN wh_lines l ON l.id = m.wh_line_id_m
-							INNER JOIN wh_saldosm s ON s.product_id = m.id
 							LEFT JOIN wh_categories c ON c.cat_id = m.wh_category_id_m
-							WHERE m.zone_id = '$ZON' 
-							  AND m.company_id = '$CIAX' 
-							  AND m.wh_line_id_m = '$LIN' 
-							  AND m.m_statu_m = 'Activo' 
-							  AND s.aa_s = '$AA'
-							  ORDER BY m.code ASC";
+							LEFT JOIN (
+								SELECT
+									product_cod,
+									SUM(CASE WHEN movd_tmov = 'ENTRADAS' THEN movd_cant ELSE 0 END) AS Entradas,
+									SUM(CASE WHEN movd_tmov = 'SALIDAS' THEN movd_cant ELSE 0 END) AS Salidas,
+									SUM(CASE WHEN movd_tmov = 'ENTRADAS' THEN movd_cant ELSE 0 END) -
+									SUM(CASE WHEN movd_tmov = 'SALIDAS' THEN movd_cant ELSE 0 END) AS Stock
+								FROM wh_movinvd
+								WHERE movd_cia = '$CIAX'
+								GROUP BY product_cod
+							) s ON m.code = s.product_cod
+							WHERE
+								m.zone_id = '$ZON'
+								AND m.company_id = '$CIAX'
+								AND m.wh_line_id_m = '$LIN'
+								AND m.m_statu_m = 'Activo'
+							ORDER BY m.code ASC";
 							//--------------------------------------------------------------								
- 
-							echo "<Table id='exist_mat' class='table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer' role='grid' border='1'>";
+ 							echo "<Table id='exist_mat' class='table table-bordered table-hover text-nowrap dataTable dtr-inline mt-1 no-footer' role='grid' border='1'>";
 
 							echo "<thead>";
 							echo "<tr>";
 							echo "<th>Codigo</th>";
 							echo "<th>Descripción</th>";
-							echo "<th>Línea</th>";							
 							echo "<th>Categoria</th>";
 							echo "<th>Ubicacion</th>";
 							echo "<th>Existencia</th>";
@@ -286,29 +298,13 @@ else $LIN = '';
 								//=============================
 								$prodid = $Fila["id"];
 								$prod2X = $Fila["code"];
-								$existencia = 0;
-								
-								$SQLS = "SELECT 
-									product_cod,
-									SUM(IF(movd_tmov = 'ENTRADAS', movd_cant, 0)) AS 'Entradas',
-									SUM(IF(movd_tmov = 'SALIDAS', movd_cant, 0)) AS 'Salidas',
-									SUM(IF(movd_tmov = 'ENTRADAS', movd_cant, 0)) - SUM(IF(movd_tmov = 'SALIDAS', movd_cant, 0)) AS 'Stock'
-								FROM wh_movinvd
-								WHERE movd_cia = '$CIAX' AND product_cod = '$prod2X'
-								GROUP BY product_cod";
-
-									$RegistroS = mysqli_query($link,$SQLS);
-									while($FilaS = mysqli_fetch_array($RegistroS))
-									{
-										$existencia = $FilaS["Stock"];
-									}
-									mysqli_free_result ($RegistroS);
+								$existencia = 0;							
+								$existencia = $Fila["Stock"];
 								//=============================
 
 								echo "<tr>";
 								echo "<td Align=Center><font size=3>" . $Fila['code'];
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
-								echo "<td Align=Left><font size=2>" . $Fila['namel'];
 								echo "<td Align=Left><font size=2>" . $Fila['category'];
 								echo "<td Align=Center><font size=2>" . $Fila['ubication'];
 								echo "<td Align=Center><font size=2>" . $existencia;

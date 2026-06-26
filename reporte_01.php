@@ -252,6 +252,8 @@ else $LIN = '';
 						</div>
 					<!-------------------------------------- -->
 						<div class="container-fluid">
+							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "reporte_01_excel.php?CIA=$CIAX&ZON=$ZON&LIN=$LIN "; ?> "> Descargar en Excel</a>
+							
 							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "reporte_01_pdf.php?CIA=$CIAX&ZON=$ZON&LIN=$LIN "; ?> " target="_blank"> Imprimir en PDF</a>
 							<br><br>
 						<div class="container-fluid">
