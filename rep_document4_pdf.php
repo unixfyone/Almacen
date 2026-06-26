@@ -26,55 +26,25 @@ else $IDM = '';
 //-------------
 if(isset($_GET["ZON"]))$ZON = $_GET["ZON"];
 else $ZON = '';
-//---------------------------------------------------------------ob_end_clean();  'L','mm','LETTER'
-//---------------------------------------------------------------ob_end_flush();
-//---------------- ENCABEZADO Y PIE DE PAGINA ------------------
-ob_end_clean();
-//ob_start();
-class PDF extends FPDF
-{
-// ----------- Cabecera de página ------------------------------
-//--------------------------------------------------------------
-
-function Header()
-{
-    $this->SetXY(3,8);
-
-	$this->SetX(60);
-	$this->SetFont('Arial','B',10);
-	$this->Cell(100,5,utf8_decode('MOVIMIENTOS DE MATERIALES'),0,0,'C');
-
-	$this->SetX(110);
-    // Salto de línea
-    //$this->Ln(4);
-}
-//--------------------------------------------------------------
-// Pie de página
-function Footer()
-{
-
-	// Posición: a 1,5 cm del final
-    $this->SetY(-12);
-    // Arial italic 8
-    $this->SetFont('Arial','I',8);
-    // Número de página
-    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-}
-}
-//---------------------------------------------------------------
-//---------------------------------------------------------------
-	$pdf = new PDF('P','mm','LETTER');
-	$pdf->SetTitle('Entradas Materiales');
-	$pdf->AliasNbPages();
-	$pdf->SetLeftMargin(10);
-	$pdf->SetTopMargin(12);
-	$pdf->SetRightMargin(10);
-	$pdf->SetAutoPageBreak(true,12); 
-	$pdf->AddPage();
-//----------------------
-	$pdf->Image($logo,5.5,3,-205);
-//----------------------
-
+//-------------
+if(isset($_GET["DCIA"]))$DCIA = $_GET["DCIA"];
+else $DCIA = '';
+if(isset($_GET["mhdoc"]))$mhdoc = $_GET["mhdoc"];
+else $mhdoc = '';
+if(isset($_GET["DESCTM"]))$DESCTM = $_GET["DESCTM"];
+else $DESCTM = '';
+if(isset($_GET["mhtmov"]))$mhtmov = $_GET["mhtmov"];
+else $mhtmov = '';
+if(isset($_GET["mhfecha"]))$mhfecha = $_GET["mhfecha"];
+else $mhfecha = '';
+if(isset($_GET["mhejer"]))$mhejer = $_GET["mhejer"];
+else $mhejer = '';
+if(isset($_GET["mhper"]))$mhper = $_GET["mhper"];
+else $mhper = '';
+if(isset($_GET["mhtipent"]))$mhtipent = $_GET["mhtipent"];
+else $mhtipent = '';
+if(isset($_GET["mhorden"]))$mhorden = $_GET["mhorden"];
+else $mhorden = '';
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 $SQL = "SELECT * FROM wh_movinvh 
@@ -120,74 +90,118 @@ mysqli_free_result ($RegistroA);
 	$DESCTM= $FilaTM["tm_desc"];
 	}
 	mysqli_free_result ($RegistroTM);
+
+//---------------------------------------------------------------ob_end_clean();  'L','mm','LETTER'
+//---------------------------------------------------------------ob_end_flush();
+//---------------- ENCABEZADO Y PIE DE PAGINA ------------------
+ob_end_clean();
+ob_start();
+class PDF extends FPDF
+{
+// ----------- Cabecera de página ------------------------------
+//--------------------------------------------------------------
+
+function Header()
+{	
+	$this->Image($_SESSION['logo'], 5.5, 3, -205);
+	
+    $this->SetXY(3,8);
+
+	$this->SetX(60);
+	$this->SetFont('Arial','B',10);
+	$this->Cell(100,5,utf8_decode('MOVIMIENTOS DE MATERIALES'),1,1,'C');
+
+	$this->SetX(110);
+	
+	$this->SetY(17);
+	$this->SetFont('Arial','B',10);
+	$this->SetFillColor(244,244,255);
+	$this->Cell(20,5,utf8_decode('Empresa:'),0,0,'C',1);
+	$this->Cell(28,5,utf8_decode ($GLOBALS['DCIA']),0,1,'L');
+	//---------------	
+	$this->SetY(22);
+	$this->SetFont('Arial','B',10);
+	$this->SetFillColor(244,244,255);
+	$this->Cell(30,5,utf8_decode('Documento'),1,0,'C',1);
+	$this->Cell(70,5,utf8_decode('Tipo Documento'),1,0,'C',1);
+	$this->Cell(27,5,utf8_decode('T.M.'),1,0,'C',1);
+	$this->Cell(30,5,utf8_decode('Fecha Doc.'),1,0,'C',1);
+	$this->Cell(20,5,utf8_decode('Ejercicio'),1,0,'C',1);
+	$this->Cell(17,5,utf8_decode('Periodo'),1,0,'C',1);
+
+	$this->SetY(27);			
+	$this->SetTextColor(0,0,0);
+	$this->setFillColor(255,255,255);
+	$this->SetFont('Arial','',10);
+	$this->Cell(30,5,utf8_decode ($GLOBALS['mhdoc']),1,0,'C');
+	
+	$this->Cell(70,5,utf8_decode ($GLOBALS['DESCTM']),1,0,'L');
+	$this->SetTextColor(20, 14,186);
+	$this->SetFont('Arial','B',10);
+	$this->Cell(27,5,utf8_decode ($GLOBALS['mhtmov']),1,0,'C');
+	$this->SetTextColor(0,0,0);
+	$this->SetFont('Arial','',10);
+	$this->Cell(30,5,utf8_decode($GLOBALS['mhfecha']),1,0,'C');
+	$this->Cell(20,5,utf8_decode($GLOBALS['mhejer']),1,0,'C');
+	$this->Cell(17,5,utf8_decode($GLOBALS['mhper']),1,0,'C');
+	
+	$this->SetY(32);
+	$this->SetFont('Arial','B',10);
+	$this->SetFillColor(244,244,255);
+	$this->Cell(45,5,utf8_decode('Tipo de Entrega .....:'),1,0,'C',1);
+	$this->setFillColor(255,255,255);
+	$this->SetFont('Arial','',10);
+	$this->Cell(55,5,utf8_decode($GLOBALS['mhtipent']),1,0,'L');	
+
+	$this->SetFont('Arial','B',10);
+	$this->SetFillColor(244,244,255);	
+	$this->Cell(44,5,utf8_decode('Orden de Salida .....:'),1,0,'C',1);	
+	$this->setFillColor(255,255,255);
+	$this->SetFont('Arial','',10);
+	$this->Cell(50,5,utf8_decode($GLOBALS['mhorden']),1,0,'C');
+	
+	$this->SetXY(85,42);
+	$this->SetTextColor(0,0,0);
+	$this->SetFillColor(255,255,255);
+	$this->SetFont('Arial','B',10);
+	$this->Cell(52,6,'DETALLE DE RENGLONES',0,0,'C',1);
+	//----------------------
+
+	$this->SetY(47);
+	$this->SetTextColor(255, 255, 255);
+	$this->SetFillColor(80,80,80);
+	$this->SetFont('Arial','B',11);
+	$this->Cell(25,6,utf8_decode('MATERIAL'),1,0,'C',1);
+	$this->Cell(95,6,'DESCRIPCION',1,0,'C',1);
+	$this->Cell(25,6,'CANTIDAD',1,0,'C',1);
+	$this->Cell(25,6,'COSTO',1,0,'C',1);
+	$this->Cell(25,6,'STATUS',1,1,'C',1);	
+
+}
+//--------------------------------------------------------------
+// Pie de página
+function Footer()
+{
+
+	// Posición: a 1,5 cm del final
+    //$this->SetY(-12);
+	$this->SetY(-15);
+    // Arial italic 8
+    $this->SetFont('Arial','I',8);
+    // Número de página
+    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+}
+}
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-	$pdf->SetY(17);
-	$pdf->SetFont('Arial','B',10);
-	$pdf->SetFillColor(244,244,255);
-	$pdf->Cell(20,5,utf8_decode('Empresa:'),0,0,'C',1);
-	$pdf->Cell(28,5,utf8_decode($DCIA),0,1,'L');
-	//----------------------
-	
-	$pdf->SetY(22);
-	$pdf->SetFont('Arial','B',10);
-	$pdf->SetFillColor(244,244,255);
-	$pdf->Cell(30,5,utf8_decode('Documento'),1,0,'C',1);
-	$pdf->Cell(70,5,utf8_decode('Tipo Documento'),1,0,'C',1);
-	$pdf->Cell(27,5,utf8_decode('T.M.'),1,0,'C',1);
-	$pdf->Cell(30,5,utf8_decode('Fecha Doc.'),1,0,'C',1);
-	$pdf->Cell(20,5,utf8_decode('Ejercicio'),1,0,'C',1);
-	$pdf->Cell(17,5,utf8_decode('Periodo'),1,0,'C',1);
-
-	$pdf->SetY(27);			
-	$pdf->SetTextColor(0,0,0);
-	$pdf->setFillColor(255,255,255);
-	$pdf->SetFont('Arial','',10);
-	$pdf->Cell(30,5,utf8_decode($mhdoc),1,0,'C');	
-	$pdf->Cell(70,5,utf8_decode($DESCTM),1,0,'L');
-	$pdf->SetTextColor(20, 14,186);
-	$pdf->SetFont('Arial','B',10);
-	$pdf->Cell(27,5,utf8_decode($mhtmov),1,0,'C');
-	$pdf->SetTextColor(0,0,0);
-	$pdf->SetFont('Arial','',10);
-	$pdf->Cell(30,5,utf8_decode($mhfecha),1,0,'C');
-	$pdf->Cell(20,5,utf8_decode($mhejer),1,0,'C');
-	$pdf->Cell(17,5,utf8_decode($mhper),1,0,'C');
-	//----------------------
-	
-	$pdf->SetY(32);
-	$pdf->SetFont('Arial','B',10);
-	$pdf->SetFillColor(244,244,255);
-	$pdf->Cell(45,5,utf8_decode('Tipo de Entrega .....:'),1,0,'C',1);
-	$pdf->setFillColor(255,255,255);
-	$pdf->SetFont('Arial','',10);
-	$pdf->Cell(55,5,utf8_decode($mhtipent),1,0,'L');	
-	
-	$pdf->SetFont('Arial','B',10);
-	$pdf->SetFillColor(244,244,255);	
-	$pdf->Cell(44,5,utf8_decode('Orden de Salida .....:'),1,0,'C',1);	
-	$pdf->setFillColor(255,255,255);
-	$pdf->SetFont('Arial','',10);
-	$pdf->Cell(50,5,utf8_decode($mhorden),1,0,'C');
-	//----------------------
-	
-	$pdf->SetXY(85,42);
-	$pdf->SetTextColor(0,0,0);
-	$pdf->SetFillColor(255,255,255);
-	$pdf->SetFont('Arial','B',10);
-	$pdf->Cell(52,6,'DETALLE DE RENGLONES',0,0,'C',1);
-	//----------------------
-
-	$pdf->SetY(47);
-	$pdf->SetTextColor(255, 255, 255);
-	$pdf->SetFillColor(80,80,80);
-	$pdf->SetFont('Arial','B',11);
-	$pdf->Cell(25,6,utf8_decode('MATERIAL'),1,0,'C',1);
-	$pdf->Cell(95,6,'DESCRIPCION',1,0,'C',1);
-	$pdf->Cell(25,6,'CANTIDAD',1,0,'C',1);
-	$pdf->Cell(25,6,'COSTO',1,0,'C',1);
-	$pdf->Cell(25,6,'STATUS',1,1,'C',1);
-
+	$pdf = new PDF('P','mm','LETTER');
+	$pdf->SetTitle('MOVIMIENTOS');
+	$pdf->AliasNbPages();
+	$pdf->SetLeftMargin(10);
+	$pdf->SetTopMargin(12);
+	$pdf->SetRightMargin(10);
+	$pdf->SetAutoPageBreak(true,12); 
+	$pdf->AddPage();
 	//---------------------------------------------------------------
 	$SQL3 = "SELECT * FROM wh_movinvh 
 	INNER JOIN wh_movinvd ON wh_movinvd.movh_id = wh_movinvh.movh_id
@@ -221,6 +235,12 @@ mysqli_free_result ($RegistroA);
 				$pdf->Cell(60,5,utf8_decode($Fila3['department']),1,0,'L');
 				$pdf->Cell(18,5,utf8_decode('Usuario:'),1,0,'C',1);
 				$pdf->Cell(69,5,utf8_decode($Fila3["first_name"] .' '. $Fila3["last_name"]),1,1,'L');
+				
+				$pdf->SetX(15);
+				$pdf->SetFont('Arial','',9);
+				$pdf->SetFillColor(244,244,255);
+				$pdf->Cell(43,5,utf8_decode('Observación:'),1,0,'C',1);
+				$pdf->Cell(147,5,utf8_decode($Fila3['movd_obs']),1,1,'L');
 					
 			}
 			mysqli_free_result ($Registro3);
@@ -229,5 +249,4 @@ mysqli_free_result ($RegistroA);
 	ob_end_clean();
 	$pdf->Output();
 	ob_end_flush();
-
 ?>

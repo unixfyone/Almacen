@@ -314,7 +314,7 @@ $DCIA = $FilaA["company"];
 mysqli_free_result ($RegistroA);
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-$query = "SELECT *, COUNT(movh_id) AS renglones FROM wh_movinvd 
+$query = "SELECT movh_id, movd_statu, COUNT(movh_id) AS renglones FROM wh_movinvd 
 WHERE movh_id = '$IDM' GROUP BY movd_statu";
 
 $Registro3 = mysqli_query($link,$query);

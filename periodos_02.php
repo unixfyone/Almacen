@@ -49,7 +49,7 @@ else $ZON = '';
 
 //===============================================================
 	$query2 = "
-	SELECT *, Count(movh_id) AS Cuenta1 FROM wh_movinvh 
+	SELECT Count(movh_id) AS Cuenta1 FROM wh_movinvh 
 	WHERE movh_statu = 'Abierto' and movh_cia = '$CIA' and movh_zone = '$ZON'
 	";	
 	$Registro2 = mysqli_query($link,$query2);
@@ -113,22 +113,32 @@ else $ZON = '';
 		while($row2 = mysqli_fetch_array($Registro2))
 		{
 		//=======================================================
-		$PROD = $row2["product_id"];
-		
+		$PROD = $row2["product_cod"];
+
+		$exe = 0;
+		$exs = 0;
+		$expa = 0;
+		$mValorfp2 = 0;
 		//--------------------------------
 		$mValorfp=explode("|", $row2["saldos_fp"]);
+		$expa = $mValorfp[$MM-1];
+
+		$mValore=explode("|", $row2["saldos_e"]);
+		$exe = $mValore[$MM-1];
+
+		$mValors=explode("|", $row2["saldos_s"]);
+		$exs = $mValors[$MM-1];
 		//--------------------------------
-		
-		$vefpa = $mValorfp[$MM-1];				// valor saldo periodo anterior al cierre (13 Pos)
-		$vefp = $mValorfp[$MM]+$vefpa;			// Actualiza saldo periodo del Arreglo en periodo de Cierre (13 Pos)
-		
-		$mValorfp[$MM]=$vefp;
+
+		$mValorfp2 = ((int)$expa + (int)$exe - (int)$exs );
+
+		$mValorfp[$MM]=((int)$mValorfp2);
 
 		$mValorfp2=implode("|", $mValorfp);
 		//--------------------------------				
 		$query4 = "UPDATE wh_saldosm SET 
 		saldos_fp = '$mValorfp2'
-		WHERE aa_s = '$AA' and product_id = '$PROD' and company_id = '$CIA' and zone_id = '$ZON'
+		WHERE aa_s = '$AA' and product_cod = '$PROD' and company_id = '$CIA' and zone_id = '$ZON'
 		";
 		mysqli_query($link,$query4);
 		}
@@ -144,7 +154,6 @@ else $ZON = '';
 			window.history.go(-2)
 			</script>";
 		}
-	//echo "<pre>"; print_r($ZON); exit();
 	//========		
 	}
 //===============================================================

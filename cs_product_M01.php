@@ -305,7 +305,7 @@ else $prod = '';
 							
 							}  else  {
 								
-							$SQL = "SELECT movd.*, mat.description_m, mat.m_statu_m, cat.category, um.name AS umname,
+							$SQL = "SELECT DISTINCT movd.product_cod, movd.product_id, mat.description_m, mat.m_statu_m, cat.category, um.name AS umname,
 							sal.sal_id, sal.product_id AS sproduct_id, sal.aa_s, sal.saldos_e, sal.saldos_s, sal.saldos_fp
 							FROM wh_movinvd movd
 							INNER JOIN wh_materials mat ON mat.id = movd.product_id
@@ -313,7 +313,6 @@ else $prod = '';
 							INNER JOIN wh_measurement_units um ON um.id = mat.wh_measurement_unit_id_m
 							LEFT JOIN wh_saldosm sal ON sal.product_id = movd.product_id and sal.aa_s = movd.movd_ejer
 							WHERE movd.product_cod LIKE '%$prod%' and movd.movd_cia = '$CIA' and movd.movd_zone = '$ZON' and movd.movd_ejer = '$AA' and movd.movd_per = '$MM' and sal.zone_id = '$ZON'
-							GROUP BY movd.product_id
 							ORDER BY movd.product_id ASC";								
 							}
 							//---------------------------------------------------------------

@@ -244,8 +244,13 @@ else $CAT = '';
 							<div class="card-header bg-light border-0">
 								<h5 class="card-title text-<?= $cstyle; ?>-dark text-bold">Materiales </h5>
 							</div>
-						</div>
-					<!-------------------------------------- -->		
+						</div>					
+					<!-------------------------------------- -->	
+						<div class="container-fluid">
+							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "cs_exist_2_Excel.php?CIA=$CIAX&ZON=$ZON&CAT=$CAT "; ?> "> Descargar en Excel</a>
+							<br><br>
+
+							
 						<div class="container-fluid">
 							<?php
 							//if ($CAT != '') {
@@ -258,7 +263,7 @@ else $CAT = '';
 							//---------------------------------------------------------------
 							//} else {
 							//---------------------------------------------------------------
-//echo "<pre>"; print_r($SQL); exit();
+
 							//--------------------------------------------------------------								
 							//} 
 							echo "<b><font color='#0066FF' FACE='times new roman' size='4px'>Lista de Materiales</font></b>";
@@ -270,8 +275,8 @@ else $CAT = '';
 							echo "<th>Descripción</th>";
 							echo "<th>Categoria</th>";							
 							echo "<th>Ubicación</th>";
-							echo "<th>Statu</th>";
 							echo "<th>Existencia</th>";
+							echo "<th>Statu</th>";
 							echo "</tr>";
 							echo "</thead>";
 
@@ -330,8 +335,8 @@ else $CAT = '';
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
 								echo "<td Align=Left><font size=2>" . $Fila['category'];
 								echo "<td Align=Left><font size=2>" . $Fila['ubication'];
-								echo "<td Align=Center><font size=2>" . $status;
 								echo "<td Align=Center><font size=2>" . $existencia;
+								echo "<td Align=Center><font size=2>" . $status;								
 								echo "</tr>";
 								//---------------
 							} 

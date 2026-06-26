@@ -96,7 +96,7 @@ $existencia = 0;
 
 
 //---------------------------------------------------------------
-	$query3 = "SELECT *, Count(product_id) AS Cuenta1 FROM wh_saldosm WHERE aa_s = '".$AA."' and product_id = '".$prodid."'
+	$query3 = "SELECT product_id, aa_s, Count(product_id) AS Cuenta1 FROM wh_saldosm WHERE aa_s = '".$AA."' and product_id = '".$prodid."'
 	";	
 	$Registro3 = mysqli_query($link,$query3);
 	while($row3 = mysqli_fetch_array($Registro3))

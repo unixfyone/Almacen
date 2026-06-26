@@ -227,6 +227,7 @@ mysqli_free_result ($Registro1);
 	//-------------------------------
 	$DESCP= $Filap["description_m"];
 	$PRODP = $Filap["cost_me"];			// Precio A del Producto
+	$UBIC = $Filap["ubication"];			// Ubicacion
 	$UNIM = $Filap["name"];
 	}
 	mysqli_free_result ($Registrop);
@@ -382,6 +383,10 @@ mysqli_free_result ($Registro);
 														&nbsp;&nbsp;
 														<label class="input-group-text"><font color="blue" size="3px">Ultimo Costo:</font></label>
 														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $PRODP ?></font></label>
+														
+														&nbsp;&nbsp;
+														<label class="input-group-text"><font color="blue" size="3px">Ubicación:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $UBIC ?></font></label>
 													</div>
 												</div>
 											</div>

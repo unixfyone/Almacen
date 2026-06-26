@@ -274,7 +274,11 @@ else $LIN = '';
 								<h5 class="card-title text-<?= $cstyle; ?>-dark text-bold">Materiales </h5>
 							</div>
 						</div>
-					<!-------------------------------------- -->		
+					<!-------------------------------------- -->
+						<div class="container-fluid">
+							<a class="btn btn-outline-<?php echo $classButtonHeader;?> btn-xs elevation-1" href="<?php echo "cs_exist_3_Excel.php?CIA=$CIAX&ZON=$ZON&LIN=$LIN "; ?> "> Descargar en Excel</a>
+							<br><br>
+					
 						<div class="container-fluid">
 							<?php
 							if ($CAT != '') {
@@ -305,8 +309,9 @@ else $LIN = '';
 							echo "<th>Descripción</th>";
 							echo "<th>Línea</th>";							
 							echo "<th>Categoria</th>";
-							echo "<th>Statu</th>";
+							echo "<th>Ubicacion</th>";
 							echo "<th>Existencia</th>";
+							echo "<th>Statu</th>";
 							echo "</tr>";
 							echo "</thead>";
 
@@ -363,8 +368,9 @@ else $LIN = '';
 								echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
 								echo "<td Align=Left><font size=2>" . $Fila['namel'];
 								echo "<td Align=Left><font size=2>" . $Fila['category'];
-								echo "<td Align=Center><font size=2>" . $status;
+								echo "<td Align=Center><font size=2>" . $Fila['ubication'];
 								echo "<td Align=Center><font size=2>" . $existencia;
+								echo "<td Align=Center><font size=2>" . $status;
 								echo "</tr>";
 								//---------------
 							} 

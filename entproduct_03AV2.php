@@ -182,6 +182,7 @@ mysqli_free_result ($Registro1);
 	//-------------------------------
 	$DESCP = $Filap["description_m"];		// Descripcion del Producto
 	$PRODP = $Filap["cost_me"];				// Precio A del Producto
+	$UBIC = $Filap["ubication"];			// Ubicacion
 	$UNIM = $Filap["name"];					// Nombre Unidad de Medida
 	}
 	mysqli_free_result ($Registrop);
@@ -338,6 +339,10 @@ mysqli_free_result ($Registro);
 														&nbsp;&nbsp;
 														<label class="input-group-text"><font color="blue" size="3px">Ultimo Costo:</font></label>
 														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $PRODP ?></font></label>
+														
+														&nbsp;&nbsp;
+														<label class="input-group-text"><font color="blue" size="3px">Ubicación:</font></label>
+														<label class="input-group-text"><font color="#990000" size="3px"><?Php echo $UBIC ?></font></label>														
 													</div>
 												</div>
 											</div>
@@ -368,7 +373,7 @@ mysqli_free_result ($Registro);
 												<div class="col-lg-4">
 													<div class="input-group">
 														<label class="input-group-text"><font color="#606060" size="3px">Tasa de Cambio Bs:</font></label>
-														<Input class="form-control" Type="Text" name="movd_tasa_cambio" size='12' maxlength="12" value="<?Php echo $pdolar ?>" required />
+														<Input class="form-control" Type="Text" name="movd_tasa_cambio" size='12' maxlength="12" value="<?Php echo number_format($dolarHoy, 2) ?>" required />
 													</div>
 												</div>
 											</div>

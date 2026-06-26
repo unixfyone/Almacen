@@ -7,21 +7,17 @@ if(isset($_POST['btn_action']))
 {
 	if($_POST['btn_action'] == 'load_usuarios')
 	{
-		echo fill_user_department_list($connect, $_POST['department_id']);
+		echo fill_user_department_list($connect, $_POST['department_id'], $_POST['CIAX']);
 	}
 		
-	if ($_POST['btn_action'] == 'load_usuarios2') {
-
-		if (isset($_POST['department_id2']) && !empty($_POST['department_id2']) && isset($_POST['cia']) && !empty($_POST['cia'])) {
-			echo fill_user_department_list($connect, $_POST['department_id2'], $_POST['cia']);
-		} else {
-			echo 'Error: Parámetros inválidos';
-		}
+	if ($_POST['btn_action'] == 'load_usuarios2') 
+	{
+		echo fill_user_department_list($connect, $_POST['department_id2'], $_POST['company_id']);
 	}
 		
 	if($_POST['btn_action'] == 'load_usuarios3')
 	{
-		echo fill_user_department_list($connect, $_POST['department_id3']);
+		echo fill_user_department_list($connect, $_POST['department_id3'], $_POST['CIAX']);
 	}
 	
 	if($_POST['btn_action'] == 'load_department')

@@ -237,7 +237,7 @@ $cont_doc = "EM".'-'.$cont_em1;
 										</div>
 									</div>
 								</div>
-								<Input Type="hidden" name="cia" id="cia" value="<?Php echo $CIAX ?>">
+								<Input Type="hidden" name="company_id" id="company_id" value="<?Php echo $CIAX ?>">
 								
 								<Input Type="hidden" name="CIAX" value="<?Php echo $CIAX ?>">
 								<Input Type="hidden" name="ZON" value="<?Php echo $ZON ?>">
@@ -281,21 +281,17 @@ $(document).ready(function(){
 <!-- ********************* Lista para Usuarios/departamento **************** -->
 $('#department_id2').change(function(){
 var department_id2 = $('#department_id2').val();
-var cia = $('#cia').val();
+var company_id = $('#company_id').val();
 var btn_action = 'load_usuarios2';
-// Verificar que los datos estén válidos antes de enviar la solicitud
-if (department_id2 && cia) {
 	$.ajax({
 		url: "mov_action.php",
 		method: "POST",
-		data: { department_id2: department_id2, cia: cia, btn_action: btn_action },
+		data: { department_id2: department_id2, company_id: company_id, btn_action: btn_action },
 		success: function(data) {
 			$('#user_receptor').html(data);
 		}
 	});
-} else {
-	console.log('Error: Parámetros inválidos');
-}
+
 });
 });	
 //---------------

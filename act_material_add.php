@@ -57,7 +57,7 @@ $cost_me = $_POST["cost_me"];
 $reorder = $_POST["reorder"];
 $fill = $_POST["fill"];	
 //-------------------------- 
-$query = "select *, COUNT(code) AS ctacode from wh_materials
+$query = "select company_id, zone_id, code, COUNT(code) AS ctacode from wh_materials
 where company_id = '$company_id' and zone_id = '$zone_id' and code = '$code'
 ";
 		$Registro = mysqli_query($link,$query);
