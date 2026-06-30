@@ -1,83 +1,39 @@
 <?php
-$MID = $_GET['MID'].$_GET['AA'].$_GET['MM'];
-$NOM1 = "Existencia_Materiales-Lineas";
-$NOM2 = ".xls";
-$nombreDelDocumento = $NOM1.$MID.$NOM2;
-
-header('Content-type: application/vnd.ms-excel');
-header('Content-Disposition: attachment; filename="' . $nombreDelDocumento . '" ');
-header("Pragma: no-cache");
-header("Expires: 0");
-header("Content-Type: text/html; charset=utf-8");
-
-//header('Cache-Control: max-age=0');
+// 1. Incluir el cargador automático de Composer
+require 'vendor/autoload.php';
+// 2. Importar las clases necesarias de PhpSpreadsheet
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 //------------------------------------
 include('database_connection.php');
-
-if(!isset($_SESSION['type']))
-{
-	header('location:login.php');
-}
-if($_SESSION['type'] != 'Master')
-{
-	header("location:index2.php");
-}
-include('unico.php');
-?>
-<HTML>
-<HEAD>
-<TITLE>EXISTENCIA DE MATERIALES POR LINEA</TITLE>
-
-</HEAD>
-
-<BODY bgcolor=#FFFFFF>
-<div align="Left">
-<?php
-echo '<FORM ACTION="">';
-
+//------------------------------------
 $Fecha = date('d-m-Y');
 $CIA = $_GET['CIA']; 		// Codigo Compañia
 $ZON = $_GET['ZON']; 		// Codigo del Almacen
 $LIN = $_GET['LIN']; 			// Año
 //---------------------------------------------------------------
-//===============================================================
-	$SQLp = "SELECT * FROM wh_periodos 
-	WHERE per_statu = 'Abierto' and zone_id = '$ZON' ";
-	$Registrop = mysqli_query($link,$SQLp);
-	//-----------------------------
-	while ($Filap=mysqli_fetch_array($Registrop))
-	{	
-		$AA = $Filap["per_aa"];
-		$MM = $Filap["per_mm"];
-	}
-	mysqli_free_result ($Registrop);
-	//===============================================================
-//---------------------------------------------------------------
-$SQL = "SELECT * FROM wh_zones
+$stmt = $connect->prepare("SELECT * FROM wh_zones
 INNER JOIN companies ON companies.id = wh_zones.zcompany_id 
-Where zone_id = '$ZON' ";
-$RegistroA = mysqli_query($link,$SQL);
-while($FilaA = mysqli_fetch_array($RegistroA))
-{
-$ZOND = $FilaA["zone_desc"];
-$ZONU = $FilaA["zone_ubic"];
-$DCIA = $FilaA["company"];
-} 
-mysqli_free_result ($RegistroA);
-//---------------------------------------------------------------
-//---------------------------------------------------------------
-$SQLL="Select * FROM wh_lines  
-WHERE statu = 'Activo' and id = '$LIN' ";								
+Where zone_id = '$ZON'");
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$Registrol=mysqli_query($link,$SQLL);
-//-------
-while ($Filal=mysqli_fetch_array($Registrol))
-{
-	$DLIN =  $Filal["namel"];
-}
-mysqli_free_result ($Registrol);
+foreach ($result as $row){
+$ZOND = $row["zone_desc"];
+$ZONU = $row["zone_ubic"];
+$DCIA = $row["company"];
+} 
 //---------------------------------------------------------------
-$SQL = "SELECT 
+$stmt = $connect->prepare("Select * FROM wh_lines  
+WHERE statu = 'Activo' and id = '$LIN'");								
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//-------
+foreach ($result as $row){
+$DLIN =  $row["namel"];
+}
+//---------------------------------------------------------------
+$stmt = $connect->prepare("SELECT 
 	m.id, m.code, m.description_m, m.ubication, m.wh_line_id_m, c.category,
 	COALESCE(s.Entradas, 0) AS Entradas,
 	COALESCE(s.Salidas, 0) AS Salidas,
@@ -100,54 +56,50 @@ WHERE
 	AND m.company_id = '$CIA'
 	AND m.wh_line_id_m = '$LIN'
 	AND m.m_statu_m = 'Activo'
-ORDER BY m.code ASC";
+ORDER BY m.code ASC");
 //---------------------------------------------------------------
-//----------
-echo "<font color='#660000' size='5'><b>EXISTENCIA DE MATERIALES POR LINEA</b></font>";
-echo "<br>";
-echo "<font color='blue' size='5'><b>$DCIA</b></font>";
-echo "<br>";
-echo "<font color='#990000' size='4px'><b>ZONA: </b></font>";
-echo "$ZOND";
-echo "<br>";
-echo "<font color='#990000' size='4px'><b>LINEA: </b></font>";
-echo "$DLIN";
-echo "<br>";
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// 4. Crear el documento de Excel
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+// 5. Definir los encabezados de la tabla (Fila 1)
+$sheet->getStyle('A1:E1')->getFont()->setBold(true);
+$sheet->setCellValue('B1', 'EXISTENCIA DE MATERIALES POR LINEA');
+$sheet->setCellValue('A2', 'COMPAÑIA:');
+$sheet->setCellValue('B2', $DCIA);
+$sheet->setCellValue('A3', 'ZONA:');
+$sheet->setCellValue('B3', $ZOND);
+$sheet->setCellValue('A4', 'LINEA:');
+$sheet->setCellValue('B4', $DLIN);
 
-echo "<Table cellspacing='0' cellpadding='0' bgcolor=#6699FF border color= 000000>";
-//-------------------------------
-echo "<tr>";
-echo "<th>CODIGO MATERIAL</th>";
-echo "<th>DESCRIPCION</th>";
-//echo "<th>LINEA</th>";							
-echo "<th>CATEGORIA</th>";
-echo "<th>UBICACION</th>";
-echo "<th>EXISTENCIA</th>";
-echo "</tr>";
-
-$Registro = mysqli_query($link,$SQL);
-while($Fila = mysqli_fetch_array($Registro))
-{
-
-	//=======================================================	
-	$existencia = 0;							
-	$existencia = $Fila["Stock"];
-
-	echo "<tr bgcolor='#FFFFFF'>";
-	echo "<td align=Center><font size=3>" . $Fila['code']."</font></td>";	
-	echo "<td Align=Left><span class='text-wrap'><font size=2>".$Fila['description_m']."</font></span></td>";
-	//echo "<td Align=Left><font size=2>" . $DLIN."</font></td>";
-	echo "<td Align=Left><font size=2>" . $Fila['category']."</font></td>";
-	echo "<td Align=Center><font size=2>" . $Fila['ubication']."</font></td>";
-	echo "<td Align=Center><font size=2>" . $existencia."</font></td>";
-	echo "</tr>";
-	//---------------	
-
+$sheet->setCellValue('A6', 'CODIGO');
+$sheet->setCellValue('B6', 'DESCRIPCION');
+$sheet->setCellValue('C6', 'CATEGORIA');
+$sheet->setCellValue('D6', 'UBICACION');
+$sheet->setCellValue('E6', 'EXISTENCIA');
+// Opcional: Poner los encabezados en negrita
+$sheet->getStyle('A6:E6')->getFont()->setBold(true);
+// 6. Llenar el Excel con los datos de MySQL
+$filaInicio = 7; // Empezamos en la fila 2 porque la 1 tiene los encabezados
+foreach ($result as $row){
+    $sheet->setCellValue('A' . $filaInicio, $row['code']);
+    $sheet->setCellValue('B' . $filaInicio, $row['description_m']);
+    $sheet->setCellValue('C' . $filaInicio, $row['category']);
+    $sheet->setCellValue('D' . $filaInicio, $row['ubication']);
+	$sheet->setCellValue('E' . $filaInicio, $row['Stock']);
+    
+    $filaInicio++; // Avanzar a la siguiente fila	
 }
-mysqli_free_result ($Registro);
-echo "</Table>";
-?>
-</FORM>
-</div>
-</BODY>
-</HTML> 
+// Opcional: Autoajustar el ancho de las columnas para que se lean bien
+foreach (range('A', 'E') as $columna) {
+    $sheet->getColumnDimension($columna)->setAutoSize(true);
+}
+// Configurar cabeceras HTTP para forzar la descarga en el navegador
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="Existencia_Materiales_' . date('Ymd') . '.xlsx"');
+header('Cache-Control: max-age=0');
+// 8. Crear el archivo y enviarlo al navegador
+$writer = new Xlsx($spreadsheet);
+$writer->save('php://output');
+exit;

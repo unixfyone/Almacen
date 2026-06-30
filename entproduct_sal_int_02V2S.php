@@ -656,7 +656,7 @@ mysqli_free_result ($Registro);
 												
 												<div class="col-sm-6" align="right">
 													<?php
-													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"xentproduct_sal_int_02EV2S.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TS=$mdtipsal&CD=$CID&DE=$dmov&TT=$trans&TCON=$idconsumo&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>";
+													echo "<a type='button' class='btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1' href=\"entproduct_sal_int_02EV2S.php?IDM=$IDM&IDH=$mhid&CP=$prod2&TMC=$tmcod&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TS=$mdtipsal&CD=$CID&DE=$dmov&TT=$trans&TCON=$idconsumo&OBS=$movd_obs \"><i class='fa fa-edit'></i> Editar Renglon</a>";
 													?> &nbsp;&nbsp;&nbsp;&nbsp;
 													<button class="btn btn-outline-<?php echo $classButtonFooter;?> btn-xs elevation-1" type="button" name="BotonCancelar" onclick='window.history.go(-"<?Php echo $CT1; ?>" )'><span class="fa fa-arrow-left"></span> Retornar</button>
 												</div>											
@@ -725,7 +725,7 @@ mysqli_free_result ($Registro);
 							{
 							echo "<Td Align=Left><font size=2>" . $Fila['code'];	
 							}	else	{	
-							echo "<td><a href=\"xentproduct_sal_int_02EV2S.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TS=$mdtipsal&CD=$CID&TT=$trans&TCON=$idconsumo&OBS=$movd_obs \">$prod2X</a></td>"; 
+							echo "<td><a href=\"entproduct_sal_int_02EV2S.php?IDM=$IDM&IDH=$mhid&CP=$prod2X&TMC=$tmcod&DE=$dmov&CNT=$mdcant&UNI=$mdcostoue&TC=$tasa&REC=$rprod&TS=$mdtipsal&CD=$CID&TT=$trans&TCON=$idconsumo&OBS=$movd_obs \">$prod2X</a></td>"; 
 							}
 							echo "<Td Align=Left><span class=text-wrap><font size=2>" . $Fila['description_m'];
 							echo "<Td Align=Center><font size=2>" . $GRPXD;
